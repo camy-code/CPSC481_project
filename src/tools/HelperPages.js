@@ -8,7 +8,7 @@ import Shop from "../pages/Shop"
 import { useNavigate } from 'react-router-dom';
 
 
-
+// It looks here that I just add a page here
 const publicPages =   [
     {
       compo: <Home/>,

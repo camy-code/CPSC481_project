@@ -17,7 +17,8 @@ const Layout = () => {
       <Outlet />
 
     
-        <Footer />
+        {/* <Footer /> */}
+        {/* I just dont want the footer right now */}
       
     </>
   );

@@ -53,10 +53,11 @@ const Header = () => {
             {/* Left Side: Logo and Name */}
             <Box display="flex" alignItems="center" flexGrow={1}>
               <Typography variant="h6" component="div" sx={{ marginLeft: 1 }}>
-                MyWebsite
+              KiddoFlix
               </Typography>
               {/* Add an icon here */}
-              <DeleteOutlinedIcon sx={{ marginLeft: 1 }} />
+              {/* <DeleteOutlinedIcon sx={{ marginLeft: 1 }} /> */}
+              {/* Can change icon here */}
             </Box>
 
             {/* Right Side: Navigation Buttons */}

@@ -41,11 +41,13 @@ const publicPages =   [
       path: "/menu",
       name: "menu"
     },
+    // Below are the child pages
     {
       compo: <ChildMain/>,
       path: "/childmain",
       name: "childmain"
     },
+    // Below are the parent pages
     {
       compo: <ParentLogin/>,
       path: "/parentlogin",

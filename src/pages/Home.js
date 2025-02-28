@@ -1,7 +1,7 @@
 import { Box } from "@mui/material"
 import ColorPick from "../tools/ColorPick"
 
-
+// I think this page should be the login/create account options
 const Home = () => {
     return <h1>Hello from Home </h1>
         

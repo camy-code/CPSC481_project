@@ -6,7 +6,7 @@ import {Grid2 } from "@mui/material"
 import { Link } from "react-router-dom";
 import {Typography} from "@mui/material";
 
-
+// I am sorry for the person who needs to read this code. It so desperately needs to be refactored but IDC
 
 // I think this page should be the login/create account options
 const Home = () => {

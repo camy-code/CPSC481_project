@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { TextField, Button, Grid, Typography, Box } from "@mui/material";
+import { TextField, Button,  Typography, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import ColorPick from "../tools/ColorPick";
+import Grid from '@mui/material/Grid2';
 
 const Login = () => {
   const [formData, setFormData] = useState({

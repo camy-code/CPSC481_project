@@ -1,5 +1,7 @@
+import { useParams } from "react-router-dom";
+
 const ParentMain = () => {
-    return <h1>Hello from ParentMain</h1>
+  return <h1>Welcome sir</h1>
 }
 
 export default ParentMain

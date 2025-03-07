@@ -1,5 +1,8 @@
+import { useParams } from "react-router-dom"
+
 const ChildMain = () => {
-    return <h1>Hello from ChildMain</h1>
+    const { name } = useParams();
+    return <h1>Hello from ChildMain {name}</h1>
 }
 
 export default ChildMain

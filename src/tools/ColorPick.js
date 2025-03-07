@@ -1,5 +1,5 @@
 
-const colorArr = ["white", "#504136", "#689689"];  // This would be our color array
+const colorArr = ["white", "#9381ff", "#c84630"];  // This would be our color array
     // The following are the colours I got from the color picking
     // Website: https://coolors.co/visualizer/f5e0b7-d6ba73-8bbf9f
 
@@ -31,7 +31,7 @@ const getThird = () => {
     if (colorArr.length < 2) {
         return null;
     }
-    return colorArr[1]
+    return colorArr[2]
 }
 
 const getWhite = () => {

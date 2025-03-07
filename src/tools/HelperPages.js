@@ -4,6 +4,7 @@ import About from "../pages/About" // May not need this, gotta double take desig
 
 // New pages to add
 import Login from "../pages/Login";
+
 import Menu from "../pages/Menu";
 import Create from "../pages/Create";
 import ChildMain from "../pages/ChildWatchPages/ChildMain";
@@ -47,7 +48,17 @@ const publicPages =   [
       path: "/childmain",
       name: "childmain"
     },
+    {
+      compo: <ChildMain/>,
+      path: "/childmain/:name",
+      name: "childmain"
+    },
     // Below are the parent pages
+    {
+      compo: <ParentLogin/>,
+      path: "/parentlogin/:mode",
+      name: "ParentLogin"
+    },
     {
       compo: <ParentLogin/>,
       path: "/parentlogin",

@@ -6,20 +6,30 @@ import { Link } from "react-router-dom";
 
 import ExitButton from "../components/menuComponents/ExitButton";
 import ProfileViews from "../components/menuComponents/ProfileViews";
+import ToolBox from "../components/menuComponents/ToolBox";
 
-import Grid from '@mui/material/Grid2';
+import Grid from "@mui/material/Grid2";
 const Menu = () => {
-    return <>
-    <Grid container direction={"column"}  padding={3} sx={{ height:"80vh", justifyItems:"flex-start"}} spacing={3}>
+  return (
+    <>
+      <Grid
+        container
+        direction={"column"}
+        padding={3}
+        sx={{ height: "80vh", justifyItems: "flex-start" }}
+        spacing={3}
+      >
         <Grid>
-        <ExitButton to1="/" label="Exit"/>
+          <ExitButton to1="/" label="Exit" />
         </Grid>
-            <ProfileViews/>
-        
-        <Typography>Hello</Typography>
-    </Grid>
-    
-    </>
-}
+        <ProfileViews />
 
-export default Menu
+<Box marginTop={8}>
+        <ToolBox />
+        </Box>
+      </Grid>
+    </>
+  );
+};
+
+export default Menu;

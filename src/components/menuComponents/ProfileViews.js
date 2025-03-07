@@ -24,7 +24,7 @@ const ProfileViews = () => {
 
   return <Grid container direction={"row"} spacing={2} justifyContent="center">
  
-    {kidsProf.map((a)=><ChildProfileSel name={a.name} url={a.imageURL} PAGE_LINK={"/childmain"}/>)}
+    {kidsProf.map((a)=><ChildProfileSel name={a.name} url={a.imageURL} PAGE_LINK={"/childmain/" +a.name}/>)}
 
     <ChildProfileSel name={"Parent"} url={"https://cdn-icons-png.freepik.com/512/9307/9307950.png"} PAGE_LINK={"/parentlogin"}/>
 

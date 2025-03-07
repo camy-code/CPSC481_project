@@ -1,6 +1,6 @@
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 
-import Box from "@mui/material";
+
 import { Link } from "react-router-dom";
 
 

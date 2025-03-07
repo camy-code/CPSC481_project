@@ -81,7 +81,7 @@ const Create = () => {
           onChange={handleChange}
         />
 
-        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2,backgroundColor:ColorPick.getSecondary() }} component={Link} to="menu">
+        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2,backgroundColor:ColorPick.getSecondary() }} component={Link} to="/menu">
           Create Account
         </Button>
 

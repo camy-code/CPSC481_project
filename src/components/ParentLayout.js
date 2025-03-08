@@ -1,10 +1,11 @@
 import React from "react";
-import Header from "./Header";
-import Footer from "./Footer";
+
+import Sidebar from "./parentLayoutCompo/Sidebar";
+
+import Grid from "@mui/material/Grid2";
 
 // Some react imports
 import { Outlet } from "react-router-dom";
-
 import { Box } from "@mui/material";
 
 const ParentLayout = () => {
@@ -12,14 +13,18 @@ const ParentLayout = () => {
 
   return (
     <>
-      
-    <h1>Hello asshole</h1>
-      <Outlet />
+     <Grid container direction="row" >
+      {/* Sidebar (Fixed width) */}
+      {/* <Grid item xs={2} sx={{ backgroundColor: "red" }}>
+        <Sidebar />
+      </Grid> */}
 
+      {/* Main content (Centered Outlet) */}
+      <Box sx={{width:"20%"}}><Sidebar/></Box>
+        <Box sx={{width:"80%"}}><Outlet /></Box>
+     
+    </Grid>    
     
-        {/* <Footer /> */}
-        {/* I just dont want the footer right now */}
-      
     </>
   );
 };

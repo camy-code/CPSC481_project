@@ -5,6 +5,8 @@ import ColorPick from "../../tools/ColorPick";
 import Grid from '@mui/material/Grid2';
 
 
+import ExitButton from "../../components/menuComponents/ExitButton";
+
 import { useParams } from "react-router-dom";
 const ParentLogin = () => {
     const { mode } = useParams();
@@ -27,9 +29,30 @@ const ParentLogin = () => {
         // This is if we want to add some sort of 
       };
 
+      // The folowing is to figure out which page to move to
+
+const pageMover = (answer) => {
+  if (answer === "History") {
+    return "/history"
+  } else if (answer === "Screen time") {
+    return "/screentime"
+  } else if (answer === "Restrict") {
+    return "/restrict"
+  } else if (answer === "reg") {
+    return "/parentmain"
+  } 
+
+  else {
+    return "/acount";
+  }
+
+}
 
 
     return <>
+    <Box sx={{margin:3, paddingTop:3}}>
+  <ExitButton to1="/menu" label="Go Back"/>
+  </Box>
      <Grid
       container
       justifyContent="center"
@@ -76,7 +99,7 @@ const ParentLogin = () => {
         />
      
 
-        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, backgroundColor:ColorPick.getSecondary() }} component={Link} to="/menu">
+        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, backgroundColor:ColorPick.getSecondary() }} component={Link} to={pageMover(id)}>
             Login
         </Button>
 

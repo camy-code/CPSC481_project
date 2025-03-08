@@ -6,14 +6,10 @@ import { Card, CardMedia, CardContent, Box, IconButton} from "@mui/material";
 import ChildProfileSel from "./ChildProfileSel";
 
 import AddIcon from '@mui/icons-material/Add';
+import ConstantLib from "../../tools/ConstantLib";
 
 // Profiles
-const kidsProf = [
-    { name: "Cam", imageURL:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrjStDrFOPPPRG4vqUB28jlvvP_cPioFuqDA&s" },
-    { name: "Dawson", imageURL:"https://pbs.twimg.com/media/FH5Iq-VWYAMxYCQ.jpg" },
-    
-
-];
+const kidsProf = ConstantLib.getKidsProfile();
 
 // Parent mode
 

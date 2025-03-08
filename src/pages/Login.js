@@ -28,7 +28,7 @@ const Login = () => {
       container
       justifyContent="center"
       alignItems="center"
-      sx={{ height: "100vh" }}
+      sx={{ height: "80vh" }}
     >
       <Box
         component="form"
@@ -71,7 +71,7 @@ const Login = () => {
      
 
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, backgroundColor:ColorPick.getSecondary() }} component={Link} to="/menu">
-          Create Account
+          Login
         </Button>
 
         <Typography variant="body2" sx={{ mt: 2 }}>

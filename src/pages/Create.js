@@ -30,7 +30,7 @@ const Create = () => {
       container
       justifyContent="center"
       alignItems="center"
-      sx={{ height: "100vh" }}
+      sx={{ height: "80vh" }}
     >
       <Box
         component="form"

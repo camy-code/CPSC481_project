@@ -17,6 +17,7 @@ import Acount from "../pages/ParentControls/Acount"
 import History from "../pages/ParentControls/History";
 import Restrict from "../pages/ParentControls/Restrict"
 import ScreenTime from "../pages/ParentControls/ScreenTime";
+import ParentHome from "../pages/ParentControls/ParentHome";
 
 
 
@@ -101,7 +102,13 @@ const authPages = [
     compo: <ScreenTime/>,
     path: "/screentime",
     name: "screentime"
-  }
+  },  
+  {
+    compo: <ParentHome/>,
+    path: "/parenthome",
+    name: "Parenthome"
+  },
+
 ]
 
 const getPublicPages = () => {

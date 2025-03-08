@@ -5,18 +5,23 @@ import ExitButton from "../menuComponents/ExitButton";
 
 import { Link } from "react-router-dom";
 
+// The following are my icon imports
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import SettingsIcon from '@mui/icons-material/Settings';
+import HomeIcon from '@mui/icons-material/Home';
+
 import ColorPick from "../../tools/ColorPick";
 
 
 const iconList = [
-    {compo:<SettingsIcon/>,label:"Acount", link:"/acount"},
+    {compo:<HomeIcon/>,label:"Home", link:"/parenthome"},
+   
     {compo:<AutoStoriesIcon/>,label:"History", link:"/history"},
     {compo:<WarningAmberIcon/>,label:"Restrict", link:"/restrict"},
   {compo:<AccessTimeIcon/>,label:"Screen time", link:"/screentime"},
+  {compo:<SettingsIcon/>,label:"Acount", link:"/acount"},
   
   
   

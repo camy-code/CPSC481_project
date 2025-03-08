@@ -12,6 +12,12 @@ import ParentLogin from "../pages/ParentControls/ParentLogin";
 import ParentMain from "../pages/ParentControls/ParentMain";
 // I may have missed some of the neeed pages
 
+// The following are pages for admin
+import Acount from "../pages/ParentControls/Acount"
+import History from "../pages/ParentControls/History";
+import Restrict from "../pages/ParentControls/Restrict"
+import ScreenTime from "../pages/ParentControls/ScreenTime";
+
 
 
 // The following methods make adding more pages to our app the most stupid proof as possible.
@@ -59,11 +65,7 @@ const publicPages =   [
       path: "/parentlogin/:mode",
       name: "ParentLogin"
     },
-    {
-      compo: <ParentLogin/>,
-      path: "/parentlogin",
-      name: "ParentLogin"
-    },
+   
     {
       compo: <ParentMain/>,
       path: "/parentmain",
@@ -73,13 +75,34 @@ const publicPages =   [
     // I am keeping the about page because I think that it is funny
     {
       compo: <About/>,
-      path: "about",
+      path: "/about",
       name: "about"
     }
   
   ]
 
-const authPages = []
+const authPages = [
+  {
+    compo: <Acount/>,
+    path: "/acount",
+    name: "acount"
+  },
+  {
+    compo: <History/>,
+    path: "/history",
+    name: "history"
+  },
+  {
+    compo: <Restrict/>,
+    path: "/restrict",
+    name: "restrict"
+  },
+  {
+    compo: <ScreenTime/>,
+    path: "/screentime",
+    name: "screentime"
+  }
+]
 
 const getPublicPages = () => {
     return publicPages;

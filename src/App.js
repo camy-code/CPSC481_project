@@ -10,6 +10,8 @@ import HelperPages from "./tools/HelperPages";
 import ColorPick from "./tools/ColorPick";
 import NoPage from "./pages/NoPage"; // No page is included only here because it will not be anywhere else
 
+import ParentLayout from "./components/ParentLayout";
+
 function App() {
   // Make a list of all the public pages
 
@@ -28,7 +30,18 @@ function App() {
             />
           ))
         }
+        {/* We need to add pages that need the parent layout */}
        
+        {/* The folowing is the map for the admin pages */}
+        <Route path="" element={<ParentLayout/>}>
+        {HelperPages.getAuthPages().map(  
+          (page) => (
+            <Route path={page.path}
+            element={page.compo } />
+          )
+         )}
+         </Route>
+
         <Route path ="*" element={<NoPage/>}/>
         </Route>
       </Routes>

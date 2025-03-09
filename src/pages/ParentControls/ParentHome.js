@@ -1,22 +1,29 @@
 import  Grid  from "@mui/material/Grid2";
 import { Typography,Button } from "@mui/material";
 
+import ColorPick from "../../tools/ColorPick";
+import { Link } from "react-router-dom";
+
 const ParentHome = () => {
     return <>
-    <Grid container direction={"column"} spacing={2}>
-    <Grid
-          container
-          direction={"column"}
-          sx={{ alignItems: "center" }}
-        >
-            <Typography variant="h2">Watch shows</Typography>
-            <Button>Watch</Button>
-        </Grid>
 
-    <h2>This is where a parent can go into unrestricted access</h2>
-    <h2>I am thinking that we have some sort of overview here but the most important part is that</h2>
-    <h2>They can go into view mode</h2>
-    </Grid>
+<Grid
+  container
+  direction="column"
+  sx={{
+    height: "70vh", // Full viewport height
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  }}
+>
+  <Typography variant="h2">Welcome!</Typography>
+ <Button component={Link} to="/parentmain" sx={{backgroundColor:ColorPick.getSecondary(), padding:1, color:"black", height:40, width:80}}>Watch</Button>
+  
+</Grid>
+
+
+   
     </>
 }
 export default ParentHome;

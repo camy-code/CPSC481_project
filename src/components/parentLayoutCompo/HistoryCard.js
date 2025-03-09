@@ -24,7 +24,7 @@ const HistoryCard = ({day, shows}) => {
          <CardMedia
            component="img"
            sx={{ width: 250, height: 250, objectFit: "cover" }}
-           image="https://source.unsplash.com/random"
+           image={a.thumbnail}
            alt="Random Image"
          />
        <CardActions sx={{ width: "100%", justifyContent: "center" }}>

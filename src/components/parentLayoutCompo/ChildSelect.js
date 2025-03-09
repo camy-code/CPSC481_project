@@ -4,9 +4,12 @@ import ColorPick from "../../tools/ColorPick";
 import { useState } from "react";
 import Grid from "@mui/material/Grid2"
 import { Box,Typography } from "@mui/material";
-
 const kidsProf = ConstantLib.getKidsProfile(); 
 
+// !! Hello
+  // This still needs some work because right now I am manually setting whether 
+  // someone is selected. The day got long and I became more lazy in terms of code 
+  // quality so sorry -_-.
 
 const ChildSelect = () => {
   const [select, setSelect] = useState(true)
@@ -15,7 +18,7 @@ const ChildSelect = () => {
   <Grid container direction={"row"} marginTop={5} spacing={4}>
   
   
-  {kidsProf.map( (prof) => (
+  {kidsProf.map( (prof,index) => (
    <Box>
    <Grid container direction={"column"} alignItems={"center"} >
    <Box
@@ -37,7 +40,7 @@ const ChildSelect = () => {
          height: '100%',    // Make the image fill the box height
          objectFit: 'cover', // Crop the image to fit the box
          borderRadius:"50%",
-         border: select ? '8px solid' + ColorPick.getThird() : '',
+         border: (index ===0) ? '8px solid' + ColorPick.getThird() : '',
        }}
      />
    </Box>

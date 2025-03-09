@@ -32,8 +32,10 @@ const History = () => {
   <TimeSelector/>
 
   <ChildSelect/>
-
-  
+{/* TODO:
+  Still need to do the show summaries here as well 
+  as when you click a show one can see the trailer, full desc,
+  and restrict (need to select kid to restrict) */}
 
 </Grid>
 

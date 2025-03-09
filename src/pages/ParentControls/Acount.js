@@ -6,7 +6,7 @@ import ChangePasswordDialog from "../../components/parentLayoutCompo/ChangePassw
 import DeleteAccountDialog from "../../components/parentLayoutCompo/DeleteAccountDialog";
 import AddChildDialog from "../../components/parentLayoutCompo/AddChildDialog";
 import RemoveChildDialog from "../../components/parentLayoutCompo/RemoveChildDialog";
-
+import EditChildDialog from "../../components/parentLayoutCompo/EditChildDialog";
 
 import { useState } from "react";
 
@@ -58,6 +58,16 @@ const Account = () => {
         setOpenDialogREMOVE(false);
       };
 
+           // The following is for REMOVE
+    const [openDialogEDIT, setOpenDialogEDIT] = useState(false); 
+    const handleClickOpenEDIT = () => {
+        setOpenDialogEDIT(true);
+      };
+    
+      const handleCloseEDIT = () => {
+        setOpenDialogEDIT(false);
+      };
+
 
 
   return (
@@ -87,8 +97,8 @@ const Account = () => {
     <RemoveChildDialog open={openDialogREMOVE} onClose={handleCloseREMOVE}/>
     </div>
     <div>
-    {genButton("Edit Child", (console.log("hlo")), ColorPick.getSecondary())}
-
+    {genButton("Edit Child", (handleClickOpenEDIT), ColorPick.getSecondary())}
+    <EditChildDialog open={openDialogEDIT} onClose={handleCloseEDIT}/>
     </div>
   </Grid>
 </Grid>

@@ -25,7 +25,7 @@ const ProfileViews = () => {
     <ChildProfileSel name={"Parent"} url={"https://cdn-icons-png.freepik.com/512/9307/9307950.png"} PAGE_LINK={"/parentlogin/reg"}/>
     {/* reg stands for regular as the arg */}
 
-    <ChildProfileSel name={"Add User"} url={"https://media.istockphoto.com/id/688550958/vector/black-plus-sign-positive-symbol.jpg?s=612x612&w=0&k=20&c=0tymWBTSEqsnYYXWeWmJPxMotTGUwaGMGs6BMJvr7X4="} PAGE_LINK={"/"}/>
+    <ChildProfileSel name={"Add User"} url={"https://media.istockphoto.com/id/688550958/vector/black-plus-sign-positive-symbol.jpg?s=612x612&w=0&k=20&c=0tymWBTSEqsnYYXWeWmJPxMotTGUwaGMGs6BMJvr7X4="} PAGE_LINK={"parentlogin/Account"}/>
   
     </Grid>
 

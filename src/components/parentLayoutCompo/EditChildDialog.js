@@ -42,7 +42,7 @@ const EditChildDialog = ({ open, onClose }) => {
                  <Grid container direction={"row"} spacing={2} alignItems={"center"} justifyContent={"space-between"}>
                     <Grid container direction={"column"}>
                     
-                    <TextField value={a.name}/>
+                    <TextField defaultValue={a.name}/>
                     {/* Check mark or X button*/}
                  <input
                          type="file"
@@ -60,9 +60,7 @@ const EditChildDialog = ({ open, onClose }) => {
                  </Grid>
                ))}
 
-                
-            
-                
+  
 
               </Card>
             </DialogContent>

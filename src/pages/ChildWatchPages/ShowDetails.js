@@ -73,6 +73,7 @@ const ShowDetails = () => {
           mb: 3,
         }}
       >
+        {/* Left Section: Show Description */}
         <Box sx={{ flex: 1 }}>
           <Typography
             sx={{ color: "black", fontSize: "1.2rem", lineHeight: 1.5 }}
@@ -82,7 +83,19 @@ const ShowDetails = () => {
             twists and memorable characters. Stay tuned for all the action and
             drama.
           </Typography>
+
+          {/* Favorite Button Below Description */}
+          <Box sx={{ mt: 2 }}>
+            <Button
+              variant="contained"
+              sx={{ bgcolor: "gold", color: "black" }}
+            >
+              Favorite
+            </Button>
+          </Box>
         </Box>
+
+        {/* Right Section: Show Image */}
         <Box
           component="img"
           src={image}

@@ -15,6 +15,10 @@ import VideoPlay from "../pages/ChildWatchPages/VideoPlay";
 
 import ParentLogin from "../pages/ParentControls/ParentLogin";
 import ParentMain from "../pages/ParentControls/ParentMain";
+
+import ParentShowDetails from "../pages/ParentControls/ShowParentDetails.js";
+import ParentFindShow from "../pages/ParentControls/FindShow_Parent.js";
+
 // I may have missed some of the neeed pages
 
 // The following are pages for admin
@@ -83,13 +87,21 @@ const publicPages = [
     path: "/parentlogin/:mode",
     name: "ParentLogin",
   },
-
   {
     compo: <ParentMain />,
     path: "/parentmain",
     name: "ParentMain",
   },
-
+  {
+    compo: <ParentShowDetails />,
+    path: "/showdetails_parent",
+    name: "showdetails_parent",
+  },
+  {
+    compo: <ParentFindShow />,
+    path: "/parentFindShow",
+    name: "parentFindShow",
+  },
   // I am keeping the about page because I think that it is funny
   {
     compo: <About />,

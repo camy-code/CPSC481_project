@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Box, Typography, Button, IconButton } from "@mui/material";
 import {
   Fullscreen,
@@ -17,15 +17,9 @@ const VideoPlayer = () => {
   const [volume, setVolume] = useState(1);
   const [progress, setProgress] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [showControls, setShowControls] = useState(true);
 
-  // Video control functions
   const handlePlayPause = () => {
-    if (isPlaying) {
-      videoRef.current.pause();
-    } else {
-      videoRef.current.play();
-    }
+    isPlaying ? videoRef.current.pause() : videoRef.current.play();
     setIsPlaying(!isPlaying);
   };
 
@@ -42,19 +36,16 @@ const VideoPlayer = () => {
   };
 
   const toggleFullscreen = () => {
-    if (!isFullscreen) {
-      containerRef.current.requestFullscreen?.();
-    } else {
-      document.exitFullscreen?.();
-    }
+    isFullscreen
+      ? document.exitFullscreen()
+      : containerRef.current.requestFullscreen();
     setIsFullscreen(!isFullscreen);
   };
 
-  // Update time as video plays
   const handleTimeUpdate = () => {
-    const progress =
-      (videoRef.current.currentTime / videoRef.current.duration) * 100;
-    setProgress(progress || 0);
+    setProgress(
+      (videoRef.current.currentTime / videoRef.current.duration) * 100 || 0
+    );
   };
 
   return (
@@ -62,15 +53,22 @@ const VideoPlayer = () => {
       sx={{
         bgcolor: "black",
         color: "white",
-        minHeight: "100vh",
+        height: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        p: 3,
+        p: 2,
       }}
     >
-      {/* Header */}
-      <Box sx={{ width: "100%", mb: 2 }}>
+      <Box
+        sx={{
+          width: "100%",
+          mb: 1,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Button
           onClick={() => window.history.back()}
           variant="contained"
@@ -80,17 +78,15 @@ const VideoPlayer = () => {
             borderRadius: "1rem",
             px: 2,
             py: 1,
-            "&:hover": { bgcolor: ColorPick.getSecondaryDark() },
           }}
         >
-          ← Go Back
+          ← Back
         </Button>
-        <Typography variant="h5" sx={{ mt: 2, fontWeight: "bold" }}>
+        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
           Now Playing: Episode 1
         </Typography>
       </Box>
 
-      {/* Video Container */}
       <Box
         ref={containerRef}
         sx={{
@@ -98,12 +94,11 @@ const VideoPlayer = () => {
           maxWidth: "90vw",
           aspectRatio: "16/9",
           position: "relative",
-          borderRadius: "1rem",
+          borderRadius: "0.75rem",
           overflow: "hidden",
-          mb: "2rem", // margin bottom for spacing
+          mb: 2,
         }}
       >
-        {/* Video Element */}
         <video
           ref={videoRef}
           src="/videos/sample.mp4"
@@ -111,21 +106,16 @@ const VideoPlayer = () => {
           onTimeUpdate={handleTimeUpdate}
           onClick={handlePlayPause}
         />
-
-        {/* Overlay Controls (Fixed at the bottom) */}
         <Box
           sx={{
             position: "absolute",
             bottom: 0,
             left: 0,
             right: 0,
-            p: 2,
+            p: 1,
             background: "linear-gradient(transparent, rgba(0,0,0,0.7))",
-            opacity: showControls ? 1 : 0,
-            transition: "opacity 0.3s ease",
           }}
         >
-          {/* Progress Bar */}
           <input
             type="range"
             min="0"
@@ -135,61 +125,37 @@ const VideoPlayer = () => {
             style={{
               width: "100%",
               height: "4px",
-              marginBottom: "1rem",
               cursor: "pointer",
-              WebkitAppearance: "none",
               background: `linear-gradient(to right, ${ColorPick.getSecondary()} ${progress}%, #555 ${progress}%)`,
             }}
           />
-
-          {/* Bottom Controls */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <IconButton
-              onClick={handlePlayPause}
-              sx={{
-                color: "white",
-                "&:hover": { bgcolor: "rgba(255,255,255,0.1)" },
-              }}
-            >
-              {isPlaying ? (
-                <Pause fontSize="large" />
-              ) : (
-                <PlayArrow fontSize="large" />
-              )}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
+            <IconButton onClick={handlePlayPause} sx={{ color: "white" }}>
+              {isPlaying ? <Pause /> : <PlayArrow />}
             </IconButton>
-
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <IconButton sx={{ color: "white" }}>
-                {volume > 0 ? <VolumeUp /> : <VolumeOff />}
-              </IconButton>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value={volume}
-                onChange={handleVolumeChange}
-                style={{
-                  width: "100px",
-                  height: "4px",
-                  cursor: "pointer",
-                  WebkitAppearance: "none",
-                  background: `linear-gradient(to right, ${ColorPick.getSecondary()} ${
-                    volume * 100
-                  }%, #555 ${volume * 100}%)`,
-                }}
-              />
-            </Box>
-
-            <Box sx={{ flexGrow: 1 }} />
-
             <IconButton
-              onClick={toggleFullscreen}
-              sx={{
-                color: "white",
-                "&:hover": { bgcolor: "rgba(255,255,255,0.1)" },
-              }}
+              onClick={() => setVolume(volume > 0 ? 0 : 1)}
+              sx={{ color: "white" }}
             >
+              {volume > 0 ? <VolumeUp /> : <VolumeOff />}
+            </IconButton>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={handleVolumeChange}
+              style={{
+                width: "80px",
+                cursor: "pointer",
+                background: `linear-gradient(to right, ${ColorPick.getSecondary()} ${
+                  volume * 100
+                }%, #555 ${volume * 100}%)`,
+              }}
+            />
+            <Box sx={{ flexGrow: 1 }} />
+            <IconButton onClick={toggleFullscreen} sx={{ color: "white" }}>
               {isFullscreen ? <FullscreenExit /> : <Fullscreen />}
             </IconButton>
           </Box>

@@ -105,7 +105,7 @@ const Account = () => {
 
 <Grid container justifyContent="center" sx={{ width: "100%" }}>
   <Grid container direction={"column"} alignItems={"flex-start"} marginTop={4} spacing={2}>
-    <Typography variant="h4">Acount</Typography>
+    <Typography variant="h4">Account</Typography>
 
     <div>
     {genButton("DELETE", (handleClickOpeDELETE), ColorPick.getThird())}

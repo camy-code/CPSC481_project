@@ -14,7 +14,7 @@ const iconList = [
     {compo:<AccessTimeIcon/>,label:"Screen time"},
     {compo:<WarningAmberIcon/>,label:"Restrict"},
     {compo:<AutoStoriesIcon/>,label:"History"},
-    {compo:<SettingsIcon/>,label:"Acount"},
+    {compo:<SettingsIcon/>,label:"Account"},
 
 ];
 

@@ -4,6 +4,12 @@ const colorArr = ["white", "#9381ff", "#c84630"]; // This would be our color arr
 
 // The purpose of these methods are to avoid copy pasting long
 // color codes
+const errorColor = "#c84630"; // Some random error color in order to change things uniformly
+
+// TODO: border color
+// TODO: hover color
+
+// MAYBE TODO: background color
 
 const getColor = () => {
   return colorArr;
@@ -42,6 +48,10 @@ const getSecondaryDark = () => {
   return "#7a6dcc"; // A darker variant of the secondary color (#9381ff)
 };
 
+const getErrorColor = () => {
+  return errorColor;
+}
+
 export default {
   getColor,
   getPrimary,
@@ -49,5 +59,6 @@ export default {
   getThird,
   getWhite,
   getSecondaryDark,
+  getErrorColor
 };
 // This could be used for more colors, this seems like an easy shortcut

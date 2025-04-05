@@ -72,8 +72,8 @@ const pageMover = (answer) => {
         }}
       >
         
-        <Typography variant="h5" mb={2}>
-          Parent sign in
+        <Typography variant="h5" mb={2} sx={{color:ColorPick.getErrorColor()}}>
+          Parent sign in 123
         </Typography>
         
         <TextField

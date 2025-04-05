@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import ColorPick from "../../tools/ColorPick";
 import Grid from '@mui/material/Grid2';
 
+import { useNavigate } from "react-router-dom";
 
 import ExitButton from "../../components/menuComponents/ExitButton";
 
@@ -16,6 +17,8 @@ const ParentLogin = () => {
     const [formData, setFormData] = useState({
         pin: "",
       });
+
+      const [error, setError] = useState("None");
     
       const handleChange = (e) => {
         if (e.target.value.length > 4) {
@@ -34,6 +37,8 @@ const ParentLogin = () => {
       // The folowing is to figure out which page to move to
 
 const pageMover = (answer) => {
+
+
   if (answer === "History") {
     return "/history"
   } else if (answer === "Screen time") {
@@ -49,6 +54,36 @@ const pageMover = (answer) => {
   }
 
 }
+// Time for the moving
+const navigate = useNavigate();
+
+      // This is the function that will be used to move to the next page
+      const handleMove = (page) => {
+        const isNumeric = (string) => /^[+-]?\d+(\.\d+)?$/.test(string)
+
+    
+        let pin = formData.pin;
+        if (pin === "") {
+          setError("Please enter a pin");
+          return;
+        }
+        else if (pin.length < 4) {
+          setError("Please enter a 4 digit pin");
+          return;
+        }
+        else if (isNumeric(pin) === false) {
+          setError("Please enter all numbers");
+          
+        }  else if (pin !== "1234") {
+          setError("Incorrect pin");
+          return;
+        } else {
+          setError("None");
+          navigate(page);
+        }
+
+      
+      };
 
 
     return <>
@@ -122,12 +157,15 @@ const pageMover = (answer) => {
         
      
 
-        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, backgroundColor:ColorPick.getSecondary() }} component={Link} to={pageMover(id)}>
+        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, backgroundColor:ColorPick.getSecondary() }} onClick={() => handleMove(pageMover(id))}>
             Login
         </Button>
 
-        
+        <Typography variant="body1" mt={2} sx={{color: (error === "None") ? "white":ColorPick.getErrorColor(), fontSize:"1.25rem"}}>
+      {error}
+      </Typography>  
       </Box>
+      
     </Grid>
 </>
 }

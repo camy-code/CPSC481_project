@@ -2,6 +2,8 @@ import Grid from "@mui/material/Grid2"
 import { Card, CardContent, CardMedia, CardActions,Typography, Button, Box } from "@mui/material";
 import ColorPick from "../../tools/ColorPick";
 
+import RestrictDialog from "./RestrictDialog";
+
 const HistoryCard = ({day, shows}) => {
     return <Grid container direction="column" alignItems="flex-start" marginTop={4} spacing={2}>
     <Typography variant="h4">{day}</Typography>
@@ -38,9 +40,10 @@ const HistoryCard = ({day, shows}) => {
            View trailer
          </Button>
          </a>
-         <Button sx={{ backgroundColor: ColorPick.getThird(), color: "black" }}>
+         <Button sx={{ backgroundColor: ColorPick.getThird(), color: "black" }} onClick={() => {alert("Restricting this show")}}>
            Restrict
          </Button>
+         {/* <RestrictDialog open={false} onClose={() => {}}/> This is what I am moving later */}
        </CardActions>
      </Box>
        </Card>

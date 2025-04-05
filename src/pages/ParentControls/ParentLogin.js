@@ -14,12 +14,14 @@ const ParentLogin = () => {
 
     // The following is for logging in variables
     const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-        confirmPassword: "",
+        pin: "",
       });
     
       const handleChange = (e) => {
+        if (e.target.value.length > 4) {
+          
+          return;
+        }
         setFormData({ ...formData, [e.target.name]: e.target.value });
       };
     
@@ -72,31 +74,31 @@ const pageMover = (answer) => {
         }}
       >
         
-        <Typography variant="h5" mb={2} sx={{color:ColorPick.getErrorColor()}}>
-          Parent sign in 123
+        <Typography variant="h5" mb={2} >
+          Parent sign in
         </Typography>
         
         <TextField
-          label="Email"
-          name="email"
-          type="email"
+          label="Pin"
+          name="pin"
+          type="password"
+          variant="outlined"
           fullWidth
           margin="normal"
           required
-          value={formData.email}
+          value={formData.pin}
           onChange={handleChange}
+          sx={{
+            '& .MuiInputBase-input': {
+              fontSize: '3.2rem', // input text
+            },
+            '& .MuiInputLabel-root': {
+              fontSize: '1.2rem', // label text
+            }
+          }}
         />
         
-        <TextField
-          label="Password"
-          name="password"
-          type="password"
-          fullWidth
-          margin="normal"
-          required
-          value={formData.password}
-          onChange={handleChange}
-        />
+        
      
 
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, backgroundColor:ColorPick.getSecondary() }} component={Link} to={pageMover(id)}>

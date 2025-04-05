@@ -3,11 +3,16 @@ import { TextField, Button, Grid, Typography, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import ColorPick from "../tools/ColorPick";
 
+import { useNavigate } from 'react-router-dom';
+
+
 const Create = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     confirmPassword: "",
+    pin:"",
+    confirmPin:"",
   });
 
   const handleChange = (e) => {
@@ -23,6 +28,13 @@ const Create = () => {
     alert("Account Created!");
   };
 
+  // Time to do the nav stuff
+  const navigate = useNavigate();
+
+  const handleMenu = () => {
+    // TODO:
+    alert("Cam this is not done" + formData.email + " " + formData.password);
+  }
   
 
   return (
@@ -81,7 +93,7 @@ const Create = () => {
           onChange={handleChange}
         />
 
-        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2,backgroundColor:ColorPick.getSecondary() }} component={Link} to="/menu">
+        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2,backgroundColor:ColorPick.getSecondary() }} onClick={handleMenu}>
           Create Account
         </Button>
 

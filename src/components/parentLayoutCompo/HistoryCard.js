@@ -17,6 +17,10 @@ const HistoryCard = ({day, shows}) => {
            {/* TODO: Still need to make dynamtic */}
            <Typography>Description</Typography>
            <Typography variant="body2">{a.desc}</Typography>
+
+           <Typography>Rating: {a.rating}</Typography>
+           <Typography>Age: {a.age}</Typography>
+           <Typography>Genre: {a.genre}</Typography>
          </CardContent>
      
          {/* Image on the right */}
@@ -28,9 +32,12 @@ const HistoryCard = ({day, shows}) => {
            alt="Random Image"
          />
        <CardActions sx={{ width: "100%", justifyContent: "center" }}>
+        <a href="https://youtu.be/xvFZjo5PgG0?si=0lCLW7dj0U3F0guq" target="_blank" rel="noopener noreferrer">
+         {/* Button to view trailer */}
          <Button sx={{ backgroundColor: ColorPick.getSecondary(), color: "black" }}>
            View trailer
          </Button>
+         </a>
          <Button sx={{ backgroundColor: ColorPick.getThird(), color: "black" }}>
            Restrict
          </Button>

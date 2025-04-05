@@ -18,7 +18,7 @@ const HistoryCard = ({day, shows}) => {
            <Typography>Description</Typography>
            <Typography variant="body2">{a.desc}</Typography>
 
-           <Typography>Rating: {a.rating}</Typography>
+           <Typography sx={{marginTop:2}}>Rating: {a.rating}</Typography>
            <Typography>Age: {a.age}</Typography>
            <Typography>Genre: {a.genre}</Typography>
          </CardContent>

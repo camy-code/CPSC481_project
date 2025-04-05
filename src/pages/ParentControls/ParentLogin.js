@@ -91,13 +91,31 @@ const pageMover = (answer) => {
           InputLabelProps={{required: false}}
           sx={{
             '& .MuiInputBase-input': {
-      fontSize: '3.2rem',
+      fontSize: '2.2rem',
       textAlign: 'center', // This centers the text within the input field
+      justifyContent: 'center',
+      display: 'flex',
+      
     },
     '& .MuiInputLabel-root': {
-      fontSize: '1.2rem',
+      fontSize: '2.2rem',
       textAlign: 'center', // This centers the label text
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingLeft:"100px", 
+      '&.Mui-focused': {
+        paddingLeft:"0px",
+        fontSize: '1.7rem',
+      },
+      '&.MuiFormLabel-filled': {
+        paddingLeft:"0px",
+        fontSize: '1.7rem',
+      },
+      
     },
+    
+    
           }}
         />
         

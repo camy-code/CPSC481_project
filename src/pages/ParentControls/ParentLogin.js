@@ -88,13 +88,16 @@ const pageMover = (answer) => {
           required
           value={formData.pin}
           onChange={handleChange}
+          InputLabelProps={{required: false}}
           sx={{
             '& .MuiInputBase-input': {
-              fontSize: '3.2rem', // input text
-            },
-            '& .MuiInputLabel-root': {
-              fontSize: '1.2rem', // label text
-            }
+      fontSize: '3.2rem',
+      textAlign: 'center', // This centers the text within the input field
+    },
+    '& .MuiInputLabel-root': {
+      fontSize: '1.2rem',
+      textAlign: 'center', // This centers the label text
+    },
           }}
         />
         
@@ -112,3 +115,5 @@ const pageMover = (answer) => {
 }
 
 export default ParentLogin
+
+// Gotta work on some of the work stuff

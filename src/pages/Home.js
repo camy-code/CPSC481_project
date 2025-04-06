@@ -27,7 +27,7 @@ const Home = () => {
     alignItems: "center",
     marginTop:30
   }}>
-    <Button sx={{
+    <Button component={Link} to="/login" sx={{
         width: 56, // Adjust size
         height: 56, 
         borderRadius: "50%", 

@@ -25,16 +25,24 @@ const Home = () => {
         borderRadius: "50%", 
         minWidth: 0, // Prevents default button width
         padding:20,
-        backgroundColor:ColorPick.getSecondary()
-      }}><Typography sx={{color:"black"}}>Login</Typography></Button>
+        backgroundColor:ColorPick.getSecondary(),
+        border:"3px solid black",
+        "&:hover": {
+            backgroundColor: ColorPick.getHoverCol(), // Change this later
+          }
+      }}><Typography sx={{color:ColorPick.getTextCol(), fontSize:"3rem"}}>Login</Typography></Button>
     <Button component={Link} to="/create"  sx={{
         width: 56, // Adjust size
         height: 56, 
         borderRadius: "50%", 
         minWidth: 0, // Prevents default button width
         padding:20,
-        backgroundColor:ColorPick.getThird()
-      }}><Typography sx={{color:"black"}}>Create</Typography></Button>
+        backgroundColor:ColorPick.getThird(),
+        border:"3px solid black",
+        "&:hover": {
+            backgroundColor: ColorPick.getHoverCol(), // Change this later
+          }
+      }}><Typography sx={{color:ColorPick.getTextCol(), fontSize:"3rem"}}>Create</Typography></Button>
     </Grid2>
     
     </>

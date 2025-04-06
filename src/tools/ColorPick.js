@@ -6,8 +6,13 @@ const colorArr = ["white", "#9381ff", "#c84630"]; // This would be our color arr
 // color codes
 const errorColor = "#c84630"; // Some random error color in order to change things uniformly
 
-// TODO: border color
+const textCol = "white"; // Text color for buttons and shit
+
+// TODO: border color (we are going to assume this is black as anything else is phychotic)
+
 // TODO: hover color
+//const hoverCol = "#7a6dcc"; // A darker variant of the secondary color (#9381ff)
+const hoverCol = "blue"; // A darker variant of the secondary color (#9381ff)
 
 // MAYBE TODO: background color
 
@@ -52,6 +57,13 @@ const getErrorColor = () => {
   return errorColor;
 }
 
+const getTextCol = () => {
+  return textCol;
+}
+
+const getHoverCol = () => {return hoverCol;}
+
+
 export default {
   getColor,
   getPrimary,
@@ -59,6 +71,8 @@ export default {
   getThird,
   getWhite,
   getSecondaryDark,
-  getErrorColor
+  getErrorColor,
+  getTextCol,
+  getHoverCol
 };
 // This could be used for more colors, this seems like an easy shortcut

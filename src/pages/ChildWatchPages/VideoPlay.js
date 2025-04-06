@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Box, Typography, Button, IconButton } from "@mui/material";
 import {
   Fullscreen,
@@ -17,10 +17,24 @@ const VideoPlayer = () => {
   const [volume, setVolume] = useState(1);
   const [progress, setProgress] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [currentFocus, setCurrentFocus] = useState("back");
 
   const handlePlayPause = () => {
-    isPlaying ? videoRef.current.pause() : videoRef.current.play();
-    setIsPlaying(!isPlaying);
+    try {
+      if (isPlaying) {
+        videoRef.current?.pause();
+      } else {
+        const playPromise = videoRef.current?.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Silently handle the error
+          });
+        }
+      }
+      setIsPlaying(!isPlaying);
+    } catch (error) {
+      // Silently handle the error
+    }
   };
 
   const handleVolumeChange = (e) => {
@@ -36,9 +50,13 @@ const VideoPlayer = () => {
   };
 
   const toggleFullscreen = () => {
-    isFullscreen
-      ? document.exitFullscreen()
-      : containerRef.current.requestFullscreen();
+    if (isFullscreen) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+    } else {
+      containerRef.current.requestFullscreen();
+    }
     setIsFullscreen(!isFullscreen);
   };
 
@@ -47,6 +65,75 @@ const VideoPlayer = () => {
       (videoRef.current.currentTime / videoRef.current.duration) * 100 || 0
     );
   };
+
+  const handleKeyDown = (e) => {
+    switch (e.key) {
+      case "ArrowRight":
+        if (currentFocus === "back") setCurrentFocus("play");
+        else if (currentFocus === "play") setCurrentFocus("volume");
+        else if (currentFocus === "volume") setCurrentFocus("fullscreen");
+        break;
+      case "ArrowLeft":
+        if (currentFocus === "fullscreen") setCurrentFocus("volume");
+        else if (currentFocus === "volume") setCurrentFocus("play");
+        else if (currentFocus === "play") setCurrentFocus("back");
+        break;
+      case "Enter":
+      case " ":
+        if (currentFocus !== "volume") {
+          e.preventDefault();
+          document.querySelector(`[data-focus="${currentFocus}"]`)?.click();
+        }
+        break;
+      case "Backspace":
+        e.preventDefault();
+        window.history.back();
+        break;
+      // Media control shortcuts
+      case "k":
+      case "p":
+        handlePlayPause();
+        break;
+      case "m":
+        setVolume(volume > 0 ? 0 : 1);
+        break;
+      case "f":
+        toggleFullscreen();
+        break;
+      case "ArrowUp":
+        if (currentFocus === "volume") {
+          const newVolume = Math.min(1, volume + 0.1);
+          setVolume(newVolume);
+          videoRef.current.volume = newVolume;
+        }
+        break;
+      case "ArrowDown":
+        if (currentFocus === "volume") {
+          const newVolume = Math.max(0, volume - 0.1);
+          setVolume(newVolume);
+          videoRef.current.volume = newVolume;
+        }
+        break;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentFocus, volume]);
+
+  const getFocusStyle = (elementId) => ({
+    outline:
+      currentFocus === elementId
+        ? "3px solid rgba(255, 255, 255, 0.8)"
+        : "none",
+    boxShadow:
+      currentFocus === elementId ? "0 0 8px rgba(255, 255, 255, 0.5)" : "none",
+    transform: currentFocus === elementId ? "scale(1.05)" : "none",
+    transition: "all 0.2s ease",
+    position: "relative",
+    zIndex: currentFocus === elementId ? 1 : "auto",
+  });
 
   return (
     <Box
@@ -70,11 +157,13 @@ const VideoPlayer = () => {
         }}
       >
         <Button
+          data-focus="back"
           onClick={() => window.history.back()}
           variant="contained"
           sx={{
+            ...getFocusStyle("back"),
             bgcolor: ColorPick.getSecondary(),
-            color: "black",
+            color: "white",
             borderRadius: "1rem",
             px: 2,
             py: 1,
@@ -130,12 +219,23 @@ const VideoPlayer = () => {
             }}
           />
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
-            <IconButton onClick={handlePlayPause} sx={{ color: "white" }}>
+            <IconButton
+              data-focus="play"
+              onClick={handlePlayPause}
+              sx={{
+                ...getFocusStyle("play"),
+                color: "white",
+              }}
+            >
               {isPlaying ? <Pause /> : <PlayArrow />}
             </IconButton>
             <IconButton
+              data-focus="volume"
               onClick={() => setVolume(volume > 0 ? 0 : 1)}
-              sx={{ color: "white" }}
+              sx={{
+                ...getFocusStyle("volume"),
+                color: "white",
+              }}
             >
               {volume > 0 ? <VolumeUp /> : <VolumeOff />}
             </IconButton>
@@ -155,7 +255,14 @@ const VideoPlayer = () => {
               }}
             />
             <Box sx={{ flexGrow: 1 }} />
-            <IconButton onClick={toggleFullscreen} sx={{ color: "white" }}>
+            <IconButton
+              data-focus="fullscreen"
+              onClick={toggleFullscreen}
+              sx={{
+                ...getFocusStyle("fullscreen"),
+                color: "white",
+              }}
+            >
               {isFullscreen ? <FullscreenExit /> : <Fullscreen />}
             </IconButton>
           </Box>

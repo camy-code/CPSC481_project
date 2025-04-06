@@ -63,22 +63,22 @@ const publicPages = [
   },
   {
     compo: <ChildMain />,
-    path: "/childmain/:name",
+    path: "/childmain/:profileName",
     name: "childmain",
   },
   {
     compo: <FindShow />,
-    path: "/findShow",
+    path: "/findShow/:profileName",
     name: "findshow",
   },
   {
     compo: <ShowDetails />,
-    path: "/showdetails",
+    path: "/showdetails/:profileName",
     name: "showdetails",
   },
   {
     compo: <VideoPlay />,
-    path: "/videoplay",
+    path: "/videoplay/:profileName",
     name: "showdetails",
   },
   // Below are the parent pages

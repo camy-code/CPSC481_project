@@ -23,8 +23,6 @@ const Create = () => {
     alert("Account Created!");
   };
 
-  
-
   return (
     <Grid
       container
@@ -47,7 +45,7 @@ const Create = () => {
         <Typography variant="h5" mb={2}>
           Create Account
         </Typography>
-        
+
         <TextField
           label="Email"
           name="email"
@@ -58,7 +56,7 @@ const Create = () => {
           value={formData.email}
           onChange={handleChange}
         />
-        
+
         <TextField
           label="Password"
           name="password"
@@ -69,7 +67,7 @@ const Create = () => {
           value={formData.password}
           onChange={handleChange}
         />
-        
+
         <TextField
           label="Confirm Password"
           name="confirmPassword"
@@ -81,7 +79,14 @@ const Create = () => {
           onChange={handleChange}
         />
 
-        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2,backgroundColor:ColorPick.getSecondary() }} component={Link} to="/menu">
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          sx={{ mt: 2, backgroundColor: ColorPick.getSecondary() }}
+          component={Link}
+          to="/menu"
+        >
           Create Account
         </Button>
 

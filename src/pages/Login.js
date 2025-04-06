@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { TextField, Button,  Typography, Box } from "@mui/material";
+import { TextField, Button, Typography, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import ColorPick from "../tools/ColorPick";
-import Grid from '@mui/material/Grid2';
+import Grid from "@mui/material/Grid2";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -17,11 +17,9 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
- 
-    // This is if we want to add some sort of 
-  };
 
-  
+    // This is if we want to add some sort of
+  };
 
   return (
     <Grid
@@ -42,11 +40,10 @@ const Login = () => {
           bgcolor: "white",
         }}
       >
-        
         <Typography variant="h5" mb={2}>
           Login
         </Typography>
-        
+
         <TextField
           label="Email"
           name="email"
@@ -57,7 +54,7 @@ const Login = () => {
           value={formData.email}
           onChange={handleChange}
         />
-        
+
         <TextField
           label="Password"
           name="password"
@@ -68,9 +65,15 @@ const Login = () => {
           value={formData.password}
           onChange={handleChange}
         />
-     
 
-        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, backgroundColor:ColorPick.getSecondary() }} component={Link} to="/menu">
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          sx={{ mt: 2, backgroundColor: ColorPick.getSecondary() }}
+          component={Link}
+          to="/menu"
+        >
           Login
         </Button>
 

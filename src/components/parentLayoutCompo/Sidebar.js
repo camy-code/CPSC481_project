@@ -37,7 +37,7 @@ const Sidebar = () => {
         
         {iconList.map(
             (a) => (
-                <Box sx={{display:"flex", alignItems:"center", justifyContent:"center", gap:1, textDecoration:"None", color:"black", backgroundColor:ColorPick.getThird(), padding:1, borderRadius:10}} component={Link} to={a.link}>
+                <Box sx={{display:"flex", alignItems:"center", justifyContent:"center", gap:1, textDecoration:"None", color:"black", backgroundColor:ColorPick.getThird(), padding:1, borderRadius:10}} component={Link} to={a.link} onClick={() => {}} >
                 {a.compo}
                 <h1>{a.label}</h1>
                 

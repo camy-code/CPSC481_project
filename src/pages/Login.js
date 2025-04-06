@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import ColorPick from "../tools/ColorPick";
 import Grid from '@mui/material/Grid2';
 
+import { useNavigate } from 'react-router-dom';
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -21,7 +23,18 @@ const Login = () => {
     // This is if we want to add some sort of 
   };
 
-  
+const [error, setError] = useState("None");
+
+  let navigate = useNavigate();
+  const handleLogin = () => {
+
+    if (formData.password !== "123" || formData.email !== "cam") {
+      setError("Incorrect password or email");
+      return;
+    }
+    // TODO
+    navigate("/menu");
+  }
 
   return (
     <Grid
@@ -46,14 +59,17 @@ const Login = () => {
         <Typography variant="h5" mb={2}>
           Login
         </Typography>
+        <Typography sx={{color: (error === "None") ? "white": ColorPick.getErrorColor()}}>
+          {error}{formData.email}{formData.password}
+        </Typography>
         
         <TextField
           label="Email"
           name="email"
-          type="email"
+      
           fullWidth
           margin="normal"
-          required
+       
           value={formData.email}
           onChange={handleChange}
         />
@@ -64,13 +80,13 @@ const Login = () => {
           type="password"
           fullWidth
           margin="normal"
-          required
+       
           value={formData.password}
           onChange={handleChange}
         />
      
 
-        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, backgroundColor:ColorPick.getSecondary() }} component={Link} to="/menu">
+        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, backgroundColor:ColorPick.getSecondary() }} onClick={handleLogin}>
           Login
         </Button>
 

@@ -25,7 +25,7 @@ const Create = () => {
       alert("Passwords do not match!");
       return;
     }
-    alert("Account Created!");
+   
   };
 
   // Time to do the nav stuff
@@ -33,9 +33,35 @@ const Create = () => {
 
   const handleMenu = () => {
     // TODO:
-    alert("Cam this is not done" + formData.email + " " + formData.password);
+    
+    if (formData.confirmPassword !== formData.password) {
+      setError("Passwords do not match!");
+      return;
+    } else if (formData.confirmPin !== formData.pin) {
+      setError("Pins do not match!");
+      return;
+    } else if (formData.pin.length !==4) {
+      setError("Pin must be  4 characters long!");
+      return;
+    }
+    else if (formData.email === "") {
+      setError("Email cannot be empty!");
+      return;
+    } else if (formData.pin === "") {
+      setError("Pin cannot be empty!");
+      return;
+    } else if (formData.password === "") {
+      setError("Password cannot be empty!");
+      return;
+    } else if (formData.email === "") {
+      setError("Email cannot be empty!");
+      return;
+    } else {
+      navigate("/menu");
+    }
   }
   
+  const [error, setError] = useState("None");
 
   return (
     <Grid
@@ -59,14 +85,18 @@ const Create = () => {
         <Typography variant="h5" mb={2}>
           Create Account
         </Typography>
+
+        <Typography variant="body2" color="error" sx={{mt:-1, color: (error === "None") ? "white" : ColorPick.getColor()}}>
+          {error}
+        </Typography>
         
         <TextField
           label="Email"
           name="email"
-          type="email"
+          
           fullWidth
           margin="normal"
-          required
+          
           value={formData.email}
           onChange={handleChange}
         />
@@ -77,7 +107,7 @@ const Create = () => {
           type="password"
           fullWidth
           margin="normal"
-          required
+         
           value={formData.password}
           onChange={handleChange}
         />
@@ -88,8 +118,30 @@ const Create = () => {
           type="password"
           fullWidth
           margin="normal"
-          required
+        
           value={formData.confirmPassword}
+          onChange={handleChange}
+        />
+
+<TextField
+          label="Pin"
+          name="pin"
+          type="password"
+          fullWidth
+          margin="normal"
+      
+          value={formData.pin}
+          onChange={handleChange}
+        />
+
+<TextField
+          label="Confirm Pin"
+          name="confirmPin"
+          type="password"
+          fullWidth
+          margin="normal"
+       
+          value={formData.confirmPin}
           onChange={handleChange}
         />
 

@@ -7,8 +7,13 @@ import { Link } from "react-router-dom";
 import ColorPick from "../../tools/ColorPick";
 const ExitButton = ({ to1 = "/", label = "Exit" }) => {
     return <>
-    <Button component={Link} to={to1}sx={{backgroundColor:ColorPick.getSecondary(), padding:1}}>
-    <Grid container direction={"row"} spacing={1} alignItems="center" sx={{color:"black"}}>
+    <Button component={Link} to={to1}sx={{backgroundColor:ColorPick.getSecondary(), padding:1, paddingRight:2,textTransform:"none",
+        "&:hover": {
+            backgroundColor:ColorPick.getSecondaryHOVER()
+        },
+      
+    }}>
+    <Grid container direction={"row"} spacing={1} alignItems="center" sx={{color:"white"}}>
        
        <ArrowBackOutlinedIcon />
 

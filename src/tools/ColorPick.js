@@ -10,9 +10,10 @@ const textCol = "white"; // Text color for buttons and shit
 
 // TODO: border color (we are going to assume this is black as anything else is phychotic)
 
-// TODO: hover color
+
 //const hoverCol = "#7a6dcc"; // A darker variant of the secondary color (#9381ff)
 const hoverArr = ["black", "blue", "red"]; // A darker variant of the secondary color (#9381ff)
+const menuHover = "grey"; 
 
 // MAYBE TODO: background color
 
@@ -80,7 +81,9 @@ const getThirdHOVER = () => {
   return hoverArr[2];
 };
 
-
+const getMenuHover = () => {
+  return menuHover;
+}
 
 export default {
   getColor,
@@ -92,7 +95,8 @@ export default {
   getTextCol,
   getPrimaryHOVER,
   getSecondaryHOVER,
-  getThirdHOVER
+  getThirdHOVER,
+  getMenuHover,
 
 };
 // This could be used for more colors, this seems like an easy shortcut

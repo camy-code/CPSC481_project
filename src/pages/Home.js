@@ -6,10 +6,18 @@ import {Grid2 } from "@mui/material"
 import { Link } from "react-router-dom";
 import {Typography} from "@mui/material";
 
+import { useNavigate } from "react-router-dom";
+
 // I am sorry for the person who needs to read this code. It so desperately needs to be refactored but IDC
 
 // I think this page should be the login/create account options
 const Home = () => {
+
+  let navigate = useNavigate();
+  const handleClick = (loc) => {
+    navigate(loc);
+  }
+
     return <>
     <Grid2   container
   direction="row"
@@ -19,7 +27,7 @@ const Home = () => {
     alignItems: "center",
     marginTop:30
   }}>
-    <Button component={Link} to="/login" sx={{
+    <Button sx={{
         width: 56, // Adjust size
         height: 56, 
         borderRadius: "50%", 
@@ -27,6 +35,7 @@ const Home = () => {
         padding:20,
         backgroundColor:ColorPick.getSecondary(),
         border:"3px solid black",
+        textTransform:"none",
         "&:hover": {
             backgroundColor: ColorPick.getHoverCol(), // Change this later
           }
@@ -39,6 +48,7 @@ const Home = () => {
         padding:20,
         backgroundColor:ColorPick.getThird(),
         border:"3px solid black",
+        textTransform:"none",
         "&:hover": {
             backgroundColor: ColorPick.getHoverCol(), // Change this later
           }

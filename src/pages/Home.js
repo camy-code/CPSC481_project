@@ -37,7 +37,7 @@ const Home = () => {
         border:"3px solid black",
         textTransform:"none",
         "&:hover": {
-            backgroundColor: ColorPick.getHoverCol(), // Change this later
+            backgroundColor: ColorPick.getSecondaryHOVER(), // Change this later
           }
       }}><Typography sx={{color:ColorPick.getTextCol(), fontSize:"3rem"}}>Login</Typography></Button>
     <Button component={Link} to="/create"  sx={{
@@ -50,7 +50,7 @@ const Home = () => {
         border:"3px solid black",
         textTransform:"none",
         "&:hover": {
-            backgroundColor: ColorPick.getHoverCol(), // Change this later
+            backgroundColor: ColorPick.getThirdHOVER(), // Change this later
           }
       }}><Typography sx={{color:ColorPick.getTextCol(), fontSize:"3rem"}}>Create</Typography></Button>
     </Grid2>

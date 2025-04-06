@@ -12,7 +12,7 @@ const textCol = "white"; // Text color for buttons and shit
 
 // TODO: hover color
 //const hoverCol = "#7a6dcc"; // A darker variant of the secondary color (#9381ff)
-const hoverCol = "blue"; // A darker variant of the secondary color (#9381ff)
+const hoverArr = ["black", "blue", "red"]; // A darker variant of the secondary color (#9381ff)
 
 // MAYBE TODO: background color
 
@@ -46,12 +46,7 @@ const getWhite = () => {
   return "white";
 };
 
-const getSecondaryDark = () => {
-  if (colorArr.length < 1) {
-    return null;
-  }
-  return "#7a6dcc"; // A darker variant of the secondary color (#9381ff)
-};
+
 
 const getErrorColor = () => {
   return errorColor;
@@ -61,7 +56,30 @@ const getTextCol = () => {
   return textCol;
 }
 
-const getHoverCol = () => {return hoverCol;}
+// Time to do the hovers for something
+
+const getPrimaryHOVER = () => {
+  if (hoverArr.length < 0) {
+    return null;
+  }
+
+  return hoverArr[0];
+};
+
+const getSecondaryHOVER = () => {
+  if (hoverArr.length < 1) {
+    return null;
+  }
+  return hoverArr[1];
+};
+
+const getThirdHOVER = () => {
+  if (hoverArr.length < 2) {
+    return null;
+  }
+  return hoverArr[2];
+};
+
 
 
 export default {
@@ -70,9 +88,11 @@ export default {
   getSecondary,
   getThird,
   getWhite,
-  getSecondaryDark,
   getErrorColor,
   getTextCol,
-  getHoverCol
+  getPrimaryHOVER,
+  getSecondaryHOVER,
+  getThirdHOVER
+
 };
 // This could be used for more colors, this seems like an easy shortcut

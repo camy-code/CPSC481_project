@@ -4,6 +4,8 @@ import { Typography, Button } from "@mui/material";
 import ColorPick from "../../tools/ColorPick";
 import { Link } from "react-router-dom";
 
+import { Box } from "@mui/material";
+
 const ParentHome = () => {
   return (
     <>
@@ -18,23 +20,31 @@ const ParentHome = () => {
         }}
       >
         <Typography variant="h2">Welcome!</Typography>
-        <Button
-          component={Link}
-          to="/parentmain"
+        
+
+        <Box
           sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 1,
+            textDecoration: "None",
+            color: "white",
             backgroundColor: ColorPick.getSecondary(),
             padding: 1,
-            color: "white",
-            height: 40,
-            width: 80,
-            textTransform:"none",
+            paddingLeft: 10,
+            paddingRight: 10,
+            borderRadius: 10,
             "&:hover": {
-              backgroundColor:ColorPick.getSecondaryHOVER()
+              backgroundColor: ColorPick.getSecondaryHOVER(),
             },
           }}
+          component={Link}
+          to="/parentmain"
         >
-          Watch
-        </Button>
+
+          <h1>Watch</h1>
+        </Box>
       </Grid>
     </>
   );

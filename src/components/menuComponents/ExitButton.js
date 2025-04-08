@@ -11,7 +11,7 @@ const ExitButton = ({ to1 = "/", label = "Exit" }) => {
         "&:hover": {
             backgroundColor:ColorPick.getSecondaryHOVER()
         },
-      
+      border:"3px solid black",
     }}>
     <Grid container direction={"row"} spacing={1} alignItems="center" sx={{color:"white"}}>
        

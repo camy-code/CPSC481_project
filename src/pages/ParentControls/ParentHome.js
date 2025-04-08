@@ -38,6 +38,7 @@ const ParentHome = () => {
             "&:hover": {
               backgroundColor: ColorPick.getSecondaryHOVER(),
             },
+            border:"3px solid black",
           }}
           component={Link}
           to="/parentmain"

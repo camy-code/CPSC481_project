@@ -30,7 +30,7 @@ const iconList = [
 
 const Sidebar = () => {
     return <Box sx={{ padding:4}}>
-        <Grid container direction={"column"} spacing={3}>
+        <Grid container direction={"column"} spacing={2}>
 
        
         <ExitButton to1="/menu"/>
@@ -40,7 +40,8 @@ const Sidebar = () => {
                 <Box sx={{display:"flex", alignItems:"center", justifyContent:"center", gap:1, textDecoration:"None", color:"white", backgroundColor:ColorPick.getThird(), padding:1, borderRadius:10,
                     "&:hover":{
                         backgroundColor:ColorPick.getThirdHOVER()
-                    }
+                    },
+                    border:"3px solid black",
                 }} component={Link} to={a.link} onClick={() => {}} >
                 {a.compo}
                 <h1>{a.label}</h1>

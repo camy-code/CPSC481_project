@@ -51,7 +51,8 @@ const Home = () => {
         textTransform:"none",
         "&:hover": {
             backgroundColor: ColorPick.getThirdHOVER(), // Change this later
-          }
+          },
+          
       }}><Typography sx={{color:ColorPick.getTextCol(), fontSize:"3rem"}}>Create</Typography></Button>
     </Grid2>
     

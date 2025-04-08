@@ -1,32 +1,43 @@
-import React, { useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Card } from '@mui/material';
-import ColorPick from '../../tools/ColorPick';
-
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  TextField,
+  Card,
+} from "@mui/material";
+import ColorPick from "../../tools/ColorPick";
 
 const ChangePasswordDialog = ({ open, onClose }) => {
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-    const [password, setPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-  
-    const handleSubmit = () => {
-      setPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
+  const handleSubmit = () => {
+    setPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    if (password === "") {
+      alert("Current password is empty!");
+    return;}
 
-      if (newPassword === confirmPassword ) {
-        console.log('Password changed successfully');
-        alert("Changed successfully")
-        // Here you can add the logic to change the password
-        onClose(); // Close the dialog on successful password change
-      } else {
-        console.log('Passwords do not match!');
-        // Handle error (e.g., show a warning)
-        alert("Password does not match")
-      }
-    };
 
-    return <Dialog open={open} onClose={onClose}>
+    if (newPassword === confirmPassword) {
+      console.log("Password changed successfully");
+      alert("Changed successfully");
+      // Here you can add the logic to change the password
+      onClose(); // Close the dialog on successful password change
+    } else {
+      console.log("Passwords do not match!");
+      // Handle error (e.g., show a warning)
+      alert("Password does not match");
+    }
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>Change Password</DialogTitle>
       <DialogContent>
         <Card sx={{ padding: 2 }}>
@@ -56,15 +67,40 @@ const ChangePasswordDialog = ({ open, onClose }) => {
           />
         </Card>
       </DialogContent>
-      <DialogActions sx={{ display: 'flex', justifyContent: 'center', width: '95%' }}>
-      <Button onClick={handleSubmit} sx={{padding:1, backgroundColor:ColorPick.getSecondary(), color:"black"}}>
+      <DialogActions
+        sx={{ display: "flex", justifyContent: "center", width: "95%" }}
+      >
+        <Button
+          onClick={handleSubmit}
+          sx={{
+            padding: 1,
+            backgroundColor: ColorPick.getSecondary(),
+            color: "white",
+            border:"3px solid black",
+            "&:hover": {
+              backgroundColor: ColorPick.getSecondaryHOVER(),
+            },
+          }}
+        >
           Submit
         </Button>
-        <Button onClick={onClose} sx={{padding:1, backgroundColor:ColorPick.getThird(), color:"black"}}>Cancel</Button>
-        
+        <Button
+          onClick={onClose}
+          sx={{
+            padding: 1,
+            backgroundColor: ColorPick.getThird(),
+            color: "white",
+            border:"3px solid black",
+            "&:hover": {
+              backgroundColor: ColorPick.getThirdHOVER(),
+            },
+          }}
+        >
+          Cancel
+        </Button>
       </DialogActions>
     </Dialog>
-  
-}
+  );
+};
 
-export default ChangePasswordDialog
+export default ChangePasswordDialog;

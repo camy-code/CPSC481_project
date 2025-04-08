@@ -22,6 +22,7 @@ const genButton = (label, func1, col, hovCol) => {
         "&:hover":{
           backgroundColor:hovCol
         },
+        border:"3px solid black",
       }}
       onClick={func1}
     >

@@ -18,44 +18,14 @@ const ScreenTime = () => {
 
     <Grid container direction={"row"} sx={{
         justifyContent:"space-between", 
-        width:"50%",
+        
         marginTop:10}}>
     
     <Grid container direction={"column"} marginBottom={10}>
+        
     <TimeSlider/>
     </Grid>
 
-    <Grid container direction={"column"} spacing={3} marginBottom={10} sx={{justifyContent:"center", alignItems:"center"}}>
-
-          <Button  sx={{
-        backgroundColor:ColorPick.getSecondary, 
-        paddingLeft:2,
-        paddingRight:2,
-        color:"white",
-        textTransform:"none",
-        border:"3px solid black",
-        "&:hover": {
-            backgroundColor: ColorPick.getSecondaryHOVER(),
-       
-        },
-        
-        fontSize:30
-        }}>Weekday</Button>
-          <Button  sx={{
-        backgroundColor:ColorPick.getSecondary, 
-        paddingLeft:2,
-        paddingRight:2,
-        color:"white",
-        textTransform:"none",
-        border:"3px solid black",
-        "&:hover": {
-            backgroundColor: ColorPick.getSecondaryHOVER(),
-       
-        },
-   
-        fontSize:30
-        }}>Weekend</Button>
-    </Grid>
     </Grid>
     <Button  sx={{
         backgroundColor:ColorPick.getSecondary, 
@@ -72,7 +42,9 @@ const ScreenTime = () => {
             backgroundColor: ColorPick.getSecondaryHOVER(),
        
         },
-        }}>Confirm</Button>
+        
+        }}
+        >Confirm</Button>
 
     </Grid>
     </>

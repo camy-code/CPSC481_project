@@ -12,8 +12,8 @@ const textCol = "white"; // Text color for buttons and shit
 
 
 //const hoverCol = "#7a6dcc"; // A darker variant of the secondary color (#9381ff)
-const hoverArr = ["black", "blue", "red"]; // A darker variant of the secondary color (#9381ff)
-const menuHover = "grey"; 
+const hoverArr = ["black", "#7a6ee6", "#d35a47"]; // A darker variant of the secondary color (#9381ff)
+const menuHover = "#f0f0f0"; 
 
 // MAYBE TODO: background color
 

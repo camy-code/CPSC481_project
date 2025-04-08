@@ -1,12 +1,17 @@
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 
 import { Link } from "react-router-dom";
+import ColorPick from "../../tools/ColorPick";
 
 const ChildProfileSel = ({ name, url, PAGE_LINK }) => {
   return (
     <>
       <Card
-        sx={{ width: 250, height: 310, textDecoration: "none" }} // Reduce size but keep proportions
+        sx={{ width: 250, height: 310, textDecoration: "none",padding:2,
+          "&:hover":{
+            backgroundColor:ColorPick.getMenuHover()
+          }
+        }} // Reduce size but keep proportions
         component={Link}
         to={PAGE_LINK}
       >
@@ -15,9 +20,10 @@ const ChildProfileSel = ({ name, url, PAGE_LINK }) => {
           image={url}
           alt="Profile Image"
           sx={{
-            width: "100%",
-            height: "85%",
-            objectFit: "contain",
+            width: "250px",
+            height: "250px",
+          
+          //  objectFit: "contain",
             borderRadius: "10px",
           }}
         />

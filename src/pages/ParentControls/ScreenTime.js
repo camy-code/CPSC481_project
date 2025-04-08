@@ -31,7 +31,13 @@ const ScreenTime = () => {
         backgroundColor:ColorPick.getSecondary, 
         paddingLeft:2,
         paddingRight:2,
-        color:"black",
+        color:"white",
+        textTransform:"none",
+        border:"3px solid black",
+        "&:hover": {
+            backgroundColor: ColorPick.getSecondaryHOVER(),
+       
+        },
         
         fontSize:30
         }}>Weekday</Button>
@@ -39,7 +45,13 @@ const ScreenTime = () => {
         backgroundColor:ColorPick.getSecondary, 
         paddingLeft:2,
         paddingRight:2,
-        color:"black",
+        color:"white",
+        textTransform:"none",
+        border:"3px solid black",
+        "&:hover": {
+            backgroundColor: ColorPick.getSecondaryHOVER(),
+       
+        },
    
         fontSize:30
         }}>Weekend</Button>
@@ -49,10 +61,17 @@ const ScreenTime = () => {
         backgroundColor:ColorPick.getSecondary, 
         paddingLeft:2,
         paddingRight:2,
-        color:"black",
+        color:"white",
         width:150,
         height:75,
-        fontSize:30
+        fontSize:30,
+        textTransform:"none",
+        borderRadius:5,
+        border:"3px solid black",
+        "&:hover": {
+            backgroundColor: ColorPick.getSecondaryHOVER(),
+       
+        },
         }}>Confirm</Button>
 
     </Grid>

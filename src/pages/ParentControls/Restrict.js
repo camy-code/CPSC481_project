@@ -38,11 +38,51 @@ const Restrict = () => {
   </Box>
 
 <SearchBar/>
-<Button sx={{backgroundColor:ColorPick.getSecondary(), color:"black"}}>Search</Button>
+<Grid container direction={"row"} alignItems={"center"} spacing={10} sx={{marginTop:2}}>
+  <Button
+          sx={{
+            backgroundColor: ColorPick.getSecondary(),
+            padding: 1,
+            transform: "scale(1.5)",
+            width: 120,
+            fontSize: 40,
+            color: "white",
+            textTransform: "none",
+            ":hover": {
+              backgroundColor: ColorPick.getSecondaryHOVER(),
+            },
+            border:"2px solid black"
+          }}
+         disableRipple
+        >
+          <Typography>Search</Typography>
+        </Button>
   {/* Gotta do a date and time selector */}
-  
+  <Button
+          sx={{
+            backgroundColor: ColorPick.getSecondary(),
+            padding: 1,
+            transform: "scale(1.5)",
+            width: 120,
+            fontSize: 40,
+            color: "white",
+            textTransform: "none",
+            ":hover": {
+              backgroundColor: ColorPick.getSecondaryHOVER(),
+            },
+            border:"2px solid black",
+          
+          }}
+         disableRipple
+        >
+          <Typography>View restrict</Typography>
+        </Button>
 
+ 
+  </Grid>
   <ChildSelect/>
+
+  
 
 
 {/* This is where we are start in day */}

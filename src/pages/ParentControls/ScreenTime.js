@@ -18,42 +18,34 @@ const ScreenTime = () => {
 
     <Grid container direction={"row"} sx={{
         justifyContent:"space-between", 
-        width:"50%",
+        
         marginTop:10}}>
     
     <Grid container direction={"column"} marginBottom={10}>
+        
     <TimeSlider/>
     </Grid>
 
-    <Grid container direction={"column"} spacing={3} marginBottom={10} sx={{justifyContent:"center", alignItems:"center"}}>
-
-          <Button  sx={{
-        backgroundColor:ColorPick.getSecondary, 
-        paddingLeft:2,
-        paddingRight:2,
-        color:"black",
-        
-        fontSize:30
-        }}>Weekday</Button>
-          <Button  sx={{
-        backgroundColor:ColorPick.getSecondary, 
-        paddingLeft:2,
-        paddingRight:2,
-        color:"black",
-   
-        fontSize:30
-        }}>Weekend</Button>
-    </Grid>
     </Grid>
     <Button  sx={{
         backgroundColor:ColorPick.getSecondary, 
         paddingLeft:2,
         paddingRight:2,
-        color:"black",
+        color:"white",
         width:150,
         height:75,
-        fontSize:30
-        }}>Confirm</Button>
+        fontSize:30,
+        textTransform:"none",
+        borderRadius:5,
+        border:"3px solid black",
+        "&:hover": {
+            backgroundColor: ColorPick.getSecondaryHOVER(),
+       
+        },
+        marginTop:-10
+        
+        }}
+        onClick={()=>{alert("Screen time saved")}}>Confirm</Button>
 
     </Grid>
     </>

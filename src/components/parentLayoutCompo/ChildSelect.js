@@ -12,7 +12,8 @@ const kidsProf = ConstantLib.getKidsProfile();
   // quality so sorry -_-.
 
 const ChildSelect = () => {
-  const [select, setSelect] = useState(true)
+  
+  const [childIndex ,setChildIndex] = useState(1);
 
   return <>
   <Grid container direction={"row"} marginTop={5} spacing={4}>
@@ -20,8 +21,9 @@ const ChildSelect = () => {
   
   {kidsProf.map( (prof,index) => (
    <Box>
-   <Grid container direction={"column"} alignItems={"center"} >
+   <Grid container direction={"column"} alignItems={"center"} spacing={1} >
    <Box
+   onClick={() => {setChildIndex(index)}}
      sx={{
        width: 150,         // Set the width of the box
        height: 150,        // Set the height of the box
@@ -29,6 +31,13 @@ const ChildSelect = () => {
        display: 'flex',
        justifyContent: 'center',  // Center the image horizontally
        alignItems: 'center',      // Center the image vertically
+       border: (index ===childIndex ) ? '8px solid' + ColorPick.getThird() : '8px solid transparent',
+        borderRadius:"50%",
+       "&:hover": {
+        border: '8px solid ' + ColorPick.getThirdHOVER(),
+        borderRadius:"50%",
+        transform: 'scale(1.05)'
+   }  
        
      }}
    >
@@ -40,7 +49,9 @@ const ChildSelect = () => {
          height: '100%',    // Make the image fill the box height
          objectFit: 'cover', // Crop the image to fit the box
          borderRadius:"50%",
-         border: (index ===0) ? '8px solid' + ColorPick.getThird() : '',
+        //  border: (index ===childIndex ) ? '8px solid' + ColorPick.getThird() : '',
+        
+         
        }}
      />
    </Box>

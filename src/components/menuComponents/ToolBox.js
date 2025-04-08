@@ -14,7 +14,7 @@ const iconList = [
     {compo:<AccessTimeIcon/>,label:"Screen time"},
     {compo:<WarningAmberIcon/>,label:"Restrict"},
     {compo:<AutoStoriesIcon/>,label:"History"},
-    {compo:<SettingsIcon/>,label:"Acount"},
+    {compo:<SettingsIcon/>,label:"Account"},
 
 ];
 
@@ -25,7 +25,7 @@ const ToolBox = () => {
     <Grid container direction={"row"} spacing={13} justifyContent="center" sx={{marginTop:4}}>
     {iconList.map((a)=><>
    
-   <Box component={Link} to={"/parentlogin/" + a.label} sx={{textDecoration:"none"}}>
+   <Box component={Link} to={"/parentlogin/" + a.label} sx={{textDecoration:"none","&:hover": { transform:"scale(1.25)"}}}>
     <Grid container direction={"column"} spacing={0} alignItems={"center"} sx={{transform:"scale(2)"}}>
         
          <Box sx={{color:"black"}}>

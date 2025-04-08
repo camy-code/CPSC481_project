@@ -19,7 +19,7 @@ import Grid from "@mui/material/Grid";
 import ColorPick from "../../tools/ColorPick";
 import ExitButton from "../../components/menuComponents/ExitButton";
 import ConstantLib from "../../tools/ConstantLib";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const ChildMain = () => {
   const navigate = useNavigate();
@@ -125,152 +125,6 @@ const ChildMain = () => {
     }
   };
 
-  const [currentFocus, setCurrentFocus] = useState("back");
-  const [lastRecentIndex, setLastRecentIndex] = useState(0);
-  const [lastFavoriteIndex, setLastFavoriteIndex] = useState(0);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (currentFocus.startsWith("recent-")) {
-        const index = parseInt(currentFocus.split("-")[1]);
-        if (!isNaN(index)) scrollToShow("recent", index);
-      } else if (currentFocus.startsWith("favorite-")) {
-        const index = parseInt(currentFocus.split("-")[1]);
-        if (!isNaN(index)) scrollToShow("favorite", index);
-      }
-    }, 0);
-    return () => clearTimeout(timeout);
-  }, [currentFocus]);
-
-  const handleKeyDown = (e) => {
-    e.preventDefault();
-
-    let nextFocus = currentFocus;
-
-    switch (e.key) {
-      case "ArrowRight":
-        if (currentFocus === "back") {
-          nextFocus = "logo";
-        } else if (currentFocus === "logo") {
-          nextFocus = "resume";
-        } else if (currentFocus === "resume") {
-          nextFocus = "timer";
-        } else if (currentFocus === "timer") {
-          nextFocus = `recent-${lastRecentIndex}`;
-        } else if (currentFocus.startsWith("recent-")) {
-          const index = parseInt(currentFocus.split("-")[1]);
-          if (index < showImages.length - 1) {
-            nextFocus = `recent-${index + 1}`;
-            setLastRecentIndex(index + 1);
-          } else {
-            nextFocus = `favorite-${lastFavoriteIndex}`;
-          }
-        } else if (currentFocus.startsWith("favorite-")) {
-          const index = parseInt(currentFocus.split("-")[1]);
-          if (index < favoriteImages.length - 1) {
-            nextFocus = `favorite-${index + 1}`;
-            setLastFavoriteIndex(index + 1);
-          } else {
-            nextFocus = "find";
-          }
-        }
-        break;
-
-      case "ArrowLeft":
-        if (currentFocus === "logo") {
-          nextFocus = "back";
-        } else if (currentFocus === "resume") {
-          nextFocus = "logo";
-        } else if (currentFocus === "timer") {
-          nextFocus = "resume";
-        } else if (currentFocus === "recent-0") {
-          nextFocus = "timer";
-        } else if (currentFocus.startsWith("recent-")) {
-          const index = parseInt(currentFocus.split("-")[1]);
-          if (index > 0) {
-            nextFocus = `recent-${index - 1}`;
-            setLastRecentIndex(index - 1);
-          } else {
-            nextFocus = "timer";
-          }
-        } else if (currentFocus === "favorite-0") {
-          nextFocus = `recent-${lastRecentIndex}`;
-        } else if (currentFocus.startsWith("favorite-")) {
-          const index = parseInt(currentFocus.split("-")[1]);
-          if (index > 0) {
-            nextFocus = `favorite-${index - 1}`;
-            setLastFavoriteIndex(index - 1);
-          } else {
-            nextFocus = `recent-${lastRecentIndex}`;
-          }
-        } else if (currentFocus === "find") {
-          nextFocus = `favorite-${lastFavoriteIndex}`;
-        }
-        break;
-
-      case "ArrowDown":
-        if (currentFocus === "back" || currentFocus === "logo") {
-          nextFocus = "resume";
-        } else if (currentFocus === "resume" || currentFocus === "timer") {
-          nextFocus = `recent-${lastRecentIndex}`;
-        } else if (currentFocus.startsWith("recent")) {
-          nextFocus = `favorite-${lastFavoriteIndex}`;
-        } else if (currentFocus.startsWith("favorite")) {
-          nextFocus = "find";
-        }
-        break;
-
-      case "ArrowUp":
-        if (currentFocus === "find") {
-          nextFocus = `favorite-${lastFavoriteIndex}`;
-        } else if (currentFocus.startsWith("favorite")) {
-          nextFocus = `recent-${lastRecentIndex}`;
-        } else if (currentFocus.startsWith("recent")) {
-          nextFocus = "resume";
-        } else if (currentFocus === "resume" || currentFocus === "timer") {
-          nextFocus = "back";
-        }
-        break;
-
-      case "Enter":
-      case " ":
-        document.querySelector(`[data-focus="${currentFocus}"]`)?.click();
-        break;
-
-      case "Backspace":
-        navigate("/menu");
-        break;
-    }
-
-    if (nextFocus !== currentFocus) {
-      // Update last indices when moving between sections
-      if (currentFocus.startsWith("recent-")) {
-        setLastRecentIndex(parseInt(currentFocus.split("-")[1]));
-      } else if (currentFocus.startsWith("favorite-")) {
-        setLastFavoriteIndex(parseInt(currentFocus.split("-")[1]));
-      }
-
-      setCurrentFocus(nextFocus);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentFocus]);
-
-  const getFocusStyle = (elementId) => ({
-    outline: currentFocus === elementId ? "3px solid #FFD700" : "none",
-    boxShadow:
-      currentFocus === elementId
-        ? "0 0 10px #FFD700, 0 0 20px rgba(255, 215, 0, 0.5)"
-        : "none",
-    transform: currentFocus === elementId ? "scale(1.05)" : "none",
-    transition: "all 0.2s ease",
-    position: "relative",
-    zIndex: currentFocus === elementId ? 1 : "auto",
-  });
-
   return (
     <Box
       sx={{
@@ -288,10 +142,8 @@ const ChildMain = () => {
         sx={{ mb: 3 }}
       >
         <Button
-          data-focus="back"
           onClick={() => navigate("/menu")}
           sx={{
-            ...getFocusStyle("back"),
             backgroundColor: ColorPick.getSecondary(),
             color: "white",
             fontSize: "1.2rem",
@@ -311,10 +163,8 @@ const ChildMain = () => {
           <ChevronLeft /> Go Back
         </Button>
         <Button
-          data-focus="logo"
           onClick={() => navigate("/menu")}
           sx={{
-            ...getFocusStyle("logo"),
             color: "black",
             fontWeight: "bold",
             fontSize: "1.5rem",
@@ -353,7 +203,6 @@ const ChildMain = () => {
         }}
       >
         <Button
-          data-focus="resume"
           onClick={() =>
             navigate(`/showdetails/${profileName}`, {
               state: {
@@ -363,7 +212,6 @@ const ChildMain = () => {
             })
           }
           sx={{
-            ...getFocusStyle("resume"),
             backgroundImage: "url('/images/naruto.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
@@ -383,9 +231,7 @@ const ChildMain = () => {
         </Button>
 
         <Box
-          data-focus="timer"
           sx={{
-            ...getFocusStyle("timer"),
             bgcolor: "rgba(255, 255, 255, 0.9)",
             borderRadius: 3,
             p: 1.5,
@@ -513,7 +359,6 @@ const ChildMain = () => {
             {showImages.map((image, index) => (
               <Button
                 key={index}
-                data-focus={`recent-${index}`}
                 tabIndex={-1}
                 onClick={() =>
                   navigate(`/showdetails/${profileName}`, {
@@ -524,7 +369,6 @@ const ChildMain = () => {
                   })
                 }
                 sx={{
-                  ...getFocusStyle(`recent-${index}`),
                   backgroundImage: `url(${image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
@@ -567,7 +411,6 @@ const ChildMain = () => {
             {favoriteImages.map((image, index) => (
               <Button
                 key={index}
-                data-focus={`favorite-${index}`}
                 tabIndex={-1}
                 onClick={() =>
                   navigate(`/showdetails/${profileName}`, {
@@ -578,7 +421,6 @@ const ChildMain = () => {
                   })
                 }
                 sx={{
-                  ...getFocusStyle(`favorite-${index}`),
                   backgroundImage: `url(${image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
@@ -598,11 +440,9 @@ const ChildMain = () => {
       {/* Find a Show Button */}
       <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
         <Button
-          data-focus="find"
           onClick={() => navigate(`/findShow/${profileName}`)}
           variant="contained"
           sx={{
-            ...getFocusStyle("find"),
             bgcolor: ColorPick.getSecondary(),
             color: "white",
             fontSize: "1.2rem",

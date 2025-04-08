@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Box, Typography, Button, IconButton } from "@mui/material";
+import { Box, Typography, Button, IconButton, Avatar } from "@mui/material";
 import {
   Fullscreen,
   FullscreenExit,
@@ -9,13 +9,40 @@ import {
   Pause,
 } from "@mui/icons-material";
 import ColorPick from "../../tools/ColorPick";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+import ConstantLib from "../../tools/ConstantLib";
+import Grid2 from "@mui/material/Grid2";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 
 const VideoPlayer = () => {
+  const location = useLocation();
+  const { profileName } = useParams();
+  const navigate = useNavigate();
+
+  const { episode, showTitle, image } = location.state || {
+    episode: 1,
+    showTitle: "Unknown Show",
+    image: "",
+  };
+
+  const kidsProfiles = ConstantLib.getKidsProfile();
+  let currentProfile = profileName
+    ? kidsProfiles.find(
+        (profile) => profile.name.toLowerCase() === profileName.toLowerCase()
+      )
+    : { name: "U", imageURL: "" };
+
+  // If no profile was found, use default
+  if (!currentProfile) {
+    currentProfile = { name: "U", imageURL: "" };
+  }
+
   const videoRef = useRef(null);
   const containerRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
   const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [currentFocus, setCurrentFocus] = useState("back");
 
@@ -39,14 +66,40 @@ const VideoPlayer = () => {
 
   const handleVolumeChange = (e) => {
     const newVolume = parseFloat(e.target.value);
-    videoRef.current.volume = newVolume;
-    setVolume(newVolume);
+    if (videoRef.current) {
+      videoRef.current.volume = newVolume;
+      setVolume(newVolume);
+    }
   };
 
   const handleProgressChange = (e) => {
-    const newTime = (e.target.value / 100) * videoRef.current.duration;
-    videoRef.current.currentTime = newTime;
-    setProgress(e.target.value);
+    if (videoRef.current && duration > 0) {
+      const newTime = (parseFloat(e.target.value) / 100) * duration;
+      if (isFinite(newTime)) {
+        videoRef.current.currentTime = newTime;
+        setProgress(e.target.value);
+      }
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      const currentTime = videoRef.current.currentTime;
+      const videoDuration = videoRef.current.duration;
+      if (isFinite(videoDuration) && videoDuration > 0) {
+        setDuration(videoDuration);
+        setProgress((currentTime / videoDuration) * 100);
+      }
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      const videoDuration = videoRef.current.duration;
+      if (isFinite(videoDuration)) {
+        setDuration(videoDuration);
+      }
+    }
   };
 
   const toggleFullscreen = () => {
@@ -58,12 +111,6 @@ const VideoPlayer = () => {
       containerRef.current.requestFullscreen();
     }
     setIsFullscreen(!isFullscreen);
-  };
-
-  const handleTimeUpdate = () => {
-    setProgress(
-      (videoRef.current.currentTime / videoRef.current.duration) * 100 || 0
-    );
   };
 
   const handleKeyDown = (e) => {
@@ -138,19 +185,18 @@ const VideoPlayer = () => {
   return (
     <Box
       sx={{
-        bgcolor: "black",
+        bgcolor: ColorPick.getPrimary(),
         color: "white",
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         p: 2,
       }}
     >
       <Box
         sx={{
           width: "100%",
-          mb: 1,
+          mb: 2,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -159,43 +205,155 @@ const VideoPlayer = () => {
         <Button
           data-focus="back"
           onClick={() => window.history.back()}
-          variant="contained"
           sx={{
             ...getFocusStyle("back"),
-            bgcolor: ColorPick.getSecondary(),
-            color: "white",
-            borderRadius: "1rem",
-            px: 2,
-            py: 1,
+            backgroundColor: ColorPick.getSecondary(),
+            padding: 1,
+            paddingRight: 2,
+            textTransform: "none",
+            "&:hover": {
+              backgroundColor: ColorPick.getSecondaryHOVER(),
+              transform: "scale(1.1)",
+              transition: "transform 0.2s ease-in-out",
+            },
+            border: "3px solid black",
           }}
         >
-          ← Back
+          <Grid2
+            container
+            direction={"row"}
+            spacing={1}
+            alignItems="center"
+            sx={{ color: "white" }}
+          >
+            <ArrowBackOutlinedIcon />
+            <Typography>Back</Typography>
+          </Grid2>
         </Button>
-        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          Now Playing: Episode 1
-        </Typography>
+        <Button
+          onClick={() => navigate("/menu")}
+          sx={{
+            color: "black",
+            fontWeight: "bold",
+            fontSize: "1.5rem",
+            textTransform: "none",
+            "&:hover": {
+              backgroundColor: "transparent",
+              opacity: 0.8,
+              transform: "scale(1.1)",
+              transition: "transform 0.2s ease-in-out",
+            },
+          }}
+        >
+          KiddoFlix
+        </Button>
+        <Avatar
+          src={currentProfile.imageURL}
+          sx={{
+            bgcolor: ColorPick.getSecondary(),
+            color: "white",
+            width: 40,
+            height: 40,
+            "&:hover": {
+              transform: "scale(1.1)",
+              transition: "transform 0.2s ease-in-out",
+            },
+          }}
+        >
+          {currentProfile.name ? currentProfile.name[0] : "U"}
+        </Avatar>
       </Box>
+
+      <Typography
+        variant="h5"
+        sx={{
+          mb: 2,
+          color: "black",
+          fontWeight: "bold",
+          textAlign: "center",
+        }}
+      >
+        Now Playing: {showTitle} - Episode {episode}
+      </Typography>
 
       <Box
         ref={containerRef}
+        onClick={(e) => {
+          // Don't trigger play/pause if clicking on controls
+          if (!e.target.closest(".video-controls")) {
+            handlePlayPause();
+          }
+        }}
+        onDoubleClick={(e) => {
+          e.stopPropagation(); // Prevent triggering the click handler
+          toggleFullscreen();
+        }}
         sx={{
           width: "100%",
-          maxWidth: "90vw",
+          maxWidth: "80vw",
           aspectRatio: "16/9",
           position: "relative",
           borderRadius: "0.75rem",
           overflow: "hidden",
-          mb: 2,
+          mx: "auto",
+          border: "3px solid black",
+          bgcolor: "black",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          cursor: "pointer",
+          "&:hover": {
+            "& .playOverlay": {
+              opacity: 1,
+            },
+          },
         }}
       >
+        {!isPlaying && (
+          <Box
+            className="playOverlay"
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 2,
+              opacity: 0,
+              transition: "opacity 0.2s",
+              bgcolor: "rgba(0,0,0,0.5)",
+              borderRadius: "50%",
+              p: 1,
+            }}
+          >
+            <PlayArrow sx={{ fontSize: 60, color: "white" }} />
+          </Box>
+        )}
+        {!isPlaying && image && (
+          <Box
+            component="img"
+            src={image}
+            alt={showTitle}
+            sx={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+            }}
+          />
+        )}
         <video
           ref={videoRef}
           src="/videos/sample.mp4"
-          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            display: isPlaying ? "block" : "none",
+          }}
           onTimeUpdate={handleTimeUpdate}
-          onClick={handlePlayPause}
+          onLoadedMetadata={handleLoadedMetadata}
         />
         <Box
+          className="video-controls"
           sx={{
             position: "absolute",
             bottom: 0,
@@ -204,6 +362,7 @@ const VideoPlayer = () => {
             p: 1,
             background: "linear-gradient(transparent, rgba(0,0,0,0.7))",
           }}
+          onClick={(e) => e.stopPropagation()} // Prevent play/pause when clicking controls
         >
           <input
             type="range"
@@ -221,7 +380,10 @@ const VideoPlayer = () => {
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
             <IconButton
               data-focus="play"
-              onClick={handlePlayPause}
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePlayPause();
+              }}
               sx={{
                 ...getFocusStyle("play"),
                 color: "white",
@@ -231,7 +393,13 @@ const VideoPlayer = () => {
             </IconButton>
             <IconButton
               data-focus="volume"
-              onClick={() => setVolume(volume > 0 ? 0 : 1)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setVolume(volume > 0 ? 0 : 1);
+                if (videoRef.current) {
+                  videoRef.current.volume = volume > 0 ? 0 : 1;
+                }
+              }}
               sx={{
                 ...getFocusStyle("volume"),
                 color: "white",
@@ -246,6 +414,7 @@ const VideoPlayer = () => {
               step="0.01"
               value={volume}
               onChange={handleVolumeChange}
+              onClick={(e) => e.stopPropagation()}
               style={{
                 width: "80px",
                 cursor: "pointer",
@@ -257,7 +426,10 @@ const VideoPlayer = () => {
             <Box sx={{ flexGrow: 1 }} />
             <IconButton
               data-focus="fullscreen"
-              onClick={toggleFullscreen}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleFullscreen();
+              }}
               sx={{
                 ...getFocusStyle("fullscreen"),
                 color: "white",

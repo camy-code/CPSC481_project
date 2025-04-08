@@ -19,14 +19,14 @@ const genButton = (label, func1, col, hovCol) => {
         color: "black",
         width: 350,
         textTransform: "none",
-        "&:hover":{
-          backgroundColor:hovCol
+        "&:hover": {
+          backgroundColor: hovCol,
         },
-        border:"3px solid black",
+        border: "3px solid black",
       }}
       onClick={func1}
     >
-      <Typography sx={{ fontSize: 30, color:"white" }}>{label}</Typography>
+      <Typography sx={{ fontSize: 30, color: "white" }}>{label}</Typography>
     </Button>
   );
 };
@@ -166,7 +166,12 @@ const Account = () => {
             <Typography variant="h4">Account</Typography>
 
             <div>
-              {genButton("Delete", handleClickOpeDELETE, ColorPick.getThird(),ColorPick.getThirdHOVER())}
+              {genButton(
+                "Delete",
+                handleClickOpeDELETE,
+                ColorPick.getThird(),
+                ColorPick.getThirdHOVER()
+              )}
               <DeleteAccountDialog
                 open={openDialogDELETE}
                 onClose={handleCloseDELETE}

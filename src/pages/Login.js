@@ -1,37 +1,53 @@
 import { useState } from "react";
-import { TextField, Button, Typography, Box } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import ColorPick from "../tools/ColorPick";
 import Grid from "@mui/material/Grid2";
-
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("None");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // This is if we want to add some sort of
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
-  const [error, setError] = useState("None");
-
-  let navigate = useNavigate();
-  const handleLogin = () => {
-    if (formData.password !== "123" || formData.email !== "cam") {
-      setError("Incorrect password or email");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.email === "") {
+      setError("Please enter your email");
       return;
     }
-    // TODO
+    if (formData.password === "") {
+      setError("Please enter your password");
+      return;
+    }
+    if (
+      formData.password !== "password" ||
+      formData.email !== "test@email.com"
+    ) {
+      setError("Invalid email or password. Please try again.");
+      return;
+    }
     navigate("/menu");
   };
 
@@ -57,13 +73,18 @@ const Login = () => {
         <Typography variant="h5" mb={2}>
           Login
         </Typography>
-        <Typography
-          sx={{ color: error === "None" ? "white" : ColorPick.getErrorColor() }}
-        >
-          {error}
-          {formData.email}
-          {formData.password}
-        </Typography>
+        {error !== "None" && (
+          <Typography
+            variant="body2"
+            sx={{
+              color: ColorPick.getErrorColor(),
+              mb: 2,
+              fontWeight: "bold",
+            }}
+          >
+            {error}
+          </Typography>
+        )}
 
         <TextField
           label="Email"
@@ -72,24 +93,53 @@ const Login = () => {
           margin="normal"
           value={formData.email}
           onChange={handleChange}
+          error={error !== "None" && formData.email === ""}
+          helperText={
+            error !== "None" && formData.email === "" ? "Email is required" : ""
+          }
         />
 
         <TextField
           label="Password"
           name="password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           fullWidth
           margin="normal"
           value={formData.password}
           onChange={handleChange}
+          error={error !== "None" && formData.password === ""}
+          helperText={
+            error !== "None" && formData.password === ""
+              ? "Password is required"
+              : ""
+          }
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         <Button
           type="submit"
           variant="contained"
           fullWidth
-          sx={{ mt: 2, backgroundColor: ColorPick.getSecondary() }}
-          onClick={handleLogin}
+          sx={{
+            mt: 2,
+            backgroundColor: ColorPick.getSecondary(),
+            "&:hover": {
+              backgroundColor: ColorPick.getSecondaryHOVER(),
+            },
+          }}
+          onClick={handleSubmit}
         >
           Login
         </Button>

@@ -15,6 +15,7 @@ import VideoPlay from "../pages/ChildWatchPages/VideoPlay";
 
 import ParentLogin from "../pages/ParentControls/ParentLogin";
 import ParentMain from "../pages/ParentControls/ParentMain";
+import ParentProfileInit from "../pages/ParentControls/ParentProfileInit";
 
 import ParentShowDetails from "../pages/ParentControls/ShowParentDetails.js";
 import ParentFindShow from "../pages/ParentControls/FindShow_Parent.js";
@@ -91,6 +92,11 @@ const publicPages = [
     compo: <ParentMain />,
     path: "/parentmain",
     name: "ParentMain",
+  },
+  {
+    compo: <ParentProfileInit />,
+    path: "/parentprofileinit",
+    name: "ParentProfileInit",
   },
   {
     compo: <ParentShowDetails />,

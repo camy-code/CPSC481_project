@@ -16,6 +16,14 @@ const kidsProf = ConstantLib.getKidsProfile();
 const ProfileViews = () => {
   return (
     <Grid container direction={"row"} spacing={2} justifyContent="center">
+      {/* Parent Profile - Moved to the left */}
+      <ChildProfileSel
+        name={"Parent"}
+        url={"https://cdn-icons-png.freepik.com/512/9307/9307950.png"}
+        PAGE_LINK={"/parentlogin/reg"}
+      />
+
+      {/* Child Profiles */}
       {kidsProf.map((a) => (
         <ChildProfileSel
           name={a.name}
@@ -24,32 +32,14 @@ const ProfileViews = () => {
         />
       ))}
 
-      <ChildProfileSel
-        name={"Parent"}
-        url={"https://cdn-icons-png.freepik.com/512/9307/9307950.png"}
-        PAGE_LINK={"/parentlogin/reg"}
-      />
-      {/* reg stands for regular as the arg */}
-
-<<<<<<< HEAD
+      {/* Add User Profile */}
       <ChildProfileSel
         name={"Add User"}
         url={
           "https://media.istockphoto.com/id/688550958/vector/black-plus-sign-positive-symbol.jpg?s=612x612&w=0&k=20&c=0tymWBTSEqsnYYXWeWmJPxMotTGUwaGMGs6BMJvr7X4="
         }
-        PAGE_LINK={"parentlogin/Account"}
+        PAGE_LINK={"/parentlogin/Account"}
       />
-=======
-  return <Grid container direction={"row"} spacing={2} justifyContent="center">
- 
-    {kidsProf.map((a)=><ChildProfileSel name={a.name} url={a.imageURL} PAGE_LINK={"/childmain/" +a.name}/>)}
-
-    <ChildProfileSel name={"Parent"} url={"https://cdn-icons-png.freepik.com/512/9307/9307950.png"} PAGE_LINK={"/parentlogin/reg"}/>
-    {/* reg stands for regular as the arg */}
-
-    <ChildProfileSel name={"Add User"} url={"https://media.istockphoto.com/id/688550958/vector/black-plus-sign-positive-symbol.jpg?s=612x612&w=0&k=20&c=0tymWBTSEqsnYYXWeWmJPxMotTGUwaGMGs6BMJvr7X4="} PAGE_LINK={"/parentlogin/acount"}/>
-  
->>>>>>> 07d07f658f7fbed7a26bee69558c5391f1aa745f
     </Grid>
   );
 

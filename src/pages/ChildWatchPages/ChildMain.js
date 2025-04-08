@@ -14,12 +14,14 @@ import {
   ChevronLeft,
   AccessTime,
 } from "@mui/icons-material";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import ColorPick from "../../tools/ColorPick";
 import ExitButton from "../../components/menuComponents/ExitButton";
 import ConstantLib from "../../tools/ConstantLib";
 import React, { useState } from "react";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import Grid2 from "@mui/material/Grid2";
 
 const ChildMain = () => {
   const navigate = useNavigate();
@@ -125,6 +127,32 @@ const ChildMain = () => {
     }
   };
 
+  const recentShows = [
+    { title: "Drake & Josh", image: "/images/drake_Josh.jpg" },
+    { title: "Kim Possible", image: "/images/kim_possible.jpg" },
+    { title: "Cory in the House", image: "/images/cory.jpg" },
+    { title: "Hannah Montana", image: "/images/hannah-montana.jpg" },
+    { title: "Wonder Pets", image: "/images/wonder_pets.jpg" },
+    { title: "Franklin", image: "/images/franklin.png" },
+    { title: "Danny Phantom", image: "/images/DannyPhantom.jpg" },
+    { title: "Backyardigans", image: "/images/backyardigans.jpg" },
+    { title: "Handy Manny", image: "/images/HandyManny.jpg" },
+    { title: "Phineas and Ferb", image: "/images/phineas_and_ferb.png" },
+    { title: "iCarly", image: "/images/iCarly.jpg" },
+    { title: "Zach & Cody", image: "/images/zach_Cody.webp" },
+    { title: "Fairly OddParents", image: "/images/Fairly_OddParents.webp" },
+    { title: "Dora", image: "/images/Dora.jpg" },
+    { title: "Max and Ruby", image: "/images/max_and_ruby.jpg" },
+  ];
+
+  const favoriteShows = [
+    { title: "Danny Phantom", image: "/images/DannyPhantom.jpg" },
+    { title: "Backyardigans", image: "/images/backyardigans.jpg" },
+    { title: "Phineas and Ferb", image: "/images/phineas_and_ferb.png" },
+    { title: "Hannah Montana", image: "/images/hannah-montana.jpg" },
+    { title: "Drake & Josh", image: "/images/drake_Josh.jpg" },
+  ];
+
   return (
     <Box
       sx={{
@@ -142,25 +170,29 @@ const ChildMain = () => {
         sx={{ mb: 3 }}
       >
         <Button
-          onClick={() => navigate("/menu")}
+          component={Link}
+          to="/menu"
           sx={{
             backgroundColor: ColorPick.getSecondary(),
-            color: "white",
-            fontSize: "1.2rem",
+            padding: 1,
+            paddingRight: 2,
             textTransform: "none",
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-            borderRadius: 2,
-            px: 2,
-            py: 1,
             "&:hover": {
-              backgroundColor: ColorPick.getSecondary(),
-              opacity: 0.9,
+              backgroundColor: ColorPick.getSecondaryHOVER(),
             },
+            border: "3px solid black",
           }}
         >
-          <ChevronLeft /> Go Back
+          <Grid2
+            container
+            direction={"row"}
+            spacing={1}
+            alignItems="center"
+            sx={{ color: "white" }}
+          >
+            <ArrowBackOutlinedIcon />
+            <Typography>Back</Typography>
+          </Grid2>
         </Button>
         <Button
           onClick={() => navigate("/menu")}
@@ -184,6 +216,9 @@ const ChildMain = () => {
             color: "white",
             width: 40,
             height: 40,
+            "&:hover": {
+              opacity: 0.8,
+            },
           }}
         >
           {currentProfile.name ? currentProfile.name[0] : "U"}
@@ -204,7 +239,7 @@ const ChildMain = () => {
       >
         <Button
           onClick={() =>
-            navigate(`/showdetails/${profileName}`, {
+            navigate(`/videoPlay/${profileName}`, {
               state: {
                 title: "Naruto",
                 image: "/images/naruto.png",
@@ -225,6 +260,10 @@ const ChildMain = () => {
             color: "white",
             textTransform: "none",
             m: 0,
+            "&:hover": {
+              opacity: 0.9,
+              transform: "scale(1.02)",
+            },
           }}
         >
           ▶ Resume Naruto
@@ -356,28 +395,33 @@ const ChildMain = () => {
               scrollBehavior: "smooth",
             }}
           >
-            {showImages.map((image, index) => (
+            {recentShows.map((show, index) => (
               <Button
                 key={index}
                 tabIndex={-1}
                 onClick={() =>
                   navigate(`/showdetails/${profileName}`, {
                     state: {
-                      title: ["Batman", "Avatar", "SpongeBob"][index % 3],
-                      image: image,
+                      title: show.title,
+                      image: show.image,
                     },
                   })
                 }
                 sx={{
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${show.image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
-                  width: 180,
-                  height: 130,
-                  marginRight: 2,
+                  width: 250,
+                  height: 150,
+                  marginRight: 3,
                   borderRadius: 3,
                   boxShadow: 2,
                   flexShrink: 0,
+                  "&:hover": {
+                    opacity: 0.9,
+                    transform: "scale(1.1)",
+                    transition: "transform 0.2s ease-in-out",
+                  },
                 }}
               />
             ))}
@@ -408,28 +452,33 @@ const ChildMain = () => {
               scrollBehavior: "smooth",
             }}
           >
-            {favoriteImages.map((image, index) => (
+            {favoriteShows.map((show, index) => (
               <Button
                 key={index}
                 tabIndex={-1}
                 onClick={() =>
                   navigate(`/showdetails/${profileName}`, {
                     state: {
-                      title: ["Batman", "Avatar", "SpongeBob"][index],
-                      image: image,
+                      title: show.title,
+                      image: show.image,
                     },
                   })
                 }
                 sx={{
-                  backgroundImage: `url(${image})`,
+                  backgroundImage: `url(${show.image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
-                  width: 180,
-                  height: 130,
-                  marginRight: 2,
+                  width: 250,
+                  height: 150,
+                  marginRight: 3,
                   borderRadius: 3,
                   boxShadow: 2,
                   flexShrink: 0,
+                  "&:hover": {
+                    opacity: 0.9,
+                    transform: "scale(1.1)",
+                    transition: "transform 0.2s ease-in-out",
+                  },
                 }}
               />
             ))}
@@ -454,6 +503,10 @@ const ChildMain = () => {
             display: "flex",
             alignItems: "center",
             gap: 1,
+            "&:hover": {
+              backgroundColor: ColorPick.getSecondaryHOVER(),
+              transform: "scale(1.05)",
+            },
           }}
         >
           <Search sx={{ color: "white" }} />

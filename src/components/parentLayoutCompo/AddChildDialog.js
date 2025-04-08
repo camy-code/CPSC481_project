@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogActions,
@@ -6,75 +6,124 @@ import {
   DialogTitle,
   Button,
   TextField,
-  Card,
+  Box,
   Typography,
+  Avatar,
 } from "@mui/material";
 import ColorPick from "../../tools/ColorPick";
-import Box from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Add as AddIcon } from "@mui/icons-material";
 
 const AddChildDialog = ({ open, onClose }) => {
-  const [name, setName] = useState("");
+  const [profileName, setProfileName] = useState("");
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [error, setError] = useState("");
 
-  const [selectedImage, setSelectedImage] = useState(null);
-
-  const handleSubmit = () => {
-    setName("");
-    setSelectedImage(null);
-
-    alert("New child added");
-    onClose();
-  };
-
-  // Handle file selection
-  const handleFileSelect = (event) => {
+  const handleProfilePictureChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setSelectedImage(URL.createObjectURL(file)); // Create an object URL for the image
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePicture(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Add Child</DialogTitle>
-      <DialogContent>
-        <Card sx={{ padding: 2 }}>
-          <TextField
-            label="Name"
-            fullWidth
-            margin="normal"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+  const handleSubmit = () => {
+    if (!profileName.trim()) {
+      setError("Please enter a profile name");
+      return;
+    }
+    // Here you would typically save the profile data
+    onClose();
+  };
 
+  const handleClose = () => {
+    setProfileName("");
+    setProfilePicture(null);
+    setError("");
+    onClose();
+  };
+
+  return (
+    <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
+      <DialogTitle sx={{ textAlign: "center", pb: 0 }}>
+        Add Child Profile
+      </DialogTitle>
+
+      <DialogContent>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            pt: 2,
+          }}
+        >
           <input
-            type="file"
             accept="image/*"
             style={{ display: "none" }}
-            id="file-upload"
-            onChange={handleFileSelect}
+            id="profile-picture-input"
+            type="file"
+            onChange={handleProfilePictureChange}
           />
-          <Button
-            sx={{
-              backgroundColor: ColorPick.getSecondary(),
-              padding: 1,
-              color: "white",
-              display: "flex",
-              "&:hover": {
-                backgroundColor: ColorPick.getSecondaryHOVER(),
-              },
-              border: "3px solid black",
-            }}
-            component="label"
-            htmlFor="file-upload"
+          <label htmlFor="profile-picture-input">
+            <Button
+              component="span"
+              sx={{
+                width: 120,
+                height: 120,
+                borderRadius: "50%",
+                backgroundColor: "#f5f5f5",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "background-color 0.3s",
+                "&:hover": {
+                  backgroundColor: "#e0e0e0",
+                },
+              }}
+            >
+              <Avatar
+                src={profilePicture}
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                {!profilePicture && (
+                  <AddIcon
+                    sx={{
+                      fontSize: 40,
+                      color: "#757575",
+                    }}
+                  />
+                )}
+              </Avatar>
+            </Button>
+          </label>
+          <Typography
+            variant="body2"
+            sx={{ mt: 1, mb: 2, color: "text.secondary" }}
           >
-            Select Image
-          </Button>
-        </Card>
+            Click to add profile picture
+          </Typography>
+
+          <TextField
+            fullWidth
+            label="Profile Name"
+            value={profileName}
+            onChange={(e) => {
+              setProfileName(e.target.value);
+              if (error) setError("");
+            }}
+            error={!!error}
+            helperText={error}
+          />
+        </Box>
       </DialogContent>
-      <DialogActions
-        sx={{ display: "flex", justifyContent: "center", width: "80%" }}
-      >
+
+      <DialogActions sx={{ padding: 2, justifyContent: "center" }}>
         <Button
           onClick={handleSubmit}
           sx={{
@@ -87,11 +136,10 @@ const AddChildDialog = ({ open, onClose }) => {
             border: "3px solid black",
           }}
         >
-          Submit
+          Add Profile
         </Button>
-
         <Button
-          onClick={onClose}
+          onClick={handleClose}
           sx={{
             padding: 1,
             backgroundColor: ColorPick.getThird(),
@@ -108,4 +156,5 @@ const AddChildDialog = ({ open, onClose }) => {
     </Dialog>
   );
 };
+
 export default AddChildDialog;

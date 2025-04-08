@@ -1,225 +1,94 @@
-import { Box, Typography, Button, Avatar } from "@mui/material";
-import { Search, ChevronLeft } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Typography,
+  Button,
+  Avatar,
+  TextField,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
+import {
+  Search,
+  Timer,
+  ChevronRight,
+  ChevronLeft,
+  AccessTime,
+} from "@mui/icons-material";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import ColorPick from "../../tools/ColorPick";
-import { useState, useEffect } from "react";
+import ExitButton from "../../components/menuComponents/ExitButton";
+import ConstantLib from "../../tools/ConstantLib";
+import React, { useState, useEffect } from "react";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import Grid2 from "@mui/material/Grid2";
 
 const ParentMain = () => {
   const navigate = useNavigate();
-  const showImages = [
-    "/images/batman.jpg",
-    "/images/avatar.jpg",
-    "/images/spongebob.jpg",
-    "/images/naruto.png",
-    "/images/batman.jpg",
-    "/images/avatar.jpg",
-    "/images/spongebob.jpg",
-    "/images/naruto.png",
-    "/images/batman.jpg",
-    "/images/avatar.jpg",
-    "/images/spongebob.jpg",
-    "/images/naruto.png",
-    "/images/batman.jpg",
-    "/images/avatar.jpg",
-    "/images/spongebob.jpg",
-    "/images/naruto.png",
-    "/images/batman.jpg",
-    "/images/avatar.jpg",
-    "/images/spongebob.jpg",
-    "/images/naruto.png",
+  const { profileName } = useParams();
+  const kidsProfiles = ConstantLib.getKidsProfile();
+
+  let currentProfile = profileName
+    ? kidsProfiles.find(
+        (profile) => profile.name.toLowerCase() === profileName.toLowerCase()
+      )
+    : { name: "U", imageURL: "" };
+
+  if (!currentProfile) {
+    currentProfile = { name: "U", imageURL: "" };
+    console.log("Using default profile");
+  }
+
+  const recentShows = [
+    { title: "Drake & Josh", image: "/images/drake_Josh.jpg" },
+    { title: "Kim Possible", image: "/images/kim_possible.jpg" },
+    { title: "Cory in the House", image: "/images/cory.jpg" },
+    { title: "Hannah Montana", image: "/images/hannah-montana.jpg" },
+    { title: "Wonder Pets", image: "/images/wonder_pets.jpg" },
+    { title: "Franklin", image: "/images/franklin.png" },
+    { title: "Danny Phantom", image: "/images/DannyPhantom.jpg" },
+    { title: "Backyardigans", image: "/images/backyardigans.jpg" },
+    { title: "Handy Manny", image: "/images/HandyManny.jpg" },
+    { title: "Phineas and Ferb", image: "/images/phineas_and_ferb.png" },
+    { title: "iCarly", image: "/images/iCarly.jpg" },
+    { title: "Zach & Cody", image: "/images/zach_Cody.webp" },
+    { title: "Fairly OddParents", image: "/images/Fairly_OddParents.webp" },
+    { title: "Dora", image: "/images/Dora.jpg" },
+    { title: "Max and Ruby", image: "/images/max_and_ruby.jpg" },
   ];
-  const favoriteImages = [
-    "/images/batman.jpg",
-    "/images/avatar.jpg",
-    "/images/spongebob.jpg",
+
+  const favoriteShows = [
+    {
+      title: "Avatar: The Last Airbender",
+      image: "/images/avatar.jpg",
+      description:
+        "A critically acclaimed animated series with deep storytelling, complex characters, and themes of war, peace, and personal growth.",
+    },
+    {
+      title: "Phineas and Ferb",
+      image: "/images/phineas_and_ferb.png",
+      description:
+        "A clever and witty show with smart humor, musical numbers, and creative inventions that appeal to both kids and adults.",
+    },
+    {
+      title: "Kim Possible",
+      image: "/images/kim_possible.jpg",
+      description:
+        "A teenage spy action-comedy with strong female lead, clever writing, and action sequences that entertain all ages.",
+    },
+    {
+      title: "Danny Phantom",
+      image: "/images/DannyPhantom.jpg",
+      description:
+        "A supernatural action series with themes of responsibility and identity, featuring a teenage ghost superhero.",
+    },
+    {
+      title: "Fairly OddParents",
+      image: "/images/Fairly_OddParents.webp",
+      description:
+        "A clever animated series with witty humor, pop culture references, and imaginative scenarios that adults can appreciate.",
+    },
   ];
-
-  const scrollToShow = (section, index) => {
-    const containerId =
-      section === "recent" ? "recent-shows" : "favorite-shows";
-    const container = document.getElementById(containerId);
-    const showElement = container?.querySelector(
-      `[data-focus="${section}-${index}"]`
-    );
-
-    if (container && showElement) {
-      const containerLeft = container.scrollLeft;
-      const containerWidth = container.clientWidth;
-      const showLeft = showElement.offsetLeft;
-      const showWidth = showElement.offsetWidth;
-
-      // Always center the item
-      container.scrollTo({
-        left: showLeft - containerWidth / 2 + showWidth / 2,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  const scrollShows = (section, direction) => {
-    const containerId =
-      section === "recent" ? "recent-shows" : "favorite-shows";
-    const container = document.getElementById(containerId);
-    if (container) {
-      const containerWidth = container.offsetWidth;
-      const showWidth = 180; // Width of each show
-      const marginRight = 16; // marginRight: 2 in rem units = 16px
-      const showsPerPage = Math.floor(
-        containerWidth / (showWidth + marginRight)
-      );
-      const scrollDistance = (showWidth + marginRight) * showsPerPage;
-
-      // Calculate max scroll position
-      const maxScroll = container.scrollWidth - container.clientWidth;
-      const newScrollLeft =
-        container.scrollLeft +
-        (direction === "right" ? scrollDistance : -scrollDistance);
-
-      // Ensure we don't scroll past bounds
-      container.scrollTo({
-        left: Math.max(0, Math.min(newScrollLeft, maxScroll)),
-        behavior: "smooth",
-      });
-    }
-  };
-
-  const [currentFocus, setCurrentFocus] = useState("back");
-  const [lastRecentIndex, setLastRecentIndex] = useState(0);
-  const [lastFavoriteIndex, setLastFavoriteIndex] = useState(0);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (currentFocus.startsWith("recent-")) {
-        const index = parseInt(currentFocus.split("-")[1]);
-        if (!isNaN(index)) scrollToShow("recent", index);
-      } else if (currentFocus.startsWith("favorite-")) {
-        const index = parseInt(currentFocus.split("-")[1]);
-        if (!isNaN(index)) scrollToShow("favorite", index);
-      }
-    }, 0);
-    return () => clearTimeout(timeout);
-  }, [currentFocus]);
-
-  const handleKeyDown = (e) => {
-    e.preventDefault();
-
-    let nextFocus = currentFocus;
-
-    switch (e.key) {
-      case "ArrowRight":
-        if (currentFocus === "back") {
-          nextFocus = "logo";
-        } else if (currentFocus === "logo") {
-          nextFocus = "resume";
-        } else if (currentFocus === "resume") {
-          nextFocus = `recent-${lastRecentIndex}`;
-        } else if (currentFocus.startsWith("recent-")) {
-          const index = parseInt(currentFocus.split("-")[1]);
-          if (index < showImages.length - 1) {
-            nextFocus = `recent-${index + 1}`;
-            setLastRecentIndex(index + 1);
-          } else {
-            nextFocus = `favorite-${lastFavoriteIndex}`;
-          }
-        } else if (currentFocus.startsWith("favorite-")) {
-          const index = parseInt(currentFocus.split("-")[1]);
-          if (index < favoriteImages.length - 1) {
-            nextFocus = `favorite-${index + 1}`;
-            setLastFavoriteIndex(index + 1);
-          } else {
-            nextFocus = "find";
-          }
-        }
-        break;
-
-      case "ArrowLeft":
-        if (currentFocus === "logo") {
-          nextFocus = "back";
-        } else if (currentFocus === "resume") {
-          nextFocus = "logo";
-        } else if (currentFocus === "recent-0") {
-          nextFocus = "resume";
-        } else if (currentFocus.startsWith("recent-")) {
-          const index = parseInt(currentFocus.split("-")[1]);
-          if (index > 0) {
-            nextFocus = `recent-${index - 1}`;
-            setLastRecentIndex(index - 1);
-          } else {
-            nextFocus = "resume";
-          }
-        } else if (currentFocus === "favorite-0") {
-          nextFocus = `recent-${lastRecentIndex}`;
-        } else if (currentFocus.startsWith("favorite-")) {
-          const index = parseInt(currentFocus.split("-")[1]);
-          if (index > 0) {
-            nextFocus = `favorite-${index - 1}`;
-            setLastFavoriteIndex(index - 1);
-          } else {
-            nextFocus = `recent-${lastRecentIndex}`;
-          }
-        } else if (currentFocus === "find") {
-          nextFocus = `favorite-${lastFavoriteIndex}`;
-        }
-        break;
-
-      case "ArrowDown":
-        if (
-          currentFocus === "back" ||
-          currentFocus === "logo" ||
-          currentFocus === "resume"
-        ) {
-          nextFocus = "recent-0";
-        } else if (currentFocus.startsWith("recent-")) {
-          nextFocus = "favorite-0";
-        } else if (currentFocus.startsWith("favorite-")) {
-          nextFocus = "find";
-        }
-        break;
-
-      case "ArrowUp":
-        if (currentFocus === "find") {
-          nextFocus = `favorite-${lastFavoriteIndex}`;
-        } else if (currentFocus.startsWith("favorite-")) {
-          nextFocus = `recent-${lastRecentIndex}`;
-        } else if (currentFocus.startsWith("recent-")) {
-          nextFocus = "resume";
-        } else if (currentFocus === "resume") {
-          nextFocus = "logo";
-        } else if (currentFocus === "logo") {
-          nextFocus = "back";
-        }
-        break;
-
-      case "Enter":
-      case " ":
-        document.querySelector(`[data-focus="${currentFocus}"]`)?.click();
-        break;
-
-      case "Backspace":
-        navigate("/menu");
-        break;
-    }
-
-    setCurrentFocus(nextFocus);
-  };
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentFocus, lastRecentIndex, lastFavoriteIndex]);
-
-  const getFocusStyle = (elementId) => ({
-    outline: currentFocus === elementId ? "3px solid #FFD700" : "none",
-    boxShadow:
-      currentFocus === elementId
-        ? "0 0 10px #FFD700, 0 0 20px rgba(255, 215, 0, 0.5)"
-        : "none",
-    transform: currentFocus === elementId ? "scale(1.05)" : "none",
-    transition: "all 0.2s ease",
-    position: "relative",
-    zIndex: currentFocus === elementId ? 1 : "auto",
-  });
 
   return (
     <Box
@@ -238,33 +107,33 @@ const ParentMain = () => {
         sx={{ mb: 3 }}
       >
         <Button
-          data-focus="back"
-          onClick={() => navigate("/menu")}
+          component={Link}
+          to="/menu"
           sx={{
-            ...getFocusStyle("back"),
             backgroundColor: ColorPick.getSecondary(),
-            color: "white",
-            fontSize: "1.2rem",
+            padding: 1,
+            paddingRight: 2,
             textTransform: "none",
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-            borderRadius: 2,
-            px: 2,
-            py: 1,
             "&:hover": {
-              backgroundColor: ColorPick.getSecondary(),
-              opacity: 0.9,
+              backgroundColor: ColorPick.getSecondaryHOVER(),
             },
+            border: "3px solid black",
           }}
         >
-          <ChevronLeft /> Go Back
+          <Grid2
+            container
+            direction={"row"}
+            spacing={1}
+            alignItems="center"
+            sx={{ color: "white" }}
+          >
+            <ArrowBackOutlinedIcon />
+            <Typography>Back</Typography>
+          </Grid2>
         </Button>
         <Button
-          data-focus="logo"
           onClick={() => navigate("/menu")}
           sx={{
-            ...getFocusStyle("logo"),
             color: "black",
             fontWeight: "bold",
             fontSize: "1.5rem",
@@ -277,25 +146,37 @@ const ParentMain = () => {
         >
           KiddoFlix
         </Button>
-        <Avatar sx={{ bgcolor: ColorPick.getSecondary(), color: "black" }}>
-          U
+        <Avatar
+          src={currentProfile.imageURL}
+          sx={{
+            bgcolor: ColorPick.getSecondary(),
+            color: "white",
+            width: 40,
+            height: 40,
+            "&:hover": {
+              opacity: 0.8,
+            },
+          }}
+        >
+          {currentProfile.name ? currentProfile.name[0] : "U"}
         </Avatar>
       </Grid>
 
-      {/* Resume Section */}
+      {/* Resume Section with Timer */}
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          alignItems: "stretch",
+          justifyContent: "space-between",
           mt: 2,
           mb: 2,
+          gap: 3,
+          height: 120,
         }}
       >
         <Button
-          data-focus="resume"
           onClick={() =>
-            navigate(`/showdetails/parent`, {
+            navigate(`/videoplay/${profileName}`, {
               state: {
                 title: "Naruto",
                 image: "/images/naruto.png",
@@ -303,12 +184,10 @@ const ParentMain = () => {
             })
           }
           sx={{
-            ...getFocusStyle("resume"),
             backgroundImage: "url('/images/naruto.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            height: 120,
-            width: "75%",
+            flex: "1 1 70%",
             borderRadius: 3,
             display: "flex",
             alignItems: "center",
@@ -317,90 +196,138 @@ const ParentMain = () => {
             justifyContent: "flex-start",
             color: "white",
             textTransform: "none",
+            m: 0,
+            "&:hover": {
+              opacity: 0.9,
+              transform: "scale(1.02)",
+            },
           }}
         >
           ▶ Resume Naruto
         </Button>
       </Box>
 
-      {/* Recent Section with Clickable Shows */}
-      <Typography
-        variant="h6"
-        sx={{ mb: 2, color: "black", fontWeight: "bold" }}
-      >
-        Recent
-      </Typography>
-      <Box
-        id="recent-shows"
-        sx={{ overflowX: "auto", whiteSpace: "nowrap", pb: 2 }}
-      >
-        {showImages.map((image, index) => (
-          <Button
-            key={index}
-            data-focus={`recent-${index}`}
-            onClick={() =>
-              navigate(`/showdetails/parent`, {
-                state: { title: "Show Title", image: image },
-              })
-            }
+      {/* Recent Section */}
+      <Box sx={{ position: "relative" }}>
+        <Typography
+          variant="h6"
+          sx={{ mb: 2, color: "black", fontWeight: "bold" }}
+        >
+          Recent
+        </Typography>
+        <Box sx={{ position: "relative" }}>
+          <Box
+            id="recent-shows"
             sx={{
-              ...getFocusStyle(`recent-${index}`),
-              backgroundImage: `url(${image})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              width: 180,
-              height: 130,
-              marginRight: 2,
-              borderRadius: 3,
-              boxShadow: 2,
+              overflowX: "auto",
+              whiteSpace: "nowrap",
+              pb: 2,
+              pt: 1,
+              px: 1,
+              mx: -1,
+              "&::-webkit-scrollbar": { display: "none" },
+              scrollbarWidth: "none",
+              scrollBehavior: "smooth",
             }}
-          ></Button>
-        ))}
+          >
+            {recentShows.map((show, index) => (
+              <Button
+                key={index}
+                tabIndex={-1}
+                onClick={() =>
+                  navigate(`/showdetails_parent`, {
+                    state: {
+                      title: show.title,
+                      image: show.image,
+                    },
+                  })
+                }
+                sx={{
+                  backgroundImage: `url(${show.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  width: 250,
+                  height: 150,
+                  marginRight: 3,
+                  borderRadius: 3,
+                  boxShadow: 2,
+                  flexShrink: 0,
+                  "&:hover": {
+                    opacity: 0.9,
+                    transform: "scale(1.1)",
+                    transition: "transform 0.2s ease-in-out",
+                  },
+                }}
+              />
+            ))}
+          </Box>
+        </Box>
       </Box>
 
-      {/* Favorites Section with Clickable Shows */}
-      <Typography
-        variant="h6"
-        sx={{ mt: 2, mb: 1, color: "black", fontWeight: "bold" }}
-      >
-        Favorites
-      </Typography>
-      <Box
-        id="favorite-shows"
-        sx={{ overflowX: "auto", whiteSpace: "nowrap", pb: 2 }}
-      >
-        {favoriteImages.map((image, index) => (
-          <Button
-            key={index}
-            data-focus={`favorite-${index}`}
-            onClick={() =>
-              navigate(`/showdetails/parent`, {
-                state: { title: "Show Title", image: image },
-              })
-            }
+      {/* Favorites Section */}
+      <Box sx={{ position: "relative" }}>
+        <Typography
+          variant="h6"
+          sx={{ mt: 2, mb: 1, color: "black", fontWeight: "bold" }}
+        >
+          Favorites
+        </Typography>
+        <Box sx={{ position: "relative" }}>
+          <Box
+            id="favorite-shows"
             sx={{
-              ...getFocusStyle(`favorite-${index}`),
-              backgroundImage: `url(${image})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              width: 180,
-              height: 130,
-              marginRight: 2,
-              borderRadius: 3,
-              boxShadow: 2,
+              overflowX: "auto",
+              whiteSpace: "nowrap",
+              pb: 2,
+              pt: 1,
+              px: 1,
+              mx: -1,
+              "&::-webkit-scrollbar": { display: "none" },
+              scrollbarWidth: "none",
+              scrollBehavior: "smooth",
             }}
-          ></Button>
-        ))}
+          >
+            {favoriteShows.map((show, index) => (
+              <Button
+                key={index}
+                tabIndex={-1}
+                onClick={() =>
+                  navigate(`/showdetails_parent`, {
+                    state: {
+                      title: show.title,
+                      image: show.image,
+                      description: show.description,
+                    },
+                  })
+                }
+                sx={{
+                  backgroundImage: `url(${show.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  width: 250,
+                  height: 150,
+                  marginRight: 3,
+                  borderRadius: 3,
+                  boxShadow: 2,
+                  flexShrink: 0,
+                  "&:hover": {
+                    opacity: 0.9,
+                    transform: "scale(1.1)",
+                    transition: "transform 0.2s ease-in-out",
+                  },
+                }}
+              />
+            ))}
+          </Box>
+        </Box>
       </Box>
 
       {/* Find a Show Button */}
       <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
         <Button
-          data-focus="find"
-          onClick={() => navigate("/findShow")}
+          onClick={() => navigate("/parentFindShow")}
           variant="contained"
           sx={{
-            ...getFocusStyle("find"),
             bgcolor: ColorPick.getSecondary(),
             color: "white",
             fontSize: "1.2rem",
@@ -412,6 +339,10 @@ const ParentMain = () => {
             display: "flex",
             alignItems: "center",
             gap: 1,
+            "&:hover": {
+              backgroundColor: ColorPick.getSecondaryHOVER(),
+              transform: "scale(1.05)",
+            },
           }}
         >
           <Search sx={{ color: "white" }} />

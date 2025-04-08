@@ -1,9 +1,17 @@
 import { useState } from "react";
-import { TextField, Button, Grid, Typography, Box } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Grid,
+  Typography,
+  Box,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import ColorPick from "../tools/ColorPick";
-
 import { useNavigate } from "react-router-dom";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Create = () => {
   const [formData, setFormData] = useState({
@@ -14,51 +22,82 @@ const Create = () => {
     confirmPin: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    // Clear error when user starts typing
+    if (error) setError("");
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleClickShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    return password.length >= 6;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate email
+    if (!formData.email) {
+      setError("Email is required");
+      return;
+    }
+    if (!validateEmail(formData.email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    // Validate password
+    if (!formData.password) {
+      setError("Password is required");
+      return;
+    }
+    if (!validatePassword(formData.password)) {
+      setError("Password must be at least 6 characters long");
+      return;
+    }
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+      setError("Passwords do not match");
       return;
     }
-  };
 
-  // Time to do the nav stuff
-  const navigate = useNavigate();
-
-  const handleMenu = () => {
-    // TODO:
-
-    if (formData.confirmPassword !== formData.password) {
-      setError("Passwords do not match!");
+    // Validate pin
+    if (!formData.pin) {
+      setError("PIN is required");
       return;
-    } else if (formData.confirmPin !== formData.pin) {
-      setError("Pins do not match!");
-      return;
-    } else if (formData.pin.length !== 4) {
-      setError("Pin must be  4 characters long!");
-      return;
-    } else if (formData.email === "") {
-      setError("Email cannot be empty!");
-      return;
-    } else if (formData.pin === "") {
-      setError("Pin cannot be empty!");
-      return;
-    } else if (formData.password === "") {
-      setError("Password cannot be empty!");
-      return;
-    } else if (formData.email === "") {
-      setError("Email cannot be empty!");
-      return;
-    } else {
-      navigate("/menu");
     }
-  };
+    if (formData.pin.length !== 4) {
+      setError("PIN must be exactly 4 digits");
+      return;
+    }
+    if (!/^\d+$/.test(formData.pin)) {
+      setError("PIN must contain only numbers");
+      return;
+    }
+    if (formData.pin !== formData.confirmPin) {
+      setError("PINs do not match");
+      return;
+    }
 
-  const [error, setError] = useState("None");
+    // If all validations pass, navigate to parent profile init
+    navigate("/parentprofileinit");
+  };
 
   return (
     <Grid
@@ -80,75 +119,116 @@ const Create = () => {
         }}
       >
         <Typography variant="h5" mb={2}>
-          Create Account
+          Create Parent Account
         </Typography>
 
-        <Typography
-          variant="body2"
-          color="error"
-          sx={{
-            mt: -1,
-            color: error === "None" ? "white" : ColorPick.getColor(),
-          }}
-        >
-          {error}
-        </Typography>
+        {error && (
+          <Typography
+            variant="body2"
+            sx={{
+              color: ColorPick.getErrorColor(),
+              mb: 2,
+              fontWeight: "bold",
+            }}
+          >
+            {error}
+          </Typography>
+        )}
 
         <TextField
           label="Email"
           name="email"
+          type="email"
           fullWidth
           margin="normal"
           value={formData.email}
           onChange={handleChange}
+          error={error.includes("email")}
         />
 
         <TextField
           label="Password"
           name="password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           fullWidth
           margin="normal"
           value={formData.password}
           onChange={handleChange}
+          error={error.includes("Password")}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         <TextField
           label="Confirm Password"
           name="confirmPassword"
-          type="password"
+          type={showConfirmPassword ? "text" : "password"}
           fullWidth
           margin="normal"
           value={formData.confirmPassword}
           onChange={handleChange}
+          error={error.includes("Passwords")}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowConfirmPassword}
+                  edge="end"
+                >
+                  {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         <TextField
-          label="Pin"
+          label="PIN (4 digits)"
           name="pin"
           type="password"
           fullWidth
           margin="normal"
           value={formData.pin}
           onChange={handleChange}
+          inputProps={{ maxLength: 4 }}
+          error={error.includes("PIN")}
         />
 
         <TextField
-          label="Confirm Pin"
+          label="Confirm PIN"
           name="confirmPin"
           type="password"
           fullWidth
           margin="normal"
           value={formData.confirmPin}
           onChange={handleChange}
+          inputProps={{ maxLength: 4 }}
+          error={error.includes("PINs")}
         />
 
         <Button
           type="submit"
           variant="contained"
           fullWidth
-          sx={{ mt: 2, backgroundColor: ColorPick.getSecondary() }}
-          onClick={handleMenu}
+          sx={{
+            mt: 2,
+            backgroundColor: ColorPick.getSecondary(),
+            "&:hover": {
+              backgroundColor: ColorPick.getSecondaryHOVER(),
+            },
+          }}
         >
           Create Account
         </Button>

@@ -42,9 +42,10 @@ const ScreenTime = () => {
             backgroundColor: ColorPick.getSecondaryHOVER(),
        
         },
+        marginTop:-10
         
         }}
-        >Confirm</Button>
+        onClick={()=>{alert("Screen time saved")}}>Confirm</Button>
 
     </Grid>
     </>

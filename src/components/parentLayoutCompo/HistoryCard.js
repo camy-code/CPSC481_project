@@ -44,11 +44,11 @@ const HistoryCard = ({day, shows}) => {
        <CardActions sx={{ width: "100%", justifyContent: "center" }}>
         <a href="https://youtu.be/xvFZjo5PgG0?si=0lCLW7dj0U3F0guq" target="_blank" rel="noopener noreferrer">
          {/* Button to view trailer */}
-         <Button sx={{ backgroundColor: ColorPick.getSecondary(), color: "black" }}>
+         <Button sx={{ backgroundColor: ColorPick.getSecondary(), color: "white", border:"3px solid black" ,"&:hover":{backgroundColor:ColorPick.getSecondaryHOVER()}  }}>
            View trailer
          </Button>
          </a>
-         <Button sx={{ backgroundColor: ColorPick.getThird(), color: "black" }} onClick={() => {setOpen(true)}}>
+         <Button sx={{ backgroundColor: ColorPick.getThird(), color: "white", border:"3px solid black", "&:hover":{backgroundColor:ColorPick.getThirdHOVER()}  }} onClick={() => {setOpen(true)}}>
            Restrict
          </Button>
          {/* <RestrictDialog open={false} onClose={() => {}}/> This is what I am moving later */}

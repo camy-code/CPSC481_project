@@ -3,6 +3,12 @@ import ColorPick from '../../tools/ColorPick';
 
 
 const RestrictDialog = ({ open, onClose }) => {
+
+    const handleNO = () => {
+        alert("Show restricted");
+        onClose();
+    }
+
     return <>
     <Dialog open={open} onClose={onClose}>
         <DialogContent>
@@ -10,9 +16,9 @@ const RestrictDialog = ({ open, onClose }) => {
         </DialogContent>
 
         <DialogActions sx={{ display: 'flex', justifyContent: 'center', width: '95%' }}>
-            <Button onClick={onClose} sx={{ padding: 1, backgroundColor:ColorPick.getSecondary(), color: "black" }}>
+            <Button onClick={handleNO} sx={{ padding: 1, backgroundColor:ColorPick.getSecondary(), color: "white", "&:hover":{backgroundColor:ColorPick.getSecondaryHOVER()} }}>
                 Yes</Button>
-            <Button onClick={onClose} sx={{ padding: 1, backgroundColor: ColorPick.getThird(), color: "black" }}>
+            <Button onClick={onClose} sx={{ padding: 1, backgroundColor: ColorPick.getThird(), color: "white", "&:hover":{backgroundColor:ColorPick.getThirdHOVER()}  }}>
                 No
             </Button>
         </DialogActions>

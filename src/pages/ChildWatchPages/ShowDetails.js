@@ -206,6 +206,7 @@ const ShowDetails = () => {
               transition: "transform 0.2s ease-in-out",
             },
           }}
+          onClick={() => {navigate("/kickout")}}
         >
           {currentProfile.name ? currentProfile.name[0] : "U"}
         </Avatar>
@@ -262,7 +263,7 @@ const ShowDetails = () => {
             startIcon={isFavorite ? <Star /> : <StarBorder />}
             sx={{
               bgcolor: isFavorite ? "gold" : ColorPick.getSecondary(),
-              color: "black",
+              color: "white",
               "&:hover": {
                 bgcolor: isFavorite ? "#FFD700" : ColorPick.getSecondaryHOVER(),
                 transform: "scale(1.1)",

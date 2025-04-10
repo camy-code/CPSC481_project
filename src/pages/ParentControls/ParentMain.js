@@ -154,7 +154,8 @@ const ParentMain = () => {
             width: 40,
             height: 40,
             "&:hover": {
-              opacity: 0.8,
+              transform: "scale(1.05)",
+              transition: "transform 0.2s ease-in-out",
             },
           }}
         >

@@ -22,6 +22,9 @@ import ParentFindShow from "../pages/ParentControls/FindShow_Parent.js";
 
 // I may have missed some of the neeed pages
 
+// Kickout
+import Kickout from "../pages/Kickout";
+
 // The following are pages for admin
 import Acount from "../pages/ParentControls/Acount";
 import History from "../pages/ParentControls/History";
@@ -114,6 +117,11 @@ const publicPages = [
     path: "/about",
     name: "about",
   },
+  {
+    compo: <Kickout />,
+    path: "/kickout",
+    name: "kickout",
+  }
 ];
 
 const authPages = [

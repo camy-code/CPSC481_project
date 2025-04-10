@@ -217,9 +217,11 @@ const ChildMain = () => {
             width: 40,
             height: 40,
             "&:hover": {
-              opacity: 0.8,
+              transform: "scale(1.05)",
+              transition: "transform 0.2s ease-in-out",
             },
           }}
+          onClick={() => {navigate("/kickout")}}
         >
           {currentProfile.name ? currentProfile.name[0] : "U"}
         </Avatar>
@@ -369,6 +371,7 @@ const ChildMain = () => {
           >
             of {totalTimeMinutes} minutes total
           </Typography>
+          
         </Box>
       </Box>
 

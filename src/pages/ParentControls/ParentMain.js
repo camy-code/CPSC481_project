@@ -257,23 +257,29 @@ const ParentMain = () => {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                p: 4,
+                p: 2,
                 bgcolor: "rgba(255, 255, 255, 0.8)",
                 borderRadius: 3,
                 boxShadow: 2,
                 textAlign: "center",
-                minHeight: 150,
+                height: 120,
                 width: "100%",
                 flexShrink: 0,
               }}
             >
               <StarBorder
-                sx={{ fontSize: 40, color: ColorPick.getSecondary(), mb: 1 }}
+                sx={{ fontSize: 30, color: ColorPick.getSecondary(), mb: 1 }}
               />
-              <Typography variant="h6" sx={{ color: "black", mb: 1 }}>
+              <Typography
+                variant="h6"
+                sx={{ color: "black", mb: 1, fontSize: "1rem" }}
+              >
                 No Favorites Yet
               </Typography>
-              <Typography variant="body2" sx={{ color: "black" }}>
+              <Typography
+                variant="body2"
+                sx={{ color: "black", fontSize: "0.8rem" }}
+              >
                 Click the star icon on any show to add it here
               </Typography>
             </Box>
@@ -297,7 +303,7 @@ const ParentMain = () => {
                   key={index}
                   tabIndex={-1}
                   onClick={() =>
-                    navigate(`/showdetails_parent`, {
+                    navigate(`/showdetails/${profileName}`, {
                       state: {
                         title: show.title,
                         image: show.image,

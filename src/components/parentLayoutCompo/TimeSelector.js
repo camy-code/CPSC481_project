@@ -48,7 +48,7 @@ const TimeSelector = () => {
     "April 20–26"
   ];
   
-  const [dateIndex, setDateIndex] = useState(1);
+  const [dateIndex, setDateIndex] = useState(2);
 
   const addDate = () => {
     if (dateIndex < dateRanges.length - 1) {
@@ -88,7 +88,7 @@ const TimeSelector = () => {
             border:"2px solid black"
           }}
           onClick={() => {
-            setDateIndex(1);
+            setDateIndex(2);
           }}
         >
           <Typography>Now</Typography>

@@ -11,9 +11,15 @@ const kidsProf = ConstantLib.getKidsProfile();
   // someone is selected. The day got long and I became more lazy in terms of code 
   // quality so sorry -_-.
 
-const ChildSelect = () => {
+const ChildSelect = ({onChange}) => {
   
   const [childIndex ,setChildIndex] = useState(1);
+
+  // make a use state that updates the change
+  const handleChange = (index) => {
+    setChildIndex(index);
+    onChange(index);
+  }
 
   return <>
   <Grid container direction={"row"} marginTop={5} spacing={4}>
@@ -23,7 +29,7 @@ const ChildSelect = () => {
    <Box>
    <Grid container direction={"column"} alignItems={"center"} spacing={1} >
    <Box
-   onClick={() => {setChildIndex(index)}}
+   onClick={() => {handleChange(index)}}
      sx={{
        width: 150,         // Set the width of the box
        height: 150,        // Set the height of the box

@@ -17,7 +17,9 @@ const sampleDesc = "Lorem ipsum odor amet, consectetuer adipiscing elit. Vehicul
 // Profiles (This is copied from profile views)
 const kidsProf = ConstantLib.getKidsProfile(); 
 const showONE = ConstantLib.getShows()[0];
-const showTWO = ConstantLib.getShows()[0];
+const showTWO = ConstantLib.getShows()[1];
+const showTHREE = ConstantLib.getShows()[2];
+const showFOUR = ConstantLib.getShows()[3];
 
 const smallShowArr = [showONE,showTWO]
 const showALL = ConstantLib.getShows();
@@ -25,7 +27,8 @@ const showALL = ConstantLib.getShows();
 
 
 const History = () => {
-  const [select, setSelect] = useState(true)
+  const [showIndex, setShowIndex] = useState(0);
+  const [childIndex, setChildIndex] = useState(0);
 
     return <>
 
@@ -37,18 +40,22 @@ const History = () => {
   </Box>
 
   {/* Gotta do a date and time selector */}
-  <TimeSelector/>
+  <TimeSelector onChange={(time)=>setShowIndex(time)}/>
 
-  <ChildSelect/>
+  <ChildSelect onChange={(child)=> setChildIndex(child)}/>
 
 
+  {
+  //conditional render the shows
+  (childIndex === 0) ? (showIndex===2) ? <HistoryCard day={"Wendesay"} shows={[showFOUR]}/>:<HistoryCard day={"Thursday"} shows={[showTHREE]}/>: null
+}
 
-  <HistoryCard day={"Monday"} shows={smallShowArr}/>
-  <HistoryCard day={"Wednesday"} shows={smallShowArr}/>
-  <HistoryCard day={"Friday"} shows={smallShowArr}/>
-  <HistoryCard day={"Saturday"} shows={smallShowArr}/>
-  <HistoryCard day={"Sunday"} shows={smallShowArr}/>
-
+{
+  //conditional render the shows
+  (childIndex === 1) ? (showIndex===2) ? <HistoryCard day={"Monday"} shows={smallShowArr}/>:<HistoryCard day={"Tuesday"} shows={[showONE]}/>: null
+}
+<h1> {childIndex}    {showIndex}</h1>
+  
 
 
 </Grid>

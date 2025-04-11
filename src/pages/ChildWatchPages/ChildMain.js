@@ -24,6 +24,7 @@ import React, { useState, useEffect } from "react";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import Grid2 from "@mui/material/Grid2";
 import { getFavorites, isShowRestricted } from "../../tools/StorageUtils";
+import { getProfileLockStatus } from "../../pages/ParentControls/ScreenTime";
 
 const ChildMain = () => {
   const navigate = useNavigate();
@@ -32,10 +33,18 @@ const ChildMain = () => {
   const [favoriteShows, setFavoriteShows] = useState([]);
 
   useEffect(() => {
+    // Check if profile is locked, redirect to kickout page if so
+    if (profileName) {
+      const isLocked = getProfileLockStatus(profileName);
+      if (isLocked) {
+        navigate("/kickout?reason=locked");
+      }
+    }
+
     // Load favorites from storage
     const favorites = getFavorites(profileName);
     setFavoriteShows(favorites);
-  }, [profileName]);
+  }, [profileName, navigate]);
 
   // console.log("Profile Name from URL:", profileName);
   // console.log("Available Profiles:", kidsProfiles);

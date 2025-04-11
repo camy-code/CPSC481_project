@@ -1,3 +1,19 @@
+## How to run
+To run our program please clone the repo.
+```git clone https://github.com/camy-code/CPSC481_project```
+
+Then inside the folder "CPSC481_project" run the following command
+```npm install @mui/system @mui/material @mui/styled-engine-sc```
+
+Sometimes, you may need to do the following command as well in "CPSC481_project" folder:
+```npm install react-router-dom```
+
+To run the code, tyle ```npm start``` inside of "CPSC481_project" folder.
+
+I got these commands from cloning the repo on my PC then doing the proper imports that I did 3 months ago when initially setting things up.
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

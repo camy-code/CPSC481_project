@@ -54,7 +54,7 @@ const History = () => {
   //conditional render the shows
   (childIndex === 1) ? (showIndex===2) ? <HistoryCard day={"Monday"} shows={smallShowArr}/>:<HistoryCard day={"Tuesday"} shows={[showONE]}/>: null
 }
-<h1> {childIndex}    {showIndex}</h1>
+
   
 
 

@@ -61,7 +61,7 @@ const Header = () => {
             </Box>
 
             {/* Right Side: Navigation Buttons */}
-            <Box>
+            {/* <Box>
               <IconButton
                 edge="start"
                 color="inherit"
@@ -70,7 +70,7 @@ const Header = () => {
               >
                 <MenuIcon />
               </IconButton>
-            </Box>
+            </Box> */}
           </Toolbar>
         </AppBar>
       </Box>

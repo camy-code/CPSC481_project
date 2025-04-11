@@ -368,7 +368,7 @@ const ShowDetails = () => {
               startIcon={isFavorite ? <Star /> : <StarBorder />}
               sx={{
                 bgcolor: isFavorite ? "gold" : ColorPick.getSecondary(),
-                color: "black",
+                color: "white",
                 "&:hover": {
                   bgcolor: isFavorite
                     ? "#FFD700"
@@ -390,7 +390,7 @@ const ShowDetails = () => {
               startIcon={<Block />}
               sx={{
                 bgcolor: ColorPick.getSecondary(),
-                color: "black",
+                color: "white",
                 "&:hover": {
                   bgcolor: ColorPick.getSecondaryHOVER(),
                   transform: "scale(1.1)",

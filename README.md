@@ -1,18 +1,71 @@
 ## How to run
+
 To run our program please clone the repo.
-```git clone https://github.com/camy-code/CPSC481_project```
+`git clone https://github.com/camy-code/CPSC481_project`
 
 Then inside the folder "CPSC481_project" run the following command
-```npm install @mui/system @mui/material @mui/styled-engine-sc```
+`npm install @mui/system @mui/material @mui/styled-engine-sc`
 
 Sometimes, you may need to do the following command as well in "CPSC481_project" folder:
-```npm install react-router-dom```
+`npm install react-router-dom`
 
-To run the code, tyle ```npm start``` inside of "CPSC481_project" folder.
+To run the code, tyle `npm start` inside of "CPSC481_project" folder.
 
 I got these commands from cloning the repo on my PC then doing the proper imports that I did 3 months ago when initially setting things up.
 
+## Login Information & Application Guide
 
+### Test Credentials
+
+To log in to the application, use:
+
+- Email: test@email.com
+- Password: password
+
+### Account Creation
+
+When creating a new account:
+
+- Email: Any valid email format (e.g., parent@example.com)
+- Password: Minimum 6 characters
+- PIN: Exactly 4 digits (This is used for parent access)
+
+### Main Interactions
+
+#### Authentication
+
+- **Login/Create Account**: Initial screen with two large circular buttons
+- **Password Visibility**: Toggle buttons to show/hide passwords and PINs
+- **Back Buttons**: Present throughout the app to navigate to previous screens
+
+#### Parent Controls
+
+- **Add Child Profile**: Create new child profiles with custom names and pictures
+- **Edit Profile**: Modify existing child profiles
+- **Remove Profile**: Delete child profiles
+- **Restrict Content**: Manage show restrictions for each profile
+- **Watch History**: View and manage viewing history
+- **Screen Time**: Set and adjust screen time limits
+
+#### Child Interface
+
+- **Profile Selection**: Choose between different child profiles
+- **Show Categories**: Browse content by category (Animals, Fantasy, etc.)
+- **Show Details**: View episode information and descriptions
+- **Watch Controls**: Play, pause, and navigate episodes
+- **Back to Menu**: Return to main menu from any screen
+
+### Navigation Tips
+
+- Use the back buttons to return to previous screens
+- The KiddoFlix logo acts as a home button
+- Category icons help identify different content sections
+
+Note: This is a design concept and does not require actual authentication. Any valid input format will work for demonstration purposes, but inputs must meet the following requirements:
+
+- Email must be in valid email format (e.g., user@domain.com)
+- Password must be at least 6 characters long
+- PIN must be exactly 4 digits
 
 # Getting Started with Create React App
 
@@ -84,57 +137,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-## Login Information & Application Guide
-
-### Test Credentials
-
-To log in to the application, use:
-
-- Email: test@email.com
-- Password: password
-
-### Account Creation
-
-When creating a new account:
-
-- Email: Any valid email format (e.g., parent@example.com)
-- Password: Minimum 6 characters
-- PIN: Exactly 4 digits (This is used for parent access)
-
-### Main Interactions
-
-#### Authentication
-
-- **Login/Create Account**: Initial screen with two large circular buttons
-- **Password Visibility**: Toggle buttons to show/hide passwords and PINs
-- **Back Buttons**: Present throughout the app to navigate to previous screens
-
-#### Parent Controls
-
-- **Add Child Profile**: Create new child profiles with custom names and pictures
-- **Edit Profile**: Modify existing child profiles
-- **Remove Profile**: Delete child profiles
-- **Restrict Content**: Manage show restrictions for each profile
-- **Watch History**: View and manage viewing history
-- **Screen Time**: Set and adjust screen time limits
-
-#### Child Interface
-
-- **Profile Selection**: Choose between different child profiles
-- **Show Categories**: Browse content by category (Animals, Fantasy, etc.)
-- **Show Details**: View episode information and descriptions
-- **Watch Controls**: Play, pause, and navigate episodes
-- **Back to Menu**: Return to main menu from any screen
-
-### Navigation Tips
-
-- Use the back buttons to return to previous screens
-- The KiddoFlix logo acts as a home button
-- Category icons help identify different content sections
-
-Note: This is a design concept and does not require actual authentication. Any valid input format will work for demonstration purposes, but inputs must meet the following requirements:
-
-- Email must be in valid email format (e.g., user@domain.com)
-- Password must be at least 6 characters long
-- PIN must be exactly 4 digits

@@ -36,6 +36,16 @@ const ParentProfileInit = () => {
       setError("Please enter a profile name");
       return;
     }
+
+    // Save profile information to localStorage
+    const profileData = {
+      name: profileName,
+      imageURL:
+        profilePicture ||
+        "https://cdn-icons-png.freepik.com/512/9307/9307950.png", // Default image if none selected
+    };
+    localStorage.setItem("parentProfile", JSON.stringify(profileData));
+
     // Check if we're coming from account creation
     const fromCreate = new URLSearchParams(location.search).get("fromCreate");
     navigate(fromCreate ? "/menu?newAccount=true" : "/menu");

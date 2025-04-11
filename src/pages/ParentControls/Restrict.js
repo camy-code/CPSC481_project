@@ -20,7 +20,7 @@ const sampleDesc = "Lorem ipsum odor amet, consectetuer adipiscing elit. Vehicul
 // Profiles (This is copied from profile views)
 const kidsProf = ConstantLib.getKidsProfile(); 
 const showONE = ConstantLib.getShows()[0];
-const showTWO = ConstantLib.getShows()[0];
+const showTWO = ConstantLib.getShows()[1];
 
 const smallShowArr = [showONE,showTWO]
 const showALL = ConstantLib.getShows();
@@ -34,10 +34,18 @@ const Restrict = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [childIndex, setChildIndex] = useState(0);
+  const [isPressed, setIsPressed] = useState(false);
+
+  const handleChange = (index) => {
+    setChildIndex(index);
+   setIsPressed(false);
+    }
 
     return <>
 
-  
+   
+
   <Grid container direction={"column"} sx={{justifyContent:"center", alignItems:"center", marginBottom:3}}>
 
   <Box sx={{marginTop:2}}>
@@ -61,6 +69,10 @@ const Restrict = () => {
             border:"2px solid black"
           }}
          disableRipple
+         onClick={() => {
+            setIsPressed(true);
+          }
+          }
         >
           <Typography>Search</Typography>
         </Button>
@@ -89,14 +101,17 @@ const Restrict = () => {
           <RestrictViewDialog open={open} onClose={handleClose} name={"Selected child"} />
  
   </Grid>
-  <ChildSelect/>
+  <ChildSelect onChange={(t)=>{handleChange(t)}}/>
 
   
 
 
 {/* This is where we are start in day */}
-  <HistoryCard day={"Results"} shows={[showONE]}/>
+{(!isPressed) ? null : 
+(childIndex === 0) ? <HistoryCard day={"Results"} shows={smallShowArr}/>:<HistoryCard day={"Results"} shows={[showTWO]}/>
 
+}
+ 
 
 
 

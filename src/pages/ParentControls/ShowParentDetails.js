@@ -527,7 +527,11 @@ const ShowDetails = () => {
           severity="success"
           sx={{ width: "100%" }}
         >
-          Successfully restricted {title} for {restrictedProfiles.join(", ")}
+          {restrictedProfiles.length === 0
+            ? `Successfully removed all restrictions for ${title}`
+            : restrictedProfiles.length === kidsProfiles.length
+            ? `Successfully restricted ${title} for all children`
+            : `Successfully updated restrictions for ${title}`}
         </Alert>
       </Snackbar>
 

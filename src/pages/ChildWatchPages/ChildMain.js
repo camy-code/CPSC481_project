@@ -28,6 +28,7 @@ import {
   isShowRestricted,
   getTimeLimit,
 } from "../../tools/StorageUtils";
+import { getProfileLockStatus } from "../../pages/ParentControls/ScreenTime";
 
 const ChildMain = () => {
   const navigate = useNavigate();
@@ -38,6 +39,14 @@ const ChildMain = () => {
   const [timeUsed, setTimeUsed] = useState(0);
 
   useEffect(() => {
+    // Check if profile is locked, redirect to kickout page if so
+    if (profileName) {
+      const isLocked = getProfileLockStatus(profileName);
+      if (isLocked) {
+        navigate("/kickout?reason=locked");
+      }
+    }
+
     // Load favorites from storage
     const favorites = getFavorites(profileName);
     // Filter out restricted shows from favorites

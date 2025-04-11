@@ -93,6 +93,8 @@ const Account = () => {
             marginTop={4}
             spacing={2}
           >
+            <Typography variant="h4">Under Development</Typography>
+
             <Typography variant="h4">Password</Typography>
             <div>
               {genButton(
@@ -163,8 +165,8 @@ const Account = () => {
             marginTop={4}
             spacing={2}
           >
+            
             <Typography variant="h4">Account</Typography>
-
             <div>
               {genButton(
                 "Delete",
@@ -178,8 +180,13 @@ const Account = () => {
               />
             </div>
           </Grid>
+          
         </Grid>
+
+        
       </Box>
+
+      
     </>
   );
 };

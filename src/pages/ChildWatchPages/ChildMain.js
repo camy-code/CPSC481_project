@@ -13,20 +13,29 @@ import {
   ChevronRight,
   ChevronLeft,
   AccessTime,
+  StarBorder,
 } from "@mui/icons-material";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import ColorPick from "../../tools/ColorPick";
 import ExitButton from "../../components/menuComponents/ExitButton";
 import ConstantLib from "../../tools/ConstantLib";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import Grid2 from "@mui/material/Grid2";
+import { getFavorites, isShowRestricted } from "../../tools/StorageUtils";
 
 const ChildMain = () => {
   const navigate = useNavigate();
   const { profileName } = useParams();
   const kidsProfiles = ConstantLib.getKidsProfile();
+  const [favoriteShows, setFavoriteShows] = useState([]);
+
+  useEffect(() => {
+    // Load favorites from storage
+    const favorites = getFavorites(profileName);
+    setFavoriteShows(favorites);
+  }, [profileName]);
 
   // console.log("Profile Name from URL:", profileName);
   // console.log("Available Profiles:", kidsProfiles);
@@ -145,13 +154,27 @@ const ChildMain = () => {
     { title: "Max and Ruby", image: "/images/max_and_ruby.jpg" },
   ];
 
-  const favoriteShows = [
-    { title: "Danny Phantom", image: "/images/DannyPhantom.jpg" },
-    { title: "Backyardigans", image: "/images/backyardigans.jpg" },
-    { title: "Phineas and Ferb", image: "/images/phineas_and_ferb.png" },
-    { title: "Hannah Montana", image: "/images/hannah-montana.jpg" },
-    { title: "Drake & Josh", image: "/images/drake_Josh.jpg" },
-  ];
+  // Filter out restricted shows from both recent and favorites
+  const filteredRecentShows = recentShows.filter(
+    (show) => !isShowRestricted(profileName, show.title)
+  );
+
+  // Update favorites to filter out restricted shows
+  useEffect(() => {
+    const loadFavorites = () => {
+      const favorites = getFavorites(profileName);
+      // Filter out restricted shows from favorites
+      const filteredFavorites = favorites.filter(
+        (show) => !isShowRestricted(profileName, show.title)
+      );
+      setFavoriteShows(filteredFavorites);
+    };
+
+    loadFavorites();
+  }, [profileName]);
+
+  // Get all available shows from ConstantLib
+  const allShows = ConstantLib.getShows();
 
   return (
     <Box
@@ -219,6 +242,9 @@ const ChildMain = () => {
             "&:hover": {
               opacity: 0.8,
             },
+          }}
+          onClick={() => {
+            navigate("/kickout");
           }}
         >
           {currentProfile.name ? currentProfile.name[0] : "U"}
@@ -395,7 +421,7 @@ const ChildMain = () => {
               scrollBehavior: "smooth",
             }}
           >
-            {recentShows.map((show, index) => (
+            {filteredRecentShows.map((show, index) => (
               <Button
                 key={index}
                 tabIndex={-1}
@@ -438,51 +464,86 @@ const ChildMain = () => {
           Favorites
         </Typography>
         <Box sx={{ position: "relative" }}>
-          <Box
-            id="favorite-shows"
-            sx={{
-              overflowX: "auto",
-              whiteSpace: "nowrap",
-              pb: 2,
-              pt: 1,
-              px: 1,
-              mx: -1,
-              "&::-webkit-scrollbar": { display: "none" },
-              scrollbarWidth: "none",
-              scrollBehavior: "smooth",
-            }}
-          >
-            {favoriteShows.map((show, index) => (
-              <Button
-                key={index}
-                tabIndex={-1}
-                onClick={() =>
-                  navigate(`/showdetails/${profileName}`, {
-                    state: {
-                      title: show.title,
-                      image: show.image,
-                    },
-                  })
-                }
-                sx={{
-                  backgroundImage: `url(${show.image})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  width: 250,
-                  height: 150,
-                  marginRight: 3,
-                  borderRadius: 3,
-                  boxShadow: 2,
-                  flexShrink: 0,
-                  "&:hover": {
-                    opacity: 0.9,
-                    transform: "scale(1.1)",
-                    transition: "transform 0.2s ease-in-out",
-                  },
-                }}
+          {favoriteShows.length === 0 ? (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                p: 2,
+                bgcolor: "rgba(255, 255, 255, 0.8)",
+                borderRadius: 3,
+                boxShadow: 2,
+                textAlign: "center",
+                height: 120,
+                width: "100%",
+                flexShrink: 0,
+              }}
+            >
+              <StarBorder
+                sx={{ fontSize: 30, color: ColorPick.getSecondary(), mb: 1 }}
               />
-            ))}
-          </Box>
+              <Typography
+                variant="h6"
+                sx={{ color: "black", mb: 1, fontSize: "1rem" }}
+              >
+                No Favorites Yet
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ color: "black", fontSize: "0.8rem" }}
+              >
+                Click the star icon on any show to add it here
+              </Typography>
+            </Box>
+          ) : (
+            <Box
+              id="favorite-shows"
+              sx={{
+                overflowX: "auto",
+                whiteSpace: "nowrap",
+                pb: 2,
+                pt: 1,
+                px: 1,
+                mx: -1,
+                "&::-webkit-scrollbar": { display: "none" },
+                scrollbarWidth: "none",
+                scrollBehavior: "smooth",
+              }}
+            >
+              {favoriteShows.map((show, index) => (
+                <Button
+                  key={index}
+                  tabIndex={-1}
+                  onClick={() =>
+                    navigate(`/showdetails/${profileName}`, {
+                      state: {
+                        title: show.title,
+                        image: show.image,
+                      },
+                    })
+                  }
+                  sx={{
+                    backgroundImage: `url(${show.image})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    width: 250,
+                    height: 150,
+                    marginRight: 3,
+                    borderRadius: 3,
+                    boxShadow: 2,
+                    flexShrink: 0,
+                    "&:hover": {
+                      opacity: 0.9,
+                      transform: "scale(1.1)",
+                      transition: "transform 0.2s ease-in-out",
+                    },
+                  }}
+                />
+              ))}
+            </Box>
+          )}
         </Box>
       </Box>
 

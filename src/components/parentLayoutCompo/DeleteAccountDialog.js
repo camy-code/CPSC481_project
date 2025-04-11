@@ -8,6 +8,8 @@ import {
   TextField,
   Card,
   Typography,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import ColorPick from "../../tools/ColorPick";
 import Box from "@mui/material";
@@ -15,11 +17,14 @@ import { useNavigate } from "react-router-dom";
 
 const DeleteAccountDialog = ({ open, onClose }) => {
   const navigate = useNavigate();
+  const [success, setSuccess] = useState(false);
+
   const handleSubmit = () => {
-    alert("Account deleted");
-    onClose();
-    navigate("/"); // Going back to the main page
-    // to show that we are deleted an account
+    setSuccess(true);
+    setTimeout(() => {
+      onClose();
+      navigate("/");
+    }, 1000);
   };
 
   return (
@@ -41,7 +46,7 @@ const DeleteAccountDialog = ({ open, onClose }) => {
               "&:hover": {
                 backgroundColor: ColorPick.getSecondaryHOVER(),
               },
-            border: "3px solid black",
+              border: "3px solid black",
             }}
           >
             Yes
@@ -52,7 +57,6 @@ const DeleteAccountDialog = ({ open, onClose }) => {
               padding: 1,
               backgroundColor: ColorPick.getThird(),
               color: "white",
-
               "&:hover": {
                 backgroundColor: ColorPick.getThirdHOVER(),
               },
@@ -63,6 +67,21 @@ const DeleteAccountDialog = ({ open, onClose }) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={success}
+        autoHideDuration={3000}
+        onClose={() => setSuccess(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSuccess(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Account deleted successfully!
+        </Alert>
+      </Snackbar>
     </>
   );
 };

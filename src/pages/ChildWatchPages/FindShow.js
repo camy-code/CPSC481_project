@@ -22,6 +22,7 @@ import ColorPick from "../../tools/ColorPick";
 import ConstantLib from "../../tools/ConstantLib";
 import Grid2 from "@mui/material/Grid2";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import { isShowRestricted } from "../../tools/StorageUtils";
 
 const FindShow = () => {
   const navigate = useNavigate();
@@ -180,27 +181,12 @@ const FindShow = () => {
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = (query) => {
-    if (!query) {
-      setSearchResults([]);
-      setSuggestions([]);
-      return;
-    }
-
-    const lowerCaseQuery = query.toLowerCase();
-    const matchedShows = allShows.filter((show) =>
-      show.title.toLowerCase().includes(lowerCaseQuery)
+    const filteredResults = allShows.filter(
+      (show) =>
+        show.title.toLowerCase().includes(query.toLowerCase()) &&
+        !isShowRestricted(profileName, show.title)
     );
-
-    if (matchedShows.length === 0 && query !== "") {
-      const suggestedShows = allShows.filter((show) =>
-        show.title.toLowerCase().startsWith(lowerCaseQuery.charAt(0))
-      );
-      setSuggestions(suggestedShows);
-    } else {
-      setSuggestions([]);
-    }
-
-    setSearchResults(matchedShows);
+    setSearchResults(filteredResults);
   };
 
   const handleSearchChange = (e) => {

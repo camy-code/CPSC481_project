@@ -14,6 +14,8 @@ import {
   Checkbox,
   Snackbar,
   Alert,
+  ListItemButton,
+  ListItemIcon,
 } from "@mui/material";
 import {
   ArrowBack,
@@ -23,11 +25,22 @@ import {
   Block,
 } from "@mui/icons-material";
 import { useNavigate, useLocation, useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ColorPick from "../../tools/ColorPick";
 import ConstantLib from "../../tools/ConstantLib";
 import Grid2 from "@mui/material/Grid2";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import {
+  getFavorites,
+  saveFavorite,
+  removeFavorite,
+  saveRestriction,
+  removeRestriction,
+  isShowRestricted,
+} from "../../tools/StorageUtils";
+import ChildSelect from "../../components/parentLayoutCompo/ChildSelect";
+import { Card, CardContent, CardMedia, CardActions } from "@mui/material";
+import TimeSlider from "../../components/parentLayoutCompo/TimeSlider";
 
 const SELECTED_EPISODE_COLOR = "#6A5ACD";
 
@@ -139,6 +152,37 @@ const ShowDetails = () => {
   const [selectedProfiles, setSelectedProfiles] = useState([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [restrictedProfiles, setRestrictedProfiles] = useState([]);
+  const [success, setSuccess] = useState(false);
+  const [isRestricted, setIsRestricted] = useState(false);
+
+  useEffect(() => {
+    // Check if show is already favorited
+    const favorites = getFavorites(profileName);
+    setIsFavorite(favorites.some((fav) => fav.title === title));
+  }, [profileName, title]);
+
+  useEffect(() => {
+    // Check if show is already restricted for any profile
+    const isRestrictedForAnyProfile = kidsProfiles.some((profile) =>
+      isShowRestricted(profile.name, title)
+    );
+    setIsRestricted(isRestrictedForAnyProfile);
+  }, [title]);
+
+  // Update useEffect to check restrictions for each profile
+  useEffect(() => {
+    const checkRestrictions = () => {
+      const restrictedProfiles = [];
+      kidsProfiles.forEach((profile) => {
+        if (isShowRestricted(profile.name, title)) {
+          restrictedProfiles.push(profile.name);
+        }
+      });
+      setRestrictedProfiles(restrictedProfiles);
+    };
+
+    checkRestrictions();
+  }, [kidsProfiles, title]);
 
   // Function to handle navigation to VideoPlay
   const handleEpisodeClick = (episode) => {
@@ -153,10 +197,14 @@ const ShowDetails = () => {
   };
 
   const handleFavoriteClick = () => {
-    console.log("Favorite button clicked. Current state:", isFavorite);
+    if (isFavorite) {
+      removeFavorite(profileName, title);
+      setSuccess(true);
+    } else {
+      saveFavorite(profileName, { title, image });
+      setSuccess(true);
+    }
     setIsFavorite(!isFavorite);
-    console.log("New state:", !isFavorite);
-    // Here you would typically also update this in your backend/storage
   };
 
   const handleRestrictClick = () => {
@@ -164,11 +212,20 @@ const ShowDetails = () => {
   };
 
   const handleProfileToggle = (profileName) => {
-    setSelectedProfiles((prev) =>
-      prev.includes(profileName)
-        ? prev.filter((name) => name !== profileName)
-        : [...prev, profileName]
-    );
+    setRestrictedProfiles((prev) => {
+      const newProfiles = prev.includes(profileName)
+        ? prev.filter((p) => p !== profileName)
+        : [...prev, profileName];
+
+      // Update restrictions in storage
+      if (newProfiles.includes(profileName)) {
+        saveRestriction(profileName, title);
+      } else {
+        removeRestriction(profileName, title);
+      }
+
+      return newProfiles;
+    });
   };
 
   const handleRestrictConfirm = () => {
@@ -320,6 +377,7 @@ const ShowDetails = () => {
                   transition: "transform 0.2s ease-in-out",
                 },
                 transition: "background-color 0.3s",
+                alignSelf: "flex-start",
               }}
             >
               {isFavorite ? "Favorited" : "Add to Favorites"}
@@ -366,61 +424,71 @@ const ShowDetails = () => {
       <Dialog
         open={isRestrictDialogOpen}
         onClose={() => setIsRestrictDialogOpen(false)}
-        maxWidth="sm"
-        fullWidth
+        PaperProps={{
+          sx: {
+            bgcolor: "white",
+            color: "black",
+            borderRadius: 3,
+            p: 2,
+            minWidth: "300px",
+          },
+        }}
       >
-        <DialogTitle sx={{ bgcolor: ColorPick.getPrimary(), color: "black" }}>
-          Restrict {title}
+        <DialogTitle sx={{ color: "black", fontWeight: "bold" }}>
+          Select Profiles to Restrict
         </DialogTitle>
-        <DialogContent sx={{ bgcolor: ColorPick.getPrimary() }}>
-          <Typography sx={{ color: "black", mb: 2 }}>
-            Select the profiles to restrict this show for:
-          </Typography>
+        <DialogContent>
           <List>
             {kidsProfiles.map((profile) => (
-              <ListItem
-                key={profile.name}
-                button
-                onClick={() => handleProfileToggle(profile.name)}
-                sx={{
-                  bgcolor: "white",
-                  mb: 1,
-                  borderRadius: 1,
-                  "&:hover": {
-                    bgcolor: ColorPick.getSecondaryHOVER(),
-                  },
-                }}
-              >
-                <Checkbox
-                  checked={selectedProfiles.includes(profile.name)}
+              <ListItem key={profile.name} disablePadding>
+                <ListItemButton
+                  onClick={() => handleProfileToggle(profile.name)}
                   sx={{
-                    color: ColorPick.getSecondary(),
-                    "&.Mui-checked": {
-                      color: ColorPick.getSecondary(),
+                    borderRadius: 2,
+                    "&:hover": {
+                      bgcolor: ColorPick.getSecondaryHOVER(),
                     },
                   }}
-                />
-                <Avatar
-                  src={profile.imageURL}
-                  sx={{
-                    width: 32,
-                    height: 32,
-                    mr: 2,
-                    bgcolor: ColorPick.getSecondary(),
-                  }}
                 >
-                  {profile.name ? profile.name[0] : "U"}
-                </Avatar>
-                <ListItemText primary={profile.name} sx={{ color: "black" }} />
+                  <ListItemIcon>
+                    <Checkbox
+                      edge="start"
+                      checked={restrictedProfiles.includes(profile.name)}
+                      tabIndex={-1}
+                      disableRipple
+                      sx={{
+                        color: ColorPick.getSecondary(),
+                        "&.Mui-checked": {
+                          color: ColorPick.getSecondary(),
+                        },
+                      }}
+                    />
+                  </ListItemIcon>
+                  <Avatar
+                    src={profile.imageURL}
+                    sx={{
+                      width: 32,
+                      height: 32,
+                      mr: 2,
+                      bgcolor: ColorPick.getSecondary(),
+                    }}
+                  >
+                    {profile.name ? profile.name[0] : "U"}
+                  </Avatar>
+                  <ListItemText
+                    primary={profile.name}
+                    sx={{ color: "black" }}
+                  />
+                </ListItemButton>
               </ListItem>
             ))}
           </List>
         </DialogContent>
-        <DialogActions sx={{ bgcolor: ColorPick.getPrimary() }}>
+        <DialogActions>
           <Button
             onClick={() => setIsRestrictDialogOpen(false)}
             sx={{
-              color: "black",
+              color: ColorPick.getSecondary(),
               "&:hover": {
                 bgcolor: ColorPick.getSecondaryHOVER(),
               },
@@ -429,11 +497,14 @@ const ShowDetails = () => {
             Cancel
           </Button>
           <Button
-            onClick={handleRestrictConfirm}
+            onClick={() => {
+              setIsRestrictDialogOpen(false);
+              setShowSuccessMessage(true);
+            }}
             variant="contained"
             sx={{
               bgcolor: ColorPick.getSecondary(),
-              color: "black",
+              color: "white",
               "&:hover": {
                 bgcolor: ColorPick.getSecondaryHOVER(),
               },
@@ -457,6 +528,21 @@ const ShowDetails = () => {
           sx={{ width: "100%" }}
         >
           Successfully restricted {title} for {restrictedProfiles.join(", ")}
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={success}
+        autoHideDuration={3000}
+        onClose={() => setSuccess(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSuccess(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          {isFavorite ? "Added to favorites!" : "Removed from favorites!"}
         </Alert>
       </Snackbar>
 

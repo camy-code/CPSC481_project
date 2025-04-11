@@ -1,11 +1,17 @@
 import { Box, Typography, Button, Avatar, IconButton } from "@mui/material";
 import { ArrowBack, Star, StarBorder, ChevronLeft } from "@mui/icons-material";
 import { useNavigate, useLocation, useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ColorPick from "../../tools/ColorPick";
 import ConstantLib from "../../tools/ConstantLib";
 import Grid2 from "@mui/material/Grid2";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import {
+  getFavorites,
+  saveFavorite,
+  removeFavorite,
+} from "../../tools/StorageUtils";
+import { Snackbar, Alert } from "@mui/material";
 
 const SELECTED_EPISODE_COLOR = "#6A5ACD";
 
@@ -113,6 +119,13 @@ const ShowDetails = () => {
 
   const [selectedEpisode, setSelectedEpisode] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    // Check if show is already favorited
+    const favorites = getFavorites(profileName);
+    setIsFavorite(favorites.some((fav) => fav.title === title));
+  }, [profileName, title]);
 
   // Function to handle navigation to VideoPlay
   const handleEpisodeClick = (episode) => {
@@ -127,210 +140,247 @@ const ShowDetails = () => {
   };
 
   const handleFavoriteClick = () => {
-    console.log("Favorite button clicked. Current state:", isFavorite);
+    if (isFavorite) {
+      removeFavorite(profileName, title);
+      setSuccess(true);
+    } else {
+      saveFavorite(profileName, { title, image });
+      setSuccess(true);
+    }
     setIsFavorite(!isFavorite);
-    console.log("New state:", !isFavorite);
-    // Here you would typically also update this in your backend/storage
   };
 
   return (
-    <Box
-      sx={{
-        padding: 3,
-        bgcolor: ColorPick.getPrimary(),
-        color: "white",
-        minHeight: "100vh",
-      }}
-    >
-      {/* Header with Go Back Button and Title */}
+    <>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          mb: 2,
+          padding: 3,
+          bgcolor: ColorPick.getPrimary(),
+          color: "white",
+          minHeight: "100vh",
         }}
       >
-        <Button
-          onClick={() => navigate(-1)}
-          sx={{
-            backgroundColor: ColorPick.getSecondary(),
-            padding: 1,
-            paddingRight: 2,
-            textTransform: "none",
-            "&:hover": {
-              backgroundColor: ColorPick.getSecondaryHOVER(),
-              transform: "scale(1.1)",
-              transition: "transform 0.2s ease-in-out",
-            },
-            border: "3px solid black",
-          }}
-        >
-          <Grid2
-            container
-            direction={"row"}
-            spacing={1}
-            alignItems="center"
-            sx={{ color: "white" }}
-          >
-            <ArrowBackOutlinedIcon />
-            <Typography>Back</Typography>
-          </Grid2>
-        </Button>
-        <Button
-          onClick={() => navigate("/menu")}
-          sx={{
-            color: "black",
-            fontWeight: "bold",
-            fontSize: "1.5rem",
-            textTransform: "none",
-            "&:hover": {
-              backgroundColor: "transparent",
-              opacity: 0.8,
-              transform: "scale(1.1)",
-              transition: "transform 0.2s ease-in-out",
-            },
-          }}
-        >
-          KiddoFlix
-        </Button>
-        <Avatar
-          src={currentProfile.imageURL}
-          sx={{
-            bgcolor: ColorPick.getSecondary(),
-            color: "white",
-            width: 40,
-            height: 40,
-            "&:hover": {
-              transform: "scale(1.1)",
-              transition: "transform 0.2s ease-in-out",
-            },
-          }}
-        >
-          {currentProfile.name ? currentProfile.name[0] : "U"}
-        </Avatar>
-      </Box>
-
-      {/* Show Image and Description (Image on Right, Description on Left) */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          mb: 4,
-          gap: 4,
-        }}
-      >
-        {/* Left Section: Show Description */}
+        {/* Header with Go Back Button and Title */}
         <Box
           sx={{
-            flex: 1,
             display: "flex",
-            flexDirection: "column",
-            gap: 3,
+            alignItems: "center",
+            justifyContent: "space-between",
+            mb: 2,
           }}
         >
-          {/* Title and Description Container */}
-          <Box>
-            <Typography
-              variant="h4"
-              sx={{
-                color: "black",
-                fontWeight: "bold",
-                mb: 2,
-              }}
-            >
-              {title}
-            </Typography>
-            <Typography
-              sx={{
-                color: "black",
-                fontSize: "1.2rem",
-                lineHeight: 1.5,
-                mb: 3,
-              }}
-            >
-              {showDescriptions[title] ||
-                `This is a description of ${title}. Enjoy watching your favorite episodes! This show brings a lot of excitement with its amazing plot twists and memorable characters. Stay tuned for all the action and drama.`}
-            </Typography>
-          </Box>
-
-          {/* Favorite Button */}
           <Button
-            variant="contained"
-            onClick={handleFavoriteClick}
-            startIcon={isFavorite ? <Star /> : <StarBorder />}
+            onClick={() => navigate(-1)}
             sx={{
-              bgcolor: isFavorite ? "gold" : ColorPick.getSecondary(),
-              color: "black",
+              backgroundColor: ColorPick.getSecondary(),
+              padding: 1,
+              paddingRight: 2,
+              textTransform: "none",
               "&:hover": {
-                bgcolor: isFavorite ? "#FFD700" : ColorPick.getSecondaryHOVER(),
+                backgroundColor: ColorPick.getSecondaryHOVER(),
                 transform: "scale(1.1)",
                 transition: "transform 0.2s ease-in-out",
               },
-              transition: "background-color 0.3s",
-              alignSelf: "flex-start",
+              border: "3px solid black",
             }}
           >
-            {isFavorite ? "Favorited" : "Add to Favorites"}
+            <Grid2
+              container
+              direction={"row"}
+              spacing={1}
+              alignItems="center"
+              sx={{ color: "white" }}
+            >
+              <ArrowBackOutlinedIcon />
+              <Typography>Back</Typography>
+            </Grid2>
           </Button>
+          <Button
+            onClick={() => navigate("/menu")}
+            sx={{
+              color: "black",
+              fontWeight: "bold",
+              fontSize: "1.5rem",
+              textTransform: "none",
+              "&:hover": {
+                backgroundColor: "transparent",
+                opacity: 0.8,
+                transform: "scale(1.1)",
+                transition: "transform 0.2s ease-in-out",
+              },
+            }}
+          >
+            KiddoFlix
+          </Button>
+          <Avatar
+            src={currentProfile.imageURL}
+            sx={{
+              bgcolor: ColorPick.getSecondary(),
+              color: "white",
+              width: 40,
+              height: 40,
+              "&:hover": {
+                transform: "scale(1.1)",
+                transition: "transform 0.2s ease-in-out",
+              },
+            }}
+            onClick={() => {
+              navigate("/kickout");
+            }}
+          >
+            {currentProfile.name ? currentProfile.name[0] : "U"}
+          </Avatar>
         </Box>
 
-        {/* Right Section: Show Image */}
-        <Box
-          component="img"
-          src={image}
-          alt={title}
-          sx={{
-            width: "50vw",
-            maxWidth: "600px",
-            height: "auto",
-            maxHeight: "500px",
-            objectFit: "contain",
-            borderRadius: 3,
-            boxShadow: 3,
-          }}
-        />
-      </Box>
-
-      {/* Episode Selection */}
-      <Box sx={{ mt: 4 }}>
-        <Typography
-          variant="h6"
-          sx={{ mb: 2, color: "black", fontWeight: "bold" }}
-        >
-          Episodes ({showEpisodeCounts[title] || "Unknown"} total)
-        </Typography>
+        {/* Show Image and Description (Image on Right, Description on Left) */}
         <Box
           sx={{
             display: "flex",
-            flexWrap: "wrap",
-            gap: 2,
-            pb: 4,
-            "& > button": {
-              flex: "0 1 calc(20% - 16px)", // 5 buttons per row, accounting for gap
-              minWidth: "150px", // Minimum width for each button
-              maxWidth: "200px", // Maximum width for each button
-              height: "48px", // Consistent height
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            },
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            mb: 4,
+            gap: 4,
           }}
         >
-          {episodes.map((episode) => (
+          {/* Left Section: Show Description */}
+          <Box
+            sx={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: 3,
+            }}
+          >
+            {/* Title and Description Container */}
+            <Box>
+              <Typography
+                variant="h4"
+                sx={{
+                  color: "black",
+                  fontWeight: "bold",
+                  mb: 2,
+                }}
+              >
+                {title}
+              </Typography>
+              <Typography
+                sx={{
+                  color: "black",
+                  fontSize: "1.2rem",
+                  lineHeight: 1.5,
+                  mb: 3,
+                }}
+              >
+                {showDescriptions[title] ||
+                  `This is a description of ${title}. Enjoy watching your favorite episodes! This show brings a lot of excitement with its amazing plot twists and memorable characters. Stay tuned for all the action and drama.`}
+              </Typography>
+            </Box>
+
+            {/* Favorite Button */}
             <Button
-              key={episode.number}
-              onClick={() => handleEpisodeClick(episode)}
               variant="contained"
+              onClick={handleFavoriteClick}
+              startIcon={isFavorite ? <Star /> : <StarBorder />}
+              sx={{
+                bgcolor: isFavorite ? "gold" : ColorPick.getSecondary(),
+                color: "white",
+                "&:hover": {
+                  bgcolor: isFavorite
+                    ? "#FFD700"
+                    : ColorPick.getSecondaryHOVER(),
+                  transform: "scale(1.1)",
+                  transition: "transform 0.2s ease-in-out",
+                },
+                transition: "background-color 0.3s",
+                alignSelf: "flex-start",
+              }}
+            >
+              {isFavorite ? "Favorited" : "Add to Favorites"}
+            </Button>
+          </Box>
+
+          {/* Right Section: Show Image */}
+          <Box
+            component="img"
+            src={image}
+            alt={title}
+            sx={{
+              width: "50vw",
+              maxWidth: "600px",
+              height: "auto",
+              maxHeight: "500px",
+              objectFit: "contain",
+              borderRadius: 3,
+              boxShadow: 3,
+            }}
+          />
+        </Box>
+
+        {/* Episode Selection */}
+        <Box sx={{ mt: 4 }}>
+          <Typography
+            variant="h6"
+            sx={{ mb: 2, color: "black", fontWeight: "bold" }}
+          >
+            Episodes ({showEpisodeCounts[title] || "Unknown"} total)
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 2,
+              pb: 4,
+              "& > button": {
+                flex: "0 1 calc(20% - 16px)", // 5 buttons per row, accounting for gap
+                minWidth: "150px", // Minimum width for each button
+                maxWidth: "200px", // Maximum width for each button
+                height: "48px", // Consistent height
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            }}
+          >
+            {episodes.map((episode) => (
+              <Button
+                key={episode.number}
+                onClick={() => handleEpisodeClick(episode)}
+                variant="contained"
+                sx={{
+                  bgcolor: ColorPick.getSecondary(),
+                  color: "white",
+                  borderRadius: 3,
+                  px: 3,
+                  py: 1,
+                  boxShadow: 2,
+                  fontSize: "1rem",
+                  "&:hover": {
+                    backgroundColor: ColorPick.getSecondaryHOVER(),
+                    transform: "scale(1.1)",
+                    transition: "transform 0.2s ease-in-out",
+                  },
+                }}
+              >
+                Episode {episode.number}
+              </Button>
+            ))}
+          </Box>
+        </Box>
+
+        {/* Watch Button */}
+        {selectedEpisode && (
+          <Box sx={{ mt: 2, textAlign: "center", pb: 4 }}>
+            <Button
+              variant="contained"
+              onClick={() => handleEpisodeClick(selectedEpisode)}
               sx={{
                 bgcolor: ColorPick.getSecondary(),
                 color: "white",
+                px: 4,
+                py: 1.5,
                 borderRadius: 3,
-                px: 3,
-                py: 1,
-                boxShadow: 2,
-                fontSize: "1rem",
+                boxShadow: 3,
+                fontSize: "1.1rem",
                 "&:hover": {
                   backgroundColor: ColorPick.getSecondaryHOVER(),
                   transform: "scale(1.1)",
@@ -338,38 +388,27 @@ const ShowDetails = () => {
                 },
               }}
             >
-              Episode {episode.number}
+              ▶ Watch Episode {selectedEpisode.number}
             </Button>
-          ))}
-        </Box>
+          </Box>
+        )}
       </Box>
 
-      {/* Watch Button */}
-      {selectedEpisode && (
-        <Box sx={{ mt: 2, textAlign: "center", pb: 4 }}>
-          <Button
-            variant="contained"
-            onClick={() => handleEpisodeClick(selectedEpisode)}
-            sx={{
-              bgcolor: ColorPick.getSecondary(),
-              color: "white",
-              px: 4,
-              py: 1.5,
-              borderRadius: 3,
-              boxShadow: 3,
-              fontSize: "1.1rem",
-              "&:hover": {
-                backgroundColor: ColorPick.getSecondaryHOVER(),
-                transform: "scale(1.1)",
-                transition: "transform 0.2s ease-in-out",
-              },
-            }}
-          >
-            ▶ Watch Episode {selectedEpisode.number}
-          </Button>
-        </Box>
-      )}
-    </Box>
+      <Snackbar
+        open={success}
+        autoHideDuration={3000}
+        onClose={() => setSuccess(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSuccess(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          {isFavorite ? "Added to favorites!" : "Removed from favorites!"}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

@@ -96,7 +96,7 @@ const Create = () => {
     }
 
     // If all validations pass, navigate to parent profile init
-    navigate("/parentprofileinit");
+    navigate("/parentprofileinit?fromCreate=true");
   };
 
   return (

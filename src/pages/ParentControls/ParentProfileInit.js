@@ -7,7 +7,7 @@ import {
   Grid,
   Avatar,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import ColorPick from "../../tools/ColorPick";
 import { Add as AddIcon } from "@mui/icons-material";
 import ExitButton from "../../components/menuComponents/ExitButton";
@@ -17,6 +17,7 @@ const ParentProfileInit = () => {
   const [profilePicture, setProfilePicture] = useState(null);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleProfilePictureChange = (event) => {
     const file = event.target.files[0];
@@ -35,8 +36,9 @@ const ParentProfileInit = () => {
       setError("Please enter a profile name");
       return;
     }
-    // For design concept, we'll just navigate to the parent main page
-    navigate("/menu");
+    // Check if we're coming from account creation
+    const fromCreate = new URLSearchParams(location.search).get("fromCreate");
+    navigate(fromCreate ? "/menu?newAccount=true" : "/menu");
   };
 
   return (

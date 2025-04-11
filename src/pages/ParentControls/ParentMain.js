@@ -13,6 +13,7 @@ import {
   ChevronRight,
   ChevronLeft,
   AccessTime,
+  StarBorder,
 } from "@mui/icons-material";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -22,11 +23,19 @@ import ConstantLib from "../../tools/ConstantLib";
 import React, { useState, useEffect } from "react";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import Grid2 from "@mui/material/Grid2";
+import { getFavorites } from "../../tools/StorageUtils";
 
 const ParentMain = () => {
   const navigate = useNavigate();
   const { profileName } = useParams();
   const kidsProfiles = ConstantLib.getKidsProfile();
+  const [favoriteShows, setFavoriteShows] = useState([]);
+
+  useEffect(() => {
+    // Load favorites from storage
+    const favorites = getFavorites(profileName);
+    setFavoriteShows(favorites);
+  }, [profileName]);
 
   let currentProfile = profileName
     ? kidsProfiles.find(
@@ -55,39 +64,6 @@ const ParentMain = () => {
     { title: "Fairly OddParents", image: "/images/Fairly_OddParents.webp" },
     { title: "Dora", image: "/images/Dora.jpg" },
     { title: "Max and Ruby", image: "/images/max_and_ruby.jpg" },
-  ];
-
-  const favoriteShows = [
-    {
-      title: "Avatar: The Last Airbender",
-      image: "/images/avatar.jpg",
-      description:
-        "A critically acclaimed animated series with deep storytelling, complex characters, and themes of war, peace, and personal growth.",
-    },
-    {
-      title: "Phineas and Ferb",
-      image: "/images/phineas_and_ferb.png",
-      description:
-        "A clever and witty show with smart humor, musical numbers, and creative inventions that appeal to both kids and adults.",
-    },
-    {
-      title: "Kim Possible",
-      image: "/images/kim_possible.jpg",
-      description:
-        "A teenage spy action-comedy with strong female lead, clever writing, and action sequences that entertain all ages.",
-    },
-    {
-      title: "Danny Phantom",
-      image: "/images/DannyPhantom.jpg",
-      description:
-        "A supernatural action series with themes of responsibility and identity, featuring a teenage ghost superhero.",
-    },
-    {
-      title: "Fairly OddParents",
-      image: "/images/Fairly_OddParents.webp",
-      description:
-        "A clever animated series with witty humor, pop culture references, and imaginative scenarios that adults can appreciate.",
-    },
   ];
 
   return (
@@ -273,52 +249,80 @@ const ParentMain = () => {
           Favorites
         </Typography>
         <Box sx={{ position: "relative" }}>
-          <Box
-            id="favorite-shows"
-            sx={{
-              overflowX: "auto",
-              whiteSpace: "nowrap",
-              pb: 2,
-              pt: 1,
-              px: 1,
-              mx: -1,
-              "&::-webkit-scrollbar": { display: "none" },
-              scrollbarWidth: "none",
-              scrollBehavior: "smooth",
-            }}
-          >
-            {favoriteShows.map((show, index) => (
-              <Button
-                key={index}
-                tabIndex={-1}
-                onClick={() =>
-                  navigate(`/showdetails_parent`, {
-                    state: {
-                      title: show.title,
-                      image: show.image,
-                      description: show.description,
-                    },
-                  })
-                }
-                sx={{
-                  backgroundImage: `url(${show.image})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  width: 250,
-                  height: 150,
-                  marginRight: 3,
-                  borderRadius: 3,
-                  boxShadow: 2,
-                  flexShrink: 0,
-                  "&:hover": {
-                    opacity: 0.9,
-                    transform: "scale(1.1)",
-                    transition: "transform 0.2s ease-in-out",
-                  },
-                }}
+          {favoriteShows.length === 0 ? (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                p: 4,
+                bgcolor: "rgba(255, 255, 255, 0.8)",
+                borderRadius: 3,
+                boxShadow: 2,
+                textAlign: "center",
+                minHeight: 150,
+                width: "100%",
+                flexShrink: 0,
+              }}
+            >
+              <StarBorder
+                sx={{ fontSize: 40, color: ColorPick.getSecondary(), mb: 1 }}
               />
-            ))}
-          </Box>
+              <Typography variant="h6" sx={{ color: "black", mb: 1 }}>
+                No Favorites Yet
+              </Typography>
+              <Typography variant="body2" sx={{ color: "black" }}>
+                Click the star icon on any show to add it here
+              </Typography>
+            </Box>
+          ) : (
+            <Box
+              id="favorite-shows"
+              sx={{
+                overflowX: "auto",
+                whiteSpace: "nowrap",
+                pb: 2,
+                pt: 1,
+                px: 1,
+                mx: -1,
+                "&::-webkit-scrollbar": { display: "none" },
+                scrollbarWidth: "none",
+                scrollBehavior: "smooth",
+              }}
+            >
+              {favoriteShows.map((show, index) => (
+                <Button
+                  key={index}
+                  tabIndex={-1}
+                  onClick={() =>
+                    navigate(`/showdetails_parent`, {
+                      state: {
+                        title: show.title,
+                        image: show.image,
+                      },
+                    })
+                  }
+                  sx={{
+                    backgroundImage: `url(${show.image})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    width: 250,
+                    height: 150,
+                    marginRight: 3,
+                    borderRadius: 3,
+                    boxShadow: 2,
+                    flexShrink: 0,
+                    "&:hover": {
+                      opacity: 0.9,
+                      transform: "scale(1.1)",
+                      transition: "transform 0.2s ease-in-out",
+                    },
+                  }}
+                />
+              ))}
+            </Box>
+          )}
         </Box>
       </Box>
 

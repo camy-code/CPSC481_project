@@ -15,37 +15,31 @@ import ParentLayout from "./components/ParentLayout";
 function App() {
   // Make a list of all the public pages
 
-    // We add this dive here so our footer has a fair amount of rooms
+  // We add this dive here so our footer has a fair amount of rooms
   return (
-    <div style={{ minHeight: "70vh",  backgroundColor:ColorPick.getWhite()}}>
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout/>}>
-        {
-          // The following just does a bunch of mapping to make things stupid proof
-          HelperPages.getPublicPages().map((page) => (
-            <Route
-              path={page.path}
-              element={page.compo} 
-            />
-          ))
-        }
-        {/* We need to add pages that need the parent layout */}
-       
-        {/* The folowing is the map for the admin pages */}
-        <Route path="" element={<ParentLayout/>}>
-        {HelperPages.getAuthPages().map(  
-          (page) => (
-            <Route path={page.path}
-            element={page.compo } />
-          )
-         )}
-         </Route>
+    <div style={{ minHeight: "70vh", backgroundColor: ColorPick.getWhite() }}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            {
+              // The following just does a bunch of mapping to make things stupid proof
+              HelperPages.getPublicPages().map((page) => (
+                <Route path={page.path} element={page.compo} />
+              ))
+            }
+            {/* We need to add pages that need the parent layout */}
 
-        <Route path ="*" element={<NoPage/>}/>
-        </Route>
-      </Routes>
-    </Router>
+            {/* The folowing is the map for the admin pages */}
+            <Route path="" element={<ParentLayout />}>
+              {HelperPages.getAuthPages().map((page) => (
+                <Route path={page.path} element={page.compo} />
+              ))}
+            </Route>
+
+            <Route path="*" element={<NoPage />} />
+          </Route>
+        </Routes>
+      </Router>
     </div>
   );
 }

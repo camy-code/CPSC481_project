@@ -1,4 +1,5 @@
 import Grid from "@mui/material/Grid2";
+import { useLocation } from "react-router-dom";
 
 import { Card, CardMedia, CardContent, Box, IconButton } from "@mui/material";
 
@@ -14,6 +15,9 @@ const kidsProf = ConstantLib.getKidsProfile();
 // Parent mode
 
 const ProfileViews = () => {
+  const location = useLocation();
+  const isNewAccount = new URLSearchParams(location.search).get("newAccount");
+
   return (
     <Grid container direction={"row"} spacing={2} justifyContent="center">
       {/* Parent Profile - Moved to the left */}
@@ -24,13 +28,15 @@ const ProfileViews = () => {
       />
 
       {/* Child Profiles */}
-      {kidsProf.map((a) => (
-        <ChildProfileSel
-          name={a.name}
-          url={a.imageURL}
-          PAGE_LINK={"/childmain/" + a.name}
-        />
-      ))}
+      {kidsProf
+        .filter((a) => !isNewAccount || a.type === "parent")
+        .map((a) => (
+          <ChildProfileSel
+            name={a.name}
+            url={a.imageURL}
+            PAGE_LINK={"/childmain/" + a.name}
+          />
+        ))}
 
       {/* Add User Profile */}
       <ChildProfileSel

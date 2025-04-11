@@ -6,19 +6,36 @@ import ChildSelect from "../../components/parentLayoutCompo/ChildSelect";
 // These  are my card imports
 import { Card, CardContent, CardMedia, CardActions } from "@mui/material";
 import TimeSlider from "../../components/parentLayoutCompo/TimeSlider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { saveTimeLimit } from "../../tools/StorageUtils";
 
 // add a button thing so it is cleaner
 
 const ScreenTime = () => {
   const [success, setSuccess] = useState(false);
+  const [selectedChild, setSelectedChild] = useState(null);
+  const [timeValue, setTimeValue] = useState(120);
+
+  const handleChildSelect = (index, childName) => {
+    setSelectedChild(childName);
+  };
+
+  const handleTimeChange = (hours, minutes) => {
+    // Convert to total minutes
+    const totalMinutes = hours * 60 + minutes;
+    setTimeValue(totalMinutes);
+  };
 
   const handleConfirm = () => {
-    setSuccess(true);
+    if (selectedChild) {
+      // Save the time limit for the selected child
+      saveTimeLimit(selectedChild, timeValue);
+      setSuccess(true);
+    }
   };
 
   return (
-    <>
+    <Box sx={{ height: "100vh", overflow: "auto", padding: 2 }}>
       <Grid
         container
         direction={"column"}
@@ -26,21 +43,22 @@ const ScreenTime = () => {
       >
         <Typography variant="h2">Screen Time</Typography>
 
-        <ChildSelect />
+        <ChildSelect onChildSelect={handleChildSelect} />
 
         <Grid
           container
           direction={"row"}
           sx={{
             justifyContent: "space-between",
-
-            marginTop: 10,
+            marginTop: 6,
+            marginBottom: 8,
           }}
         >
-          <Grid container direction={"column"} marginBottom={10}>
-            <TimeSlider />
+          <Grid container direction={"column"} marginBottom={2}>
+            <TimeSlider onTimeChange={handleTimeChange} />
           </Grid>
         </Grid>
+
         <Button
           sx={{
             backgroundColor: ColorPick.getSecondary,
@@ -56,7 +74,8 @@ const ScreenTime = () => {
             "&:hover": {
               backgroundColor: ColorPick.getSecondaryHOVER(),
             },
-            marginTop: -10,
+            margin: 0,
+            position: "relative",
           }}
           onClick={handleConfirm}
         >
@@ -78,7 +97,7 @@ const ScreenTime = () => {
           Screen time saved successfully!
         </Alert>
       </Snackbar>
-    </>
+    </Box>
   );
 };
 

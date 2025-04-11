@@ -2,6 +2,9 @@
 const FAVORITES_KEY = "kiddoflix_favorites";
 const RESTRICTIONS_KEY = "kiddoflix_restrictions";
 
+// Time limit storage
+const TIME_LIMITS_KEY = "kiddoflix_time_limits";
+
 export const getFavorites = (profileName) => {
   try {
     const favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "{}");
@@ -109,6 +112,26 @@ export const isShowRestricted = (profileName, showTitle) => {
   }
 };
 
+export const getTimeLimit = (profileName) => {
+  try {
+    const limits = JSON.parse(localStorage.getItem(TIME_LIMITS_KEY) || "{}");
+    return limits[profileName] || 0;
+  } catch (error) {
+    console.error("Error getting time limit:", error);
+    return 0;
+  }
+};
+
+export const saveTimeLimit = (profileName, minutes) => {
+  try {
+    const limits = JSON.parse(localStorage.getItem(TIME_LIMITS_KEY) || "{}");
+    limits[profileName] = minutes;
+    localStorage.setItem(TIME_LIMITS_KEY, JSON.stringify(limits));
+  } catch (error) {
+    console.error("Error saving time limit:", error);
+  }
+};
+
 export default {
   getFavorites,
   saveFavorite,
@@ -117,4 +140,6 @@ export default {
   saveRestriction,
   removeRestriction,
   isShowRestricted,
+  getTimeLimit,
+  saveTimeLimit,
 };

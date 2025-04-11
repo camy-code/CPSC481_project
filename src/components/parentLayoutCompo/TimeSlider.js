@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Slider, TextField, Typography, Grid } from "@mui/material";
 
-const TimeSlider = () => {
+const TimeSlider = ({ onTimeChange }) => {
   const [hours, setHours] = useState(1); // Default 1 hour
   const [minutes, setMinutes] = useState(0); // Default 0 minutes
 
   // Converts hours & minutes to a single number (decimal hours) for the slider
   const totalHours = hours + minutes / 60;
+
+  // Notify parent component when time changes
+  useEffect(() => {
+    if (onTimeChange) {
+      onTimeChange(hours, minutes);
+    }
+  }, [hours, minutes, onTimeChange]);
 
   // Handles slider change
   const handleSliderChange = (_, newValue) => {
@@ -31,8 +38,10 @@ const TimeSlider = () => {
   };
 
   return (
-    <Box sx={{ width: 400, textAlign: "center", p: 3 }}>
-      <Typography variant="h6">Allowed Hours</Typography>
+    <Box sx={{ width: 300 }}>
+      <Typography id="time-slider" gutterBottom>
+        Daily Screen Time Limit
+      </Typography>
 
       {/* Slider */}
       <Slider
@@ -44,26 +53,32 @@ const TimeSlider = () => {
         sx={{ mt: 3 }}
       />
 
-      {/* Time Inputs (Hours & Minutes) */}
-      <Grid container spacing={5} justifyContent="center" marginTop={4}>
-        <TextField
-          label="Hours"
-          type="number"
-          value={hours}
-          onChange={(e) => handleTimeChange(e, true)}
-          variant="outlined"
-          size="small"
-          sx={{ width: "75px", marginRight:3 }}
-        />
-        <TextField
-          label="Minutes"
-          type="number"
-          value={minutes}
-          onChange={(e) => handleTimeChange(e, false)}
-          variant="outlined"
-          size="small"
-          sx={{ width: "75px" }}
-        />
+      {/* Time Input Fields */}
+      <Grid container spacing={2} sx={{ mt: 1 }}>
+        <Grid item xs={6}>
+          <TextField
+            label="Hours"
+            type="number"
+            value={hours}
+            onChange={(e) => handleTimeChange(e, true)}
+            variant="outlined"
+            size="small"
+            inputProps={{ min: 0, max: 24 }}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            label="Minutes"
+            type="number"
+            value={minutes}
+            onChange={(e) => handleTimeChange(e, false)}
+            variant="outlined"
+            size="small"
+            inputProps={{ min: 0, max: 59, step: 15 }}
+            fullWidth
+          />
+        </Grid>
       </Grid>
     </Box>
   );

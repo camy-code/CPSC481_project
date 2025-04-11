@@ -23,18 +23,36 @@ import ConstantLib from "../../tools/ConstantLib";
 import React, { useState, useEffect } from "react";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import Grid2 from "@mui/material/Grid2";
-import { getFavorites, isShowRestricted } from "../../tools/StorageUtils";
+import {
+  getFavorites,
+  isShowRestricted,
+  getTimeLimit,
+} from "../../tools/StorageUtils";
 
 const ChildMain = () => {
   const navigate = useNavigate();
   const { profileName } = useParams();
   const kidsProfiles = ConstantLib.getKidsProfile();
   const [favoriteShows, setFavoriteShows] = useState([]);
+  const [timeLimit, setTimeLimit] = useState(0);
+  const [timeUsed, setTimeUsed] = useState(0);
 
   useEffect(() => {
     // Load favorites from storage
     const favorites = getFavorites(profileName);
-    setFavoriteShows(favorites);
+    // Filter out restricted shows from favorites
+    const filteredFavorites = favorites.filter(
+      (show) => !isShowRestricted(profileName, show.title)
+    );
+    setFavoriteShows(filteredFavorites);
+
+    // Load time limit for this profile
+    const limit = getTimeLimit(profileName);
+    setTimeLimit(limit);
+
+    // For demo purposes, set a random amount of time used
+    // In a real app, you would track actual usage
+    setTimeUsed(Math.floor(Math.random() * 30));
   }, [profileName]);
 
   // console.log("Profile Name from URL:", profileName);
@@ -81,11 +99,29 @@ const ChildMain = () => {
     "/images/spongebob.jpg",
   ];
 
-  // Mock values for the timer - these would come from props or context in real app
-  const totalTimeMinutes = 120; // 2 hours total
-  const remainingTimeMinutes = 45; // 45 minutes remaining
-  const progress =
-    ((totalTimeMinutes - remainingTimeMinutes) / totalTimeMinutes) * 100;
+  // Calculate remaining time
+  const remainingTimeMinutes = timeLimit
+    ? Math.max(0, timeLimit - timeUsed)
+    : 0;
+
+  // Format time as hours and minutes
+  const formatTime = (minutes) => {
+    if (!minutes && timeLimit === 0) return "∞";
+
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+
+    if (hours > 0) {
+      return `${hours}h ${mins}m`;
+    } else {
+      return `${mins}m`;
+    }
+  };
+
+  // Calculate progress - if no limit set, show full
+  const progress = timeLimit
+    ? ((timeLimit - remainingTimeMinutes) / timeLimit) * 100
+    : 0;
 
   const scrollToShow = (section, index) => {
     const containerId =
@@ -158,20 +194,6 @@ const ChildMain = () => {
   const filteredRecentShows = recentShows.filter(
     (show) => !isShowRestricted(profileName, show.title)
   );
-
-  // Update favorites to filter out restricted shows
-  useEffect(() => {
-    const loadFavorites = () => {
-      const favorites = getFavorites(profileName);
-      // Filter out restricted shows from favorites
-      const filteredFavorites = favorites.filter(
-        (show) => !isShowRestricted(profileName, show.title)
-      );
-      setFavoriteShows(filteredFavorites);
-    };
-
-    loadFavorites();
-  }, [profileName]);
 
   // Get all available shows from ConstantLib
   const allShows = ConstantLib.getShows();
@@ -340,11 +362,14 @@ const ChildMain = () => {
             />
             <CircularProgress
               variant="determinate"
-              value={progress}
+              value={timeLimit ? 100 - progress : 100}
               size={65}
               thickness={4}
               sx={{
-                color: ColorPick.getSecondary(),
+                color:
+                  timeLimit && remainingTimeMinutes <= 0
+                    ? "red"
+                    : ColorPick.getSecondary(),
                 transform: "rotate(180deg)",
                 circle: {
                   strokeLinecap: "round",
@@ -365,23 +390,19 @@ const ChildMain = () => {
               }}
             >
               <Typography
-                variant="h6"
+                variant="body1"
                 sx={{
-                  color: "black",
+                  color:
+                    timeLimit && remainingTimeMinutes <= 0 ? "red" : "black",
                   fontWeight: "bold",
                   lineHeight: 1,
+                  fontSize: "0.85rem",
+                  textAlign: "center",
+                  padding: "2px",
+                  maxWidth: "90%",
                 }}
               >
-                {remainingTimeMinutes}
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{
-                  color: "grey.600",
-                  fontSize: "0.7rem",
-                }}
-              >
-                min
+                {formatTime(remainingTimeMinutes)}
               </Typography>
             </Box>
           </Box>
@@ -394,7 +415,9 @@ const ChildMain = () => {
               mt: 0.5,
             }}
           >
-            of {totalTimeMinutes} minutes total
+            {timeLimit
+              ? `Of ${formatTime(timeLimit)} total`
+              : "No time limit set"}
           </Typography>
         </Box>
       </Box>

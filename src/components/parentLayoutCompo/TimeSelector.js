@@ -40,7 +40,10 @@ const getArrow = (i, addDate,minusDate) => {
   );
 };
 
-const TimeSelector = () => {
+const TimeSelector = ({onChange}) => {
+
+  
+
 
   const dateRanges = [
     "April 6–12",
@@ -48,17 +51,22 @@ const TimeSelector = () => {
     "April 20–26"
   ];
   
-  const [dateIndex, setDateIndex] = useState(1);
+  const [dateIndex, setDateIndex] = useState(2);
+
+  const handleChange = (index) => {
+    setDateIndex(index);
+    onChange(index);
+  }
 
   const addDate = () => {
     if (dateIndex < dateRanges.length - 1) {
-      setDateIndex(dateIndex + 1);
+      handleChange(dateIndex + 1);
     }
   }
 
   const subtractDate = () => {
     if (dateIndex > 0) {
-      setDateIndex(dateIndex - 1);
+      handleChange(dateIndex - 1);
     }
   }
 
@@ -88,7 +96,7 @@ const TimeSelector = () => {
             border:"2px solid black"
           }}
           onClick={() => {
-            setDateIndex(1);
+            handleChange(2);
           }}
         >
           <Typography>Now</Typography>

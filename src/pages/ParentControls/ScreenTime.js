@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import ColorPick from "../../tools/ColorPick";
 import ChildSelect from "../../components/parentLayoutCompo/ChildSelect";
+import ConstantLib from "../../tools/ConstantLib";
 
 // These  are my card imports
 import { Card, CardContent, CardMedia, CardActions } from "@mui/material";
@@ -18,6 +19,7 @@ import TimeSlider from "../../components/parentLayoutCompo/TimeSlider";
 import { useState, useEffect } from "react";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { saveTimeLimit } from "../../tools/StorageUtils";
 
 // add a button thing so it is cleaner
 
@@ -60,6 +62,7 @@ const ScreenTime = () => {
   const [success, setSuccess] = useState(false);
   const [selectedChild, setSelectedChild] = useState("");
   const [isLocked, setIsLocked] = useState(false);
+  const [timeValue, setTimeValue] = useState(60); // Default time limit in minutes
 
   // Listen for child selection changes from ChildSelect component
   useEffect(() => {
@@ -76,6 +79,25 @@ const ScreenTime = () => {
     return () =>
       window.removeEventListener("childSelected", handleChildSelectChange);
   }, []);
+
+  // Handle child selection via direct prop
+  const handleChildSelect = (index) => {
+    const selectedChildName = ConstantLib.getKidsProfile()[index].name;
+    setSelectedChild(selectedChildName);
+
+    // Load lock status when child changes
+    if (selectedChildName) {
+      const lockStatus = getProfileLockStatus(selectedChildName);
+      setIsLocked(lockStatus);
+    }
+  };
+
+  // Handle time slider changes
+  const handleTimeChange = (hours, minutes) => {
+    // Convert to total minutes
+    const totalMinutes = hours * 60 + minutes;
+    setTimeValue(totalMinutes);
+  };
 
   const handleLockToggle = () => {
     if (selectedChild) {
@@ -102,7 +124,7 @@ const ScreenTime = () => {
       >
         <Typography variant="h2">Screen Time</Typography>
 
-        <ChildSelect onChildSelect={handleChildSelect} />
+        <ChildSelect onChange={handleChildSelect} />
 
         {/* Time Slider Section */}
         <Grid
@@ -120,7 +142,7 @@ const ScreenTime = () => {
           <Typography variant="h5" sx={{ marginBottom: 2 }}>
             Daily Time Limit
           </Typography>
-          <TimeSlider />
+          <TimeSlider onTimeChange={handleTimeChange} />
         </Grid>
 
         {/* Lock Toggle Button */}

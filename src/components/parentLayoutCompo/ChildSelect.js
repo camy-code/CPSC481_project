@@ -11,17 +11,20 @@ const kidsProf = ConstantLib.getKidsProfile();
 // someone is selected. The day got long and I became more lazy in terms of code
 // quality so sorry -_-.
 
-const ChildSelect = () => {
+const ChildSelect = ({ onChange }) => {
   const [childIndex, setChildIndex] = useState(1);
 
-  // Emit the selected child name when a profile is clicked
-  const handleChildSelect = (index) => {
+  // Handle changes and notify parent components
+  const handleChange = (index) => {
     setChildIndex(index);
 
-    // Get the selected child's name
-    const selectedChildName = kidsProf[index].name;
+    // Call the onChange prop if provided (for History and Restrict pages)
+    if (onChange) {
+      onChange(index);
+    }
 
-    // Create and dispatch a custom event with the child's name
+    // Also dispatch a custom event for ScreenTime component
+    const selectedChildName = kidsProf[index].name;
     const event = new CustomEvent("childSelected", {
       detail: selectedChildName,
       bubbles: true,
@@ -36,7 +39,12 @@ const ChildSelect = () => {
       childIndex >= 0 &&
       childIndex < kidsProf.length
     ) {
-      // Create and dispatch a custom event with the default selected child's name
+      // Call onChange for initial selection if provided
+      if (onChange) {
+        onChange(childIndex);
+      }
+
+      // Also dispatch event for ScreenTime component
       const event = new CustomEvent("childSelected", {
         detail: kidsProf[childIndex].name,
         bubbles: true,
@@ -57,7 +65,9 @@ const ChildSelect = () => {
               spacing={1}
             >
               <Box
-                onClick={() => handleChildSelect(index)}
+                onClick={() => {
+                  handleChange(index);
+                }}
                 sx={{
                   width: 150, // Set the width of the box
                   height: 150, // Set the height of the box
